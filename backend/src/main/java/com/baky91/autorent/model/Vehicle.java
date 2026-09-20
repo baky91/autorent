@@ -4,6 +4,7 @@ import com.baky91.autorent.dto.VehicleDTO;
 import jakarta.persistence.*;
 
 @Entity
+@Table(name = "vehicles")
 public class Vehicle {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,6 +24,7 @@ public class Vehicle {
     private Integer kilometrage;
     @Column(name = "daily_price")
     private Double dailyPrice;
+    @Column(name = "is_active")
     private Boolean active;
 
     // CONSTRUCTORS
