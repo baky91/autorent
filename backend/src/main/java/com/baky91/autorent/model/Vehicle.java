@@ -6,22 +6,25 @@ import jakarta.persistence.*;
 public class Vehicle {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
     private String brand;
     private String model;
     private String category;
     private Integer year;
-    private String image_url;
-    private Integer seats_count;
-    private String fuel_type;
+    @Column(name = "image_url")
+    private String imageUrl;
+    @Column(name = "seats_count")
+    private Integer seatsCount;
+    @Column(name = "fuel_type")
+    private String fuelType;
     private String transmission;
     private Integer kilometrage;
-    private Double daily_price;
-    private Boolean is_active;
+    @Column(name = "daily_price")
+    private Double dailyPrice;
+    private Boolean active;
 
     // CONSTRUCTORS
-
     public Vehicle(){
 
     }
@@ -31,28 +34,37 @@ public class Vehicle {
         String model,
         String category,
         Integer year,
-        String image_url,
-        Integer seats_count,
-        String fuel_type,
+        String imageUrl,
+        Integer seatsCount,
+        String fuelType,
         String transmission,
         Integer kilometrage,
-        Double daily_price,
-        Boolean is_active
+        Double dailyPrice,
+        Boolean active
     ) {
         this.brand = brand;
         this.model = model;
         this.category = category;
         this.year = year;
-        this.image_url = image_url;
-        this.seats_count = seats_count;
-        this.fuel_type = fuel_type;
+        this.imageUrl = imageUrl;
+        this.seatsCount = seatsCount;
+        this.fuelType = fuelType;
         this.transmission = transmission;
         this.kilometrage = kilometrage;
-        this.daily_price = daily_price;
-        this.is_active = is_active;
+        this.dailyPrice = dailyPrice;
+        this.active = active;
     }
 
     // GETTERS AND SETTERS
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public String getBrand() {
         return brand;
     }
@@ -76,4 +88,69 @@ public class Vehicle {
     public void setYear(Integer year) {
         this.year = year;
     }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
+    public Integer getSeatsCount() {
+        return seatsCount;
+    }
+
+    public void setSeatsCount(Integer seatsCount) {
+        this.seatsCount = seatsCount;
+    }
+
+    public String getFuelType() {
+        return fuelType;
+    }
+
+    public void setFuelType(String fuelType) {
+        this.fuelType = fuelType;
+    }
+
+    public String getTransmission() {
+        return transmission;
+    }
+
+    public void setTransmission(String transmission) {
+        this.transmission = transmission;
+    }
+
+    public Integer getKilometrage() {
+        return kilometrage;
+    }
+
+    public void setKilometrage(Integer kilometrage) {
+        this.kilometrage = kilometrage;
+    }
+
+    public Double getDailyPrice() {
+        return dailyPrice;
+    }
+
+    public void setDailyPrice(Double dailyPrice) {
+        this.dailyPrice = dailyPrice;
+    }
+
+    public Boolean getActive() {
+        return active;
+    }
+
+    public void setActive(Boolean active) {
+        this.active = active;
+    }
+
 }
