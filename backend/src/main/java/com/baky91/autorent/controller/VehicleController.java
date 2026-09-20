@@ -6,6 +6,8 @@ import com.baky91.autorent.model.exception.VehicleNotFoundException;
 import com.baky91.autorent.service.VehicleService;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/vehicles")
 public class VehicleController {
@@ -16,10 +18,14 @@ public class VehicleController {
         this.vehicleService = vehicleService;
     }
 
+    @GetMapping
+    public List<VehicleDTO.GetOutput> getAllVehicles() {
+        return vehicleService.getAllVehicles();
+    }
+
     @GetMapping("/{id}")
     public VehicleDTO.GetOutput getVehicle(@PathVariable Integer id) throws VehicleNotFoundException {
-        Vehicle vehicle = vehicleService.getVehicleById(id);
-        return vehicle.toDto();
+        return vehicleService.getVehicleById(id).toDto();
     }
 
 }
