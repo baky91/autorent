@@ -17,6 +17,10 @@ public class VehicleController {
         this.vehicleService = vehicleService;
     }
 
+    /* CREATE (POST) */
+
+    /* READ (GET) */
+
     @GetMapping
     public List<VehicleDTO.GetOutput> getAllVehicles() {
         return vehicleService.getAllVehicles();
@@ -26,5 +30,9 @@ public class VehicleController {
     public VehicleDTO.GetOutput getVehicle(@PathVariable Integer id) throws VehicleNotFoundException {
         return vehicleService.getVehicleById(id).toDto();
     }
+
+    /* UPDATE (PUT) */
+
+    /* DELETE (DELETE) */
 
 }
