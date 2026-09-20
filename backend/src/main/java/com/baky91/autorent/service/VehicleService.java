@@ -15,14 +15,8 @@ public class VehicleService {
     }
 
     public Vehicle getVehicleById(int id) throws VehicleNotFoundException {
-        Vehicle vehicle = vehicleRepository.getReferenceById(id);
-
-        if (vehicle == null){
-            throw new VehicleNotFoundException("Le véhicule n°%d n'a pas été trouvé".formatted(id));
-        }
-
-        return vehicle;
-
+        return vehicleRepository.findById(id)
+                                .orElseThrow(() -> new VehicleNotFoundException("Le véhicule numéro %d n'a pas été trouvé".formatted(id)));
     }
 
 }
