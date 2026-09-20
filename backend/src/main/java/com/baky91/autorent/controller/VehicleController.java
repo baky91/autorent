@@ -4,13 +4,10 @@ import com.baky91.autorent.dto.VehicleDTO;
 import com.baky91.autorent.model.Vehicle;
 import com.baky91.autorent.model.exception.VehicleNotFoundException;
 import com.baky91.autorent.service.VehicleService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/vehicle")
+@RequestMapping("/api/vehicles")
 public class VehicleController {
 
     private final VehicleService vehicleService;
@@ -19,8 +16,8 @@ public class VehicleController {
         this.vehicleService = vehicleService;
     }
 
-    @GetMapping
-    public VehicleDTO.GetOutput getVehicle(@RequestParam Integer id) throws VehicleNotFoundException {
+    @GetMapping("/{id}")
+    public VehicleDTO.GetOutput getVehicle(@PathVariable Integer id) throws VehicleNotFoundException {
         Vehicle vehicle = vehicleService.getVehicleById(id);
         return vehicle.toDto();
     }
