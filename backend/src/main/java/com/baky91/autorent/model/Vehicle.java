@@ -1,5 +1,6 @@
 package com.baky91.autorent.model;
 
+import com.baky91.autorent.dto.VehicleDTO;
 import jakarta.persistence.*;
 
 @Entity
@@ -151,6 +152,23 @@ public class Vehicle {
 
     public void setActive(Boolean active) {
         this.active = active;
+    }
+
+    public VehicleDTO.GetOutput toDto(){
+        return new VehicleDTO.GetOutput(
+            id,
+            brand,
+            model,
+            category,
+            year,
+            imageUrl,
+            seatsCount,
+            fuelType,
+            transmission,
+            kilometrage,
+            dailyPrice,
+            active
+        );
     }
 
 }
