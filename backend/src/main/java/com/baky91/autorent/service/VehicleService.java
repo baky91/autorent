@@ -17,7 +17,7 @@ public class VehicleService {
         this.vehicleRepository = vehicleRepository;
     }
 
-    public Vehicle getVehicleById(int id) throws VehicleNotFoundException {
+    public Vehicle getVehicleById(long id) throws VehicleNotFoundException {
         return vehicleRepository.findById(id)
                                 .orElseThrow(() -> new VehicleNotFoundException("Le véhicule numéro %d n'a pas été trouvé".formatted(id)));
     }

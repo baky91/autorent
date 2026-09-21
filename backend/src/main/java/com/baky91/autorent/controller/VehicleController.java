@@ -27,7 +27,7 @@ public class VehicleController {
     }
 
     @GetMapping("/{id}")
-    public VehicleDTO.GetOutput getVehicle(@PathVariable Integer id) throws VehicleNotFoundException {
+    public VehicleDTO.GetOutput getVehicle(@PathVariable Long id) throws VehicleNotFoundException {
         return vehicleService.getVehicleById(id).toDto();
     }
 
