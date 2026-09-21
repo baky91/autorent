@@ -18,8 +18,8 @@ public class Vehicle {
 
     private Integer year;
 
-    @Column(name = "image_url")
-    private String imageUrl;
+    @Column(name = "image_path")
+    private String imagePath;
 
     @Column(name = "seats_count")
     private Integer seatsCount;
@@ -45,7 +45,7 @@ public class Vehicle {
         String model,
         String category,
         Integer year,
-        String imageUrl,
+        String imagePath,
         Integer seatsCount,
         String fuelType,
         String transmission,
@@ -57,7 +57,7 @@ public class Vehicle {
         this.model = model;
         this.category = category;
         this.year = year;
-        this.imageUrl = imageUrl;
+        this.imagePath = imagePath;
         this.seatsCount = seatsCount;
         this.fuelType = fuelType;
         this.transmission = transmission;
@@ -108,12 +108,12 @@ public class Vehicle {
         this.category = category;
     }
 
-    public String getImageUrl() {
-        return imageUrl;
+    public String getImagePath() {
+        return imagePath;
     }
 
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
     }
 
     public Integer getSeatsCount() {
@@ -171,7 +171,7 @@ public class Vehicle {
             model,
             category,
             year,
-            imageUrl,
+            imagePath,
             seatsCount,
             fuelType,
             transmission,
