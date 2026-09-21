@@ -6,6 +6,25 @@ import jakarta.persistence.*;
 @Entity
 @Table(name = "vehicles")
 public class Vehicle {
+    public enum Category {
+        SUPERMINI,
+        COMPACT,
+        SUV,
+        COMMERCIAL
+    }
+
+    public enum FuelType {
+        PETROL,
+        DIESEL,
+        ELECTRIC,
+        HYBRID
+    }
+
+    public enum Transmission {
+        MANUAL,
+        AUTOMATIC
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -14,7 +33,9 @@ public class Vehicle {
 
     private String model;
 
-    private String category;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "category")
+    private Category category;
 
     private Integer year;
 
@@ -24,10 +45,13 @@ public class Vehicle {
     @Column(name = "seats_count")
     private Integer seatsCount;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "fuel_type")
-    private String fuelType;
+    private FuelType fuelType;
 
-    private String transmission;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "transmission")
+    private Transmission transmission;
 
     private Integer kilometrage;
 
@@ -43,12 +67,12 @@ public class Vehicle {
     public Vehicle(
         String brand,
         String model,
-        String category,
+        Category category,
         Integer year,
         String imagePath,
         Integer seatsCount,
-        String fuelType,
-        String transmission,
+        FuelType fuelType,
+        Transmission transmission,
         Integer kilometrage,
         Double dailyPrice,
         Boolean active
@@ -100,11 +124,11 @@ public class Vehicle {
         this.year = year;
     }
 
-    public String getCategory() {
+    public Category getCategory() {
         return category;
     }
 
-    public void setCategory(String category) {
+    public void setCategory(Category category) {
         this.category = category;
     }
 
@@ -124,19 +148,19 @@ public class Vehicle {
         this.seatsCount = seatsCount;
     }
 
-    public String getFuelType() {
+    public FuelType getFuelType() {
         return fuelType;
     }
 
-    public void setFuelType(String fuelType) {
+    public void setFuelType(FuelType fuelType) {
         this.fuelType = fuelType;
     }
 
-    public String getTransmission() {
+    public Transmission getTransmission() {
         return transmission;
     }
 
-    public void setTransmission(String transmission) {
+    public void setTransmission(String Transmission) {
         this.transmission = transmission;
     }
 
