@@ -2,7 +2,6 @@ package com.baky91.autorent.service;
 
 import com.baky91.autorent.dto.ReservationDTO;
 import com.baky91.autorent.model.Reservation;
-import com.baky91.autorent.model.User;
 import com.baky91.autorent.model.exception.ObjectNotFoundException;
 import com.baky91.autorent.repository.ReservationRepository;
 import org.springframework.stereotype.Service;

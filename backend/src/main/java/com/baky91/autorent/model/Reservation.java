@@ -137,6 +137,7 @@ public class Reservation {
 
     public ReservationDTO.GetOutput toDto() {
         return new ReservationDTO.GetOutput(
+                id,
                 user.toDto(),
                 vehicle.toDto(),
                 startDate,
