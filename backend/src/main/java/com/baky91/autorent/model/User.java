@@ -1,5 +1,6 @@
 package com.baky91.autorent.model;
 
+import com.baky91.autorent.dto.UserDTO;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
@@ -135,5 +136,17 @@ public class User {
 
     public void setCreatedAt(LocalDate createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public UserDTO.GetOutput toDto() {
+        return new UserDTO.GetOutput(
+            id,
+            username,
+            firstName,
+            lastName,
+            email,
+            phone,
+            role
+        );
     }
 }

@@ -1,5 +1,6 @@
 package com.baky91.autorent.model;
 
+import com.baky91.autorent.dto.ReservationDTO;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
@@ -132,5 +133,16 @@ public class Reservation {
 
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public ReservationDTO.GetOutput toDto() {
+        return new ReservationDTO.GetOutput(
+                user.toDto(),
+                vehicle.toDto(),
+                startDate,
+                endDate,
+                totalPrice,
+                status
+        );
     }
 }
