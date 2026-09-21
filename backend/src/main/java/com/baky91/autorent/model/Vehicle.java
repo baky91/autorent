@@ -11,26 +11,34 @@ public class Vehicle {
     private Long id;
 
     private String brand;
+
     private String model;
+
     private String category;
+
     private Integer year;
+
     @Column(name = "image_url")
     private String imageUrl;
+
     @Column(name = "seats_count")
     private Integer seatsCount;
+
     @Column(name = "fuel_type")
     private String fuelType;
+
     private String transmission;
+
     private Integer kilometrage;
+
     @Column(name = "daily_price")
     private Double dailyPrice;
+
     @Column(name = "is_active")
     private Boolean active;
 
     // CONSTRUCTORS
-    public Vehicle(){
-
-    }
+    public Vehicle() {}
 
     public Vehicle(
         String brand,
