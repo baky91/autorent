@@ -2,6 +2,8 @@ package com.baky91.autorent.dto;
 
 import com.baky91.autorent.model.Vehicle;
 
+import java.math.BigDecimal;
+
 public class VehicleDTO {
 
     public record GetOutput (
@@ -10,12 +12,13 @@ public class VehicleDTO {
         String model,
         Vehicle.Category category,
         Integer year,
+        Integer horsePower,
         String imageUrl,
         Integer seatsCount,
         Vehicle.FuelType fuelType,
         Vehicle.Transmission transmission,
         Integer kilometrage,
-        Double dailyPrice,
+        BigDecimal dailyPrice,
         Boolean active
     ) {}
 

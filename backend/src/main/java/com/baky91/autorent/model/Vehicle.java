@@ -3,6 +3,8 @@ package com.baky91.autorent.model;
 import com.baky91.autorent.dto.VehicleDTO;
 import jakarta.persistence.*;
 
+import java.math.BigDecimal;
+
 @Entity
 @Table(name = "vehicles")
 public class Vehicle {
@@ -39,6 +41,9 @@ public class Vehicle {
 
     private Integer year;
 
+    @Column(name = "horse_power")
+    private Integer horsePower;
+
     @Column(name = "image_path")
     private String imagePath;
 
@@ -56,7 +61,7 @@ public class Vehicle {
     private Integer kilometrage;
 
     @Column(name = "daily_price")
-    private Double dailyPrice;
+    private BigDecimal dailyPrice;
 
     @Column(name = "is_active")
     private Boolean active;
@@ -74,7 +79,7 @@ public class Vehicle {
         FuelType fuelType,
         Transmission transmission,
         Integer kilometrage,
-        Double dailyPrice,
+        BigDecimal dailyPrice,
         Boolean active
     ) {
         this.brand = brand;
@@ -124,6 +129,14 @@ public class Vehicle {
         this.year = year;
     }
 
+    public Integer getHorsePower() {
+        return horsePower;
+    }
+
+    public void setHorsePower(Integer horsePower) {
+        this.horsePower = horsePower;
+    }
+
     public Category getCategory() {
         return category;
     }
@@ -160,7 +173,7 @@ public class Vehicle {
         return transmission;
     }
 
-    public void setTransmission(String Transmission) {
+    public void setTransmission(Transmission transmission) {
         this.transmission = transmission;
     }
 
@@ -172,11 +185,11 @@ public class Vehicle {
         this.kilometrage = kilometrage;
     }
 
-    public Double getDailyPrice() {
+    public BigDecimal getDailyPrice() {
         return dailyPrice;
     }
 
-    public void setDailyPrice(Double dailyPrice) {
+    public void setDailyPrice(BigDecimal dailyPrice) {
         this.dailyPrice = dailyPrice;
     }
 
@@ -195,6 +208,7 @@ public class Vehicle {
             model,
             category,
             year,
+            horsePower,
             imagePath,
             seatsCount,
             fuelType,
