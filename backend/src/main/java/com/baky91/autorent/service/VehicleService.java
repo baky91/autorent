@@ -49,4 +49,10 @@ public class VehicleService {
         vehicleRepository.save(vehicle);
         return vehicle.toDto();
     }
+
+    public void deleteVehicle(Long id) throws ObjectNotFoundException {
+        Vehicle foundVehicle = vehicleRepository.findById(id)
+                                                .orElseThrow(() -> new ObjectNotFoundException("Le véhicule numéro %d n'a pas été trouvé".formatted(id)));
+        vehicleRepository.delete(foundVehicle);
+    }
 }

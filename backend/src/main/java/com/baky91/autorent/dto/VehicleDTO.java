@@ -37,4 +37,8 @@ public class VehicleDTO {
         Boolean active
     ) {}
 
+    public record DeleteOutput(
+        String message
+    ) {}
+
 }
