@@ -30,7 +30,7 @@ public class VehicleService {
                                 .toList();
     }
 
-    public VehicleDTO.Output createVehicle(VehicleDTO.PostInput data) {
+    public VehicleDTO.Output createVehicle(VehicleDTO.Input data) {
         Vehicle vehicle = new Vehicle(
             data.brand(),
             data.model(),
@@ -50,8 +50,7 @@ public class VehicleService {
         return vehicle.toDto();
     }
 
-    public VehicleDTO.Output updateVehicle(VehicleDTO.PutInput data) {
-        Long id = data.id();
+    public VehicleDTO.Output updateVehicle(Long id, VehicleDTO.Input data) {
         Vehicle vehicle = vehicleRepository.findById(id)
                                            .orElseThrow(() -> new ObjectNotFoundException("Le véhicule numéro %d n'a pas été trouvé".formatted(id)));
 

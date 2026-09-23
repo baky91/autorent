@@ -24,7 +24,7 @@ public class VehicleController {
     /* CREATE (POST) */
 
     @PostMapping
-    public ResponseEntity<VehicleDTO.Output> insertVehicle(@RequestBody VehicleDTO.PostInput data) {
+    public ResponseEntity<VehicleDTO.Output> insertVehicle(@RequestBody VehicleDTO.Input data) {
         VehicleDTO.Output createdVehicle = vehicleService.createVehicle(data);
 
         // Construit l'URI de la nouvelle ressource : /api/vehicles/{id}
@@ -49,9 +49,9 @@ public class VehicleController {
 
     /* UPDATE (PUT) */
 
-    @PutMapping
-    public VehicleDTO.Output updateVehicle(@RequestBody @Validated VehicleDTO.PutInput data) {
-        return vehicleService.updateVehicle(data);
+    @PutMapping("/{id}")
+    public VehicleDTO.Output updateVehicle(@PathVariable Long id, @RequestBody @Validated VehicleDTO.Input data) {
+        return vehicleService.updateVehicle(id, data);
     }
 
     /* DELETE (DELETE) */
