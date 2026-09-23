@@ -74,6 +74,7 @@ public class Vehicle {
         String model,
         Category category,
         Integer year,
+        Integer horsePower,
         String imagePath,
         Integer seatsCount,
         FuelType fuelType,
@@ -86,6 +87,7 @@ public class Vehicle {
         this.model = model;
         this.category = category;
         this.year = year;
+        this.horsePower = horsePower;
         this.imagePath = imagePath;
         this.seatsCount = seatsCount;
         this.fuelType = fuelType;

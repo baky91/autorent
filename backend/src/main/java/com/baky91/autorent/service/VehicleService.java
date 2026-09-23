@@ -29,4 +29,26 @@ public class VehicleService {
                                 .map(Vehicle::toDto)
                                 .toList();
     }
+
+    public Vehicle createVehicle(VehicleDTO.PostInput data) {
+        Vehicle vehicle = new Vehicle(
+            data.brand(),
+            data.model(),
+            data.category(),
+            data.year(),
+            data.horsePower(),
+            data.imagePath(),
+            data.seatsCount(),
+            data.fuelType(),
+            data.transmission(),
+            data.kilometrage(),
+            data.dailyPrice(),
+            data.active()
+        );
+
+        System.out.println(vehicle);
+
+        vehicleRepository.save(vehicle);
+        return vehicle;
+    }
 }

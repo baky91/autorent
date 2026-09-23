@@ -6,6 +6,21 @@ import java.math.BigDecimal;
 
 public class VehicleDTO {
 
+    public record PostInput (
+        String brand,
+        String model,
+        Vehicle.Category category,
+        Integer year,
+        Integer horsePower,
+        String imagePath,
+        Integer seatsCount,
+        Vehicle.FuelType fuelType,
+        Vehicle.Transmission transmission,
+        Integer kilometrage,
+        BigDecimal dailyPrice,
+        Boolean active
+    ) {}
+
     public record GetOutput (
         Long id,
         String brand,
