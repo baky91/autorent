@@ -46,8 +46,6 @@ public class VehicleService {
             data.active()
         );
 
-        System.out.println(vehicle);
-
         vehicleRepository.save(vehicle);
         return vehicle;
     }

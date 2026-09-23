@@ -1,11 +1,13 @@
 package com.baky91.autorent.controller;
 
 import com.baky91.autorent.dto.VehicleDTO;
-import com.baky91.autorent.model.Vehicle;
 import com.baky91.autorent.model.exception.ObjectNotFoundException;
 import com.baky91.autorent.service.VehicleService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -21,9 +23,15 @@ public class VehicleController {
     /* CREATE (POST) */
 
     @PostMapping
-    public String createVehicle(@RequestBody VehicleDTO.PostInput data) {
-        Vehicle vehicle = vehicleService.createVehicle(data);
-        return "Le véhicule a été crée avec l'identifiant %d.".formatted(vehicle.getId());
+    public ResponseEntity<VehicleDTO.GetOutput> insertVehicle(@RequestBody VehicleDTO.PostInput data) {
+        VehicleDTO.GetOutput createdVehicle = vehicleService.createVehicle(data).toDto();
+
+        // Construit l'URI de la nouvelle ressource : /api/vehicles/{id}
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest()
+                                                  .path("/{id}")
+                                                  .buildAndExpand(createdVehicle.id())
+                                                  .toUri();
+        return ResponseEntity.created(location).body(createdVehicle);
     }
 
     /* READ (GET) */
