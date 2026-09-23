@@ -37,6 +37,22 @@ public class VehicleDTO {
         Boolean active
     ) {}
 
+    public record PutInput (
+        Long id,
+        String brand,
+        String model,
+        Vehicle.Category category,
+        Integer year,
+        Integer horsePower,
+        String imagePath,
+        Integer seatsCount,
+        Vehicle.FuelType fuelType,
+        Vehicle.Transmission transmission,
+        Integer kilometrage,
+        BigDecimal dailyPrice,
+        Boolean active
+    ) {}
+
     public record DeleteOutput(
         String message
     ) {}

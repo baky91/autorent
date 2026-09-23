@@ -50,6 +50,29 @@ public class VehicleService {
         return vehicle.toDto();
     }
 
+    public VehicleDTO.Output updateVehicle(VehicleDTO.PutInput data) {
+        Long id = data.id();
+        Vehicle vehicle = vehicleRepository.findById(id)
+                                           .orElseThrow(() -> new ObjectNotFoundException("Le véhicule numéro %d n'a pas été trouvé".formatted(id)));
+
+        vehicle.setBrand(data.brand());
+        vehicle.setModel(data.model());
+        vehicle.setYear(data.year());
+        vehicle.setHorsePower(data.horsePower());
+        vehicle.setCategory(data.category());
+        vehicle.setImagePath(data.imagePath());
+        vehicle.setSeatsCount(data.seatsCount());
+        vehicle.setFuelType(data.fuelType());
+        vehicle.setTransmission(data.transmission());
+        vehicle.setKilometrage(data.kilometrage());
+        vehicle.setDailyPrice(data.dailyPrice());
+        vehicle.setActive(data.active());
+
+        vehicleRepository.save(vehicle);
+
+        return vehicle.toDto();
+    }
+
     public void deleteVehicle(Long id) throws ObjectNotFoundException {
         Vehicle foundVehicle = vehicleRepository.findById(id)
                                                 .orElseThrow(() -> new ObjectNotFoundException("Le véhicule numéro %d n'a pas été trouvé".formatted(id)));

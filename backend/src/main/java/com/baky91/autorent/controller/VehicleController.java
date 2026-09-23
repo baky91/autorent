@@ -4,6 +4,7 @@ import com.baky91.autorent.dto.VehicleDTO;
 import com.baky91.autorent.model.exception.ObjectNotFoundException;
 import com.baky91.autorent.service.VehicleService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -47,6 +48,11 @@ public class VehicleController {
     }
 
     /* UPDATE (PUT) */
+
+    @PutMapping
+    public VehicleDTO.Output updateVehicle(@RequestBody @Validated VehicleDTO.PutInput data) {
+        return vehicleService.updateVehicle(data);
+    }
 
     /* DELETE (DELETE) */
 
