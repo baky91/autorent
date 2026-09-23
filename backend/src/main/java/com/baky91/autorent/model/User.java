@@ -138,8 +138,8 @@ public class User {
         this.createdAt = createdAt;
     }
 
-    public UserDTO.GetOutput toDto() {
-        return new UserDTO.GetOutput(
+    public UserDTO.Output toDto() {
+        return new UserDTO.Output(
             id,
             username,
             firstName,

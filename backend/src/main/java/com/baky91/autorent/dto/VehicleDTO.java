@@ -21,7 +21,7 @@ public class VehicleDTO {
         Boolean active
     ) {}
 
-    public record GetOutput (
+    public record Output(
         Long id,
         String brand,
         String model,

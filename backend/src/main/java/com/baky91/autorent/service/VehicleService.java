@@ -17,20 +17,20 @@ public class VehicleService {
         this.vehicleRepository = vehicleRepository;
     }
 
-    public VehicleDTO.GetOutput getVehicleById(long id) throws ObjectNotFoundException {
+    public VehicleDTO.Output getVehicleById(long id) throws ObjectNotFoundException {
         return vehicleRepository.findById(id)
                                 .map(Vehicle::toDto)
                                 .orElseThrow(() -> new ObjectNotFoundException("Le véhicule numéro %d n'a pas été trouvé".formatted(id)));
     }
 
-    public List<VehicleDTO.GetOutput> getAllVehicles() {
+    public List<VehicleDTO.Output> getAllVehicles() {
         return vehicleRepository.findAll()
                                 .stream()
                                 .map(Vehicle::toDto)
                                 .toList();
     }
 
-    public VehicleDTO.GetOutput createVehicle(VehicleDTO.PostInput data) {
+    public VehicleDTO.Output createVehicle(VehicleDTO.PostInput data) {
         Vehicle vehicle = new Vehicle(
             data.brand(),
             data.model(),

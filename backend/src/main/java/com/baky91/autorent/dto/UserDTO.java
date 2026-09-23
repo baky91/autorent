@@ -19,7 +19,7 @@ public class UserDTO {
         User.Role role
     ) {}
 
-    public record GetOutput (
+    public record Output(
         Long id,
         String username,
         String firstName,

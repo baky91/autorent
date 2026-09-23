@@ -203,8 +203,8 @@ public class Vehicle {
         this.active = active;
     }
 
-    public VehicleDTO.GetOutput toDto(){
-        return new VehicleDTO.GetOutput(
+    public VehicleDTO.Output toDto(){
+        return new VehicleDTO.Output(
             id,
             brand,
             model,

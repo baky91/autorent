@@ -6,10 +6,10 @@ import java.time.LocalDate;
 
 public class ReservationDTO {
 
-    public record GetOutput(
+    public record Output(
         Long id,
-        UserDTO.GetOutput user,
-        VehicleDTO.GetOutput vehicle,
+        UserDTO.Output user,
+        VehicleDTO.Output vehicle,
         LocalDate startDate,
         LocalDate endDate,
         Double totalPrice,

@@ -1,7 +1,6 @@
 package com.baky91.autorent.controller;
 
 import com.baky91.autorent.dto.ReservationDTO;
-import com.baky91.autorent.dto.UserDTO;
 import com.baky91.autorent.model.exception.ObjectNotFoundException;
 import com.baky91.autorent.service.ReservationService;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,12 +25,12 @@ public class ReservationController {
     /* READ (GET) */
 
     @GetMapping
-    public List<ReservationDTO.GetOutput> getAllReservations() {
+    public List<ReservationDTO.Output> getAllReservations() {
         return reservationService.getAllReservations();
     }
 
     @GetMapping("/{id}")
-    public ReservationDTO.GetOutput getReservation(@PathVariable Long id) throws ObjectNotFoundException {
+    public ReservationDTO.Output getReservation(@PathVariable Long id) throws ObjectNotFoundException {
         return reservationService.getReservationById(id);
     }
 

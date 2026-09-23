@@ -17,13 +17,13 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public UserDTO.GetOutput getUserById(long id) throws ObjectNotFoundException {
+    public UserDTO.Output getUserById(long id) throws ObjectNotFoundException {
         return userRepository.findById(id)
                              .map(User::toDto)
                              .orElseThrow(() -> new ObjectNotFoundException("L'utilisateur numéro %d n'a pas été trouvé".formatted(id)));
     }
 
-    public List<UserDTO.GetOutput> getAllUsers() {
+    public List<UserDTO.Output> getAllUsers() {
         return userRepository.findAll()
                              .stream()
                              .map(User::toDto)

@@ -23,8 +23,8 @@ public class VehicleController {
     /* CREATE (POST) */
 
     @PostMapping
-    public ResponseEntity<VehicleDTO.GetOutput> insertVehicle(@RequestBody VehicleDTO.PostInput data) {
-        VehicleDTO.GetOutput createdVehicle = vehicleService.createVehicle(data);
+    public ResponseEntity<VehicleDTO.Output> insertVehicle(@RequestBody VehicleDTO.PostInput data) {
+        VehicleDTO.Output createdVehicle = vehicleService.createVehicle(data);
 
         // Construit l'URI de la nouvelle ressource : /api/vehicles/{id}
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()
@@ -37,12 +37,12 @@ public class VehicleController {
     /* READ (GET) */
 
     @GetMapping
-    public List<VehicleDTO.GetOutput> getAllVehicles() {
+    public List<VehicleDTO.Output> getAllVehicles() {
         return vehicleService.getAllVehicles();
     }
 
     @GetMapping("/{id}")
-    public VehicleDTO.GetOutput getVehicle(@PathVariable Long id) throws ObjectNotFoundException {
+    public VehicleDTO.Output getVehicle(@PathVariable Long id) throws ObjectNotFoundException {
         return vehicleService.getVehicleById(id);
     }
 

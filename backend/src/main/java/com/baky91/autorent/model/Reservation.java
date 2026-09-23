@@ -135,8 +135,8 @@ public class Reservation {
         this.createdAt = createdAt;
     }
 
-    public ReservationDTO.GetOutput toDto() {
-        return new ReservationDTO.GetOutput(
+    public ReservationDTO.Output toDto() {
+        return new ReservationDTO.Output(
                 id,
                 user.toDto(),
                 vehicle.toDto(),

@@ -17,13 +17,13 @@ public class ReservationService {
         this.reservationRepository = reservationRepository;
     }
 
-    public ReservationDTO.GetOutput getReservationById(Long id) {
+    public ReservationDTO.Output getReservationById(Long id) {
         return reservationRepository.findById(id)
                                     .map(Reservation::toDto)
                                     .orElseThrow(() -> new ObjectNotFoundException("La réservation numéro %d n'a pas été trouvé".formatted(id)));
     }
 
-    public List<ReservationDTO.GetOutput> getAllReservations() {
+    public List<ReservationDTO.Output> getAllReservations() {
         return reservationRepository.findAll()
                                     .stream()
                                     .map(Reservation::toDto)

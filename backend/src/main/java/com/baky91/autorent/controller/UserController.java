@@ -25,12 +25,12 @@ public class UserController {
     /* READ (GET) */
 
     @GetMapping
-    public List<UserDTO.GetOutput> getAllUsers() {
+    public List<UserDTO.Output> getAllUsers() {
         return userService.getAllUsers();
     }
 
     @GetMapping("/{id}")
-    public UserDTO.GetOutput getUser(@PathVariable Long id) throws ObjectNotFoundException {
+    public UserDTO.Output getUser(@PathVariable Long id) throws ObjectNotFoundException {
         return userService.getUserById(id);
     }
 
