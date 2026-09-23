@@ -4,6 +4,7 @@ import com.baky91.autorent.model.exception.ObjectNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -20,6 +21,16 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ProblemDetail> catchVehicleNotFound(ObjectNotFoundException e) {
         ProblemDetail pd = ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, e.getMessage());
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(pd);
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<ProblemDetail> handleValidationExceptions(MethodArgumentNotValidException e) {
+        StringBuilder errorMessage = new StringBuilder("Erreur de validation : ");
+        e.getBindingResult().getFieldErrors().forEach(error ->
+            errorMessage.append(error.getField()).append(" (").append(error.getDefaultMessage()).append("); ")
+        );
+        ProblemDetail pd = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, errorMessage.toString());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(pd);
     }
 
 }

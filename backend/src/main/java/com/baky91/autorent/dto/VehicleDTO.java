@@ -20,13 +20,17 @@ public class VehicleDTO {
         @NotNull
         Vehicle.Category category,
 
+        @NotNull
         Integer year,
 
+        @NotNull
         @Positive(message = "La valeur de la puissance doit être strictement positive")
         Integer horsePower,
 
+        @NotNull
         String imagePath,
 
+        @NotNull
         @Positive(message = "Le nombre de sièges doit être strictement positif")
         Integer seatsCount,
 
@@ -36,12 +40,15 @@ public class VehicleDTO {
         @NotNull
         Vehicle.Transmission transmission,
 
+        @NotNull
         @PositiveOrZero(message = "Le kilométrage doit être positif")
         Integer kilometrage,
 
+        @NotNull
         @PositiveOrZero(message = "Le prix journalier doit être positif")
         BigDecimal dailyPrice,
 
+        @NotNull
         Boolean active
     ) {}
 
