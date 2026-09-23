@@ -13,7 +13,7 @@ public class VehicleDTO {
         Vehicle.Category category,
         Integer year,
         Integer horsePower,
-        String imageUrl,
+        String imagePath,
         Integer seatsCount,
         Vehicle.FuelType fuelType,
         Vehicle.Transmission transmission,
