@@ -24,7 +24,7 @@ public class VehicleController {
 
     @PostMapping
     public ResponseEntity<VehicleDTO.GetOutput> insertVehicle(@RequestBody VehicleDTO.PostInput data) {
-        VehicleDTO.GetOutput createdVehicle = vehicleService.createVehicle(data).toDto();
+        VehicleDTO.GetOutput createdVehicle = vehicleService.createVehicle(data);
 
         // Construit l'URI de la nouvelle ressource : /api/vehicles/{id}
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()

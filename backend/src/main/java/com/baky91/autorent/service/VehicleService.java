@@ -30,7 +30,7 @@ public class VehicleService {
                                 .toList();
     }
 
-    public Vehicle createVehicle(VehicleDTO.PostInput data) {
+    public VehicleDTO.GetOutput createVehicle(VehicleDTO.PostInput data) {
         Vehicle vehicle = new Vehicle(
             data.brand(),
             data.model(),
@@ -47,6 +47,6 @@ public class VehicleService {
         );
 
         vehicleRepository.save(vehicle);
-        return vehicle;
+        return vehicle.toDto();
     }
 }
