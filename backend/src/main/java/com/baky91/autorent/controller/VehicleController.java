@@ -50,7 +50,7 @@ public class VehicleController {
     /* UPDATE (PUT) */
 
     @PutMapping("/{id}")
-    public VehicleDTO.Output updateVehicle(@PathVariable Long id, @RequestBody @Validated VehicleDTO.Input data) {
+    public VehicleDTO.Output updateVehicle(@PathVariable Long id, @RequestBody VehicleDTO.Input data) {
         return vehicleService.updateVehicle(id, data);
     }
 
