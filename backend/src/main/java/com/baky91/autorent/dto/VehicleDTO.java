@@ -1,23 +1,47 @@
 package com.baky91.autorent.dto;
 
 import com.baky91.autorent.model.Vehicle;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.PositiveOrZero;
 
 import java.math.BigDecimal;
 
 public class VehicleDTO {
 
     public record Input(
+        @NotBlank(message = "Veuillez renseigner la marque")
         String brand,
+
+        @NotBlank(message = "Veuillez renseigner le modèle")
         String model,
+
+        @NotNull
         Vehicle.Category category,
+
         Integer year,
+
+        @Positive(message = "La valeur de la puissance doit être strictement positive")
         Integer horsePower,
+
         String imagePath,
+
+        @Positive(message = "Le nombre de sièges doit être strictement positif")
         Integer seatsCount,
+
+        @NotNull
         Vehicle.FuelType fuelType,
+
+        @NotNull
         Vehicle.Transmission transmission,
+
+        @PositiveOrZero(message = "Le kilométrage doit être positif")
         Integer kilometrage,
+
+        @PositiveOrZero(message = "Le prix journalier doit être positif")
         BigDecimal dailyPrice,
+
         Boolean active
     ) {}
 

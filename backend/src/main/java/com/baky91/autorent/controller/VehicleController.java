@@ -3,6 +3,7 @@ package com.baky91.autorent.controller;
 import com.baky91.autorent.dto.VehicleDTO;
 import com.baky91.autorent.model.exception.ObjectNotFoundException;
 import com.baky91.autorent.service.VehicleService;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -23,7 +24,7 @@ public class VehicleController {
     /* CREATE (POST) */
 
     @PostMapping
-    public ResponseEntity<VehicleDTO.Output> insertVehicle(@RequestBody VehicleDTO.Input data) {
+    public ResponseEntity<VehicleDTO.Output> insertVehicle(@Valid @RequestBody VehicleDTO.Input data) {
         VehicleDTO.Output createdVehicle = vehicleService.createVehicle(data);
 
         // Construit l'URI de la nouvelle ressource : /api/vehicles/{id}
@@ -49,7 +50,7 @@ public class VehicleController {
     /* UPDATE (PUT) */
 
     @PutMapping("/{id}")
-    public VehicleDTO.Output updateVehicle(@PathVariable Long id, @RequestBody VehicleDTO.Input data) {
+    public VehicleDTO.Output updateVehicle(@PathVariable Long id, @Valid @RequestBody VehicleDTO.Input data) {
         return vehicleService.updateVehicle(id, data);
     }
 
