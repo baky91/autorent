@@ -12,20 +12,14 @@ public class UserDTO {
     public record PostOutput (
         Long id,
         String username,
-        String firstName,
-        String lastName,
         String email,
-        String phone,
         User.Role role
     ) {}
 
     public record Output(
         Long id,
         String username,
-        String firstName,
-        String lastName,
         String email,
-        String phone,
         User.Role role
     ) {}
 

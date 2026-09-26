@@ -17,26 +17,18 @@ public class User {
     @Id
     private Long id;
 
+    @Column(nullable = false, unique = true)
     private String username;
 
+    @Column(nullable = false)
     private String password;
 
-    @Column(name = "first_name")
-    private String firstName;
-
-    @Column(name = "last_name")
-    private String lastName;
-
+    @Column(unique = true)
     private String email;
-
-    private String phone;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "role", nullable = false)
     private Role role;
-
-    @Column(name = "created_at")
-    private LocalDate createdAt;
 
     // CONSTRUCTORS
     public User() {}
@@ -44,24 +36,13 @@ public class User {
     public User(
             String username,
             String password,
-            String firstName,
-            String lastName,
             String email,
-            String phone,
             Role role
     ) {
         this.username = username;
         this.password = password;
-        this.firstName = firstName;
-        this.lastName = lastName;
         this.email = email;
-        this.phone = phone;
         this.role = role;
-    }
-
-    @PrePersist
-    protected void onCreate(){
-        this.createdAt = LocalDate.now();
     }
 
     // GETTERS AND SETTERS
@@ -90,36 +71,12 @@ public class User {
         this.password = password;
     }
 
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
     public String getEmail() {
         return email;
     }
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
     }
 
     public Role getRole() {
@@ -130,22 +87,11 @@ public class User {
         this.role = role;
     }
 
-    public LocalDate getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(LocalDate createdAt) {
-        this.createdAt = createdAt;
-    }
-
     public UserDTO.Output toDto() {
         return new UserDTO.Output(
             id,
             username,
-            firstName,
-            lastName,
             email,
-            phone,
             role
         );
     }
