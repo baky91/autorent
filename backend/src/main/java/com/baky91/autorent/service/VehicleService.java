@@ -43,7 +43,7 @@ public class VehicleService {
             data.transmission(),
             data.kilometrage(),
             data.dailyPrice(),
-            data.active()
+            data.available()
         );
 
         vehicleRepository.save(vehicle);
@@ -65,7 +65,7 @@ public class VehicleService {
         vehicle.setTransmission(data.transmission());
         vehicle.setKilometrage(data.kilometrage());
         vehicle.setDailyPrice(data.dailyPrice());
-        vehicle.setActive(data.active());
+        vehicle.setAvailable(data.available());
 
         vehicleRepository.save(vehicle);
 

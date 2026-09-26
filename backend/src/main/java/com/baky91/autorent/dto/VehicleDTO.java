@@ -49,7 +49,7 @@ public class VehicleDTO {
         BigDecimal dailyPrice,
 
         @NotNull
-        Boolean active
+        Boolean available
     ) {}
 
     public record Output(
@@ -65,7 +65,7 @@ public class VehicleDTO {
         Vehicle.Transmission transmission,
         Integer kilometrage,
         BigDecimal dailyPrice,
-        Boolean active
+        Boolean available
     ) {}
 
 }

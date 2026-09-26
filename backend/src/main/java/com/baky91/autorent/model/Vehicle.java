@@ -63,8 +63,8 @@ public class Vehicle {
     @Column(name = "daily_price")
     private BigDecimal dailyPrice;
 
-    @Column(name = "is_active")
-    private Boolean active;
+    @Column(name = "is_available")
+    private Boolean available;
 
     // CONSTRUCTORS
     public Vehicle() {}
@@ -81,7 +81,7 @@ public class Vehicle {
         Transmission transmission,
         Integer kilometrage,
         BigDecimal dailyPrice,
-        Boolean active
+        Boolean available
     ) {
         this.brand = brand;
         this.model = model;
@@ -94,7 +94,7 @@ public class Vehicle {
         this.transmission = transmission;
         this.kilometrage = kilometrage;
         this.dailyPrice = dailyPrice;
-        this.active = active;
+        this.available = available;
     }
 
     // GETTERS AND SETTERS
@@ -195,12 +195,12 @@ public class Vehicle {
         this.dailyPrice = dailyPrice;
     }
 
-    public Boolean getActive() {
-        return active;
+    public Boolean getAvailable() {
+        return available;
     }
 
-    public void setActive(Boolean active) {
-        this.active = active;
+    public void setAvailable(Boolean available) {
+        this.available = available;
     }
 
     public VehicleDTO.Output toDto(){
@@ -217,7 +217,7 @@ public class Vehicle {
             transmission,
             kilometrage,
             dailyPrice,
-            active
+            available
         );
     }
 
