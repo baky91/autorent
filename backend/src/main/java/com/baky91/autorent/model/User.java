@@ -3,8 +3,6 @@ package com.baky91.autorent.model;
 import com.baky91.autorent.dto.UserDTO;
 import jakarta.persistence.*;
 
-import java.time.LocalDate;
-
 @Entity
 @Table(name = "users")
 public class User {
