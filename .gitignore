@@ -36,5 +36,5 @@ build/
 
 docs/
 temp/
-backend/data/scripts
+data/scripts
 .env
