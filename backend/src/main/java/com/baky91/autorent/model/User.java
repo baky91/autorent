@@ -8,8 +8,8 @@ import jakarta.persistence.*;
 public class User {
 
     public enum Role {
-        ROLE_USER,
-        ROLE_ADMIN
+        USER,
+        ADMIN
     }
 
     @Id
