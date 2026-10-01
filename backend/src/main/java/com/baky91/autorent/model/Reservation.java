@@ -144,7 +144,8 @@ public class Reservation {
                 startDate,
                 endDate,
                 totalPrice,
-                status
+                status,
+                createdAt
         );
     }
 }
