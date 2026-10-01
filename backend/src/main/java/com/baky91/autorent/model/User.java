@@ -22,9 +22,6 @@ public class User {
     @Column(nullable = false)
     private String password;
 
-    @Column(unique = true)
-    private String email;
-
     @Enumerated(EnumType.STRING)
     @Column(name = "role", nullable = false)
     private Role role;
@@ -35,12 +32,10 @@ public class User {
     public User(
             String username,
             String password,
-            String email,
             Role role
     ) {
         this.username = username;
         this.password = password;
-        this.email = email;
         this.role = role;
     }
 
@@ -70,14 +65,6 @@ public class User {
         this.password = password;
     }
 
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
     public Role getRole() {
         return role;
     }
@@ -90,7 +77,6 @@ public class User {
         return new UserDTO.Output(
             id,
             username,
-            email,
             role
         );
     }

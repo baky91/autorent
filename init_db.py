@@ -31,7 +31,6 @@ def create_tables(cursor):
             id bigint, 
             username varchar(255) not null unique, 
             password varchar(255) not null, 
-            email varchar(255) unique, 
             role varchar(255) not null check ((role in ('USER','ADMIN'))), 
             primary key (id)
         )
@@ -88,11 +87,11 @@ def insert_data(cursor):
     ]
 
     users_to_insert = [
-        ('admin', 'admin123', 'admin@autorent.fr', 'ADMIN'),
-        ('alice_m', 'password123', 'alice.martin@email.fr', 'USER'),
-        ('bob_b', 'password123', 'bob.bernard@email.fr', 'USER'),
-        ('charlie_d', 'password123', 'charlie.dubois@email.fr', 'USER'),
-        ('sophie_l', 'password123', 'sophie.laurent@email.fr', 'USER')
+        ('admin', 'admin123', 'ADMIN'),
+        ('alice_m', 'password123', 'USER'),
+        ('bob_b', 'password123', 'USER'),
+        ('charlie_d', 'password123', 'USER'),
+        ('sophie_l', 'password123', 'USER')
     ]
 
     reservations_to_insert = [
@@ -118,13 +117,13 @@ def insert_vehicles(cursor, data):
 def insert_users(cursor, data):
     hashed_data = []
     for user in data:
-        username, password, email, role = user
+        username, password, role = user
         # Hachage du mot de passe avec bcrypt (décodé en string pour SQLite)
         hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
-        hashed_data.append((username, hashed_password, email, role))
+        hashed_data.append((username, hashed_password, role))
 
     cursor.executemany(
-        "INSERT INTO users (username, password, email, role) VALUES (?, ?, ?, ?)", 
+        "INSERT INTO users (username, password, role) VALUES (?, ?, ?)", 
         hashed_data
     )
     print("Table 'users' remplies avec succès.")
