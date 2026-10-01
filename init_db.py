@@ -1,11 +1,9 @@
 import sqlite3
-from pathlib import Path
 
 # connection à la base de données (crée le fichier s'il n'existe pas)
 # Utilisez ':memory:' à la place du nom de fichier pour une base temporaire en RAM
 
-current_folder = Path(__file__).parent.resolve()
-db_name = current_folder / "backend/data/autorent.db"
+db_name = "data/autorent.db"
 connection = sqlite3.connect(db_name)
 
 def create_tables(cursor):
