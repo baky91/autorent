@@ -1,4 +1,5 @@
 import sqlite3
+import bcrypt
 
 def create_tables(cursor):
     # Vehicles
@@ -115,9 +116,16 @@ def insert_vehicles(cursor, data):
     print("Table 'vehicles' remplies avec succès.")
 
 def insert_users(cursor, data):
+    hashed_data = []
+    for user in data:
+        username, password, email, role = user
+        # Hachage du mot de passe avec bcrypt (décodé en string pour SQLite)
+        hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
+        hashed_data.append((username, hashed_password, email, role))
+
     cursor.executemany(
         "INSERT INTO users (username, password, email, role) VALUES (?, ?, ?, ?)", 
-        data
+        hashed_data
     )
     print("Table 'users' remplies avec succès.")
 
