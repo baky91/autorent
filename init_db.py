@@ -1,11 +1,5 @@
 import sqlite3
 
-# connection à la base de données (crée le fichier s'il n'existe pas)
-# Utilisez ':memory:' à la place du nom de fichier pour une base temporaire en RAM
-
-db_name = "data/autorent.db"
-connection = sqlite3.connect(db_name)
-
 def create_tables(cursor):
     # Vehicles
     cursor.execute("""
@@ -150,6 +144,8 @@ def clean_data(cursor):
     print("Table 'vehicles' vidée avec succès.")
 
 if __name__ == "__main__":
+    db_name = "data/autorent.db"
+    connection = sqlite3.connect(db_name)
     try:
         # Création d'un curseur pour exécuter les commandes SQL
         cursor = connection.cursor()
