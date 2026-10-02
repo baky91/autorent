@@ -4,6 +4,7 @@ import com.baky91.autorent.model.exception.ObjectNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -21,6 +22,12 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ProblemDetail> catchVehicleNotFound(ObjectNotFoundException e) {
         ProblemDetail pd = ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, e.getMessage());
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(pd);
+    }
+
+    @ExceptionHandler(AuthenticationException.class)
+    public ResponseEntity<ProblemDetail> catchAuthenticationException(AuthenticationException e) {
+        ProblemDetail pd = ProblemDetail.forStatusAndDetail(HttpStatus.UNAUTHORIZED, "Mauvais identifiants (Bad credentials)");
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(pd);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
