@@ -1,8 +1,11 @@
 package com.baky91.autorent.controller;
 
 import com.baky91.autorent.dto.UserDTO;
+import com.baky91.autorent.model.User;
 import com.baky91.autorent.model.exception.ObjectNotFoundException;
 import com.baky91.autorent.service.UserService;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,6 +26,13 @@ public class UserController {
     /* CREATE (POST) */
 
     /* READ (GET) */
+
+    @GetMapping("/me")
+    public UserDTO.Output getAuthenticatedUser() {
+        Authentication authentification = SecurityContextHolder.getContext().getAuthentication();
+        User currentUser = (User)authentification.getPrincipal();
+        return currentUser.toDto();
+    }
 
     @GetMapping
     public List<UserDTO.Output> getAllUsers() {

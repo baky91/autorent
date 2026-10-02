@@ -35,6 +35,11 @@ public class User implements UserDetails {
     // Default constructor
     public User() {}
 
+    public User(String username, String password) {
+        this.username = username;
+        this.password = password;
+    }
+
     // Getters and Setters
     public Long getId() {
         return id;
