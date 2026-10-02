@@ -2,6 +2,7 @@ package com.baky91.autorent.configuration;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -34,8 +35,27 @@ public class SecurityConfiguration {
         http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(autorize -> autorize
+                        // Endpoints publics (API)
                         .requestMatchers("/api/auth/**").permitAll()
-                        .anyRequest().authenticated()
+                        .requestMatchers(HttpMethod.GET, "/api/vehicles/**").permitAll()
+
+                        // Endpoints spécifiques pour l'utilisateur authentifié
+                        // (doivent être déclarés AVANT les règles plus générales)
+                        .requestMatchers("/api/users/me").authenticated()
+                        .requestMatchers("/api/reservations/me/**").authenticated()
+
+                        // Endpoints réservés aux administrateurs
+                        .requestMatchers(HttpMethod.POST, "/api/vehicles/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.PUT, "/api/vehicles/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.DELETE, "/api/vehicles/**").hasRole("ADMIN")
+                        .requestMatchers("/api/users/**").hasRole("ADMIN")
+                        .requestMatchers("/api/reservations/**").hasRole("ADMIN")
+
+                        // Par sécurité, toute autre route de l'API nécessite une authentification
+                        .requestMatchers("/api/**").authenticated()
+
+                        // Le point d'entrée, les pages HTML et les ressources statiques sont publics
+                        .anyRequest().permitAll()
                 )
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
