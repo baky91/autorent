@@ -11,7 +11,6 @@ import java.time.LocalDateTime;
 @Table(name = "reservations")
 public class Reservation {
 
-    // TODO: Supprimer un status entre PENDING et CONFIRMED et ajuster le script Python
     public enum Status {
         CONFIRMED,
         CANCELLED,
