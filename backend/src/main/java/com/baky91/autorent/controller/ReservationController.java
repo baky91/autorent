@@ -23,7 +23,7 @@ public class ReservationController {
     /* CREATE (POST) */
 
     @PostMapping("/me")
-    public ReservationDTO.Output createReservation(Authentication authentication, @Valid @RequestBody ReservationDTO.CreateInput input) throws Exception {
+    public ReservationDTO.Output createReservation(Authentication authentication, @Valid @RequestBody ReservationDTO.CreateInput input) {
         User user = (User) authentication.getPrincipal();
         // Si l'utilisateur n'est pas authentifié, il y aura une erreur 401 Unauthorized automatiquement envoyée
 

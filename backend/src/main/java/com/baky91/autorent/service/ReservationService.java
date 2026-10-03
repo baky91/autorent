@@ -7,6 +7,7 @@ import com.baky91.autorent.model.Vehicle;
 import com.baky91.autorent.model.exception.ObjectNotFoundException;
 import com.baky91.autorent.repository.ReservationRepository;
 import com.baky91.autorent.repository.UserRepository;
+import com.baky91.autorent.repository.VehicleRepository;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -19,10 +20,12 @@ public class ReservationService {
 
     private final ReservationRepository reservationRepository;
     private final UserRepository userRepository;
+    private final VehicleRepository vehicleRepository;
 
-    public ReservationService(ReservationRepository reservationRepository, UserRepository userRepository){
+    public ReservationService(ReservationRepository reservationRepository, UserRepository userRepository, VehicleRepository vehicleRepository){
         this.reservationRepository = reservationRepository;
         this.userRepository = userRepository;
+        this.vehicleRepository = vehicleRepository;
     }
 
     public ReservationDTO.Output getReservationById(Long id) {
@@ -61,8 +64,8 @@ public class ReservationService {
             throw new ObjectNotFoundException("L'utilisateur %d n'a pas été trouvé".formatted(id));
         }
 
-        // TODO: Récupérer le véhicule -> renvoyer une erreur 404 si le véhicule n'existe pas
-        Vehicle vehicle = null;
+        Vehicle vehicle = vehicleRepository.findById(input.vehicleId())
+                                           .orElseThrow(() -> new ObjectNotFoundException("Le véhicule numéro %d n'a pas été trouvé".formatted(input.vehicleId())));
 
         // TODO: Récupérer toutes les dates (début et fin) >= date d'aujourd'hui du véhicule
 
@@ -80,6 +83,7 @@ public class ReservationService {
                 totalPrice,
                 Reservation.Status.CONFIRMED
         );
+        reservationRepository.save(newReservation);
 
         return newReservation.toDto();
     }
