@@ -29,11 +29,9 @@ public class Reservation {
     @JoinColumn(name = "vehicle_id", nullable = false)
     private Vehicle vehicle;
 
-    // TODO: Ajouter vérification startDate >= date d'aujourd'hui
     @Column(name = "start_date")
     private LocalDate startDate;
 
-    // TODO: Ajouter vérification endDate >= startDate
     @Column(name = "end_date")
     private LocalDate endDate;
 
