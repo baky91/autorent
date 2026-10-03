@@ -84,7 +84,18 @@ public class User implements UserDetails {
     // UserDetails methods (Spring Security)
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority("ROLE_" + this.role.toString()));
+        /*
+         * Explication sur la gestion des rôles dans Spring Security :
+         * 
+         * Dans notre base de données (et dans l'enum Role), le rôle est stocké sous la forme "USER" ou "ADMIN".
+         * Cependant, les méthodes de Spring Security comme @PreAuthorize("hasRole('ADMIN')") ou 
+         * requestMatchers(...).hasRole("ADMIN") s'attendent TOUJOURS à ce que l'autorité (GrantedAuthority) 
+         * correspondante soit préfixée par "ROLE_".
+         * 
+         * C'est une convention stricte de Spring Security. Si on renvoie juste "ADMIN", hasRole("ADMIN") ne marchera pas.
+         * C'est pourquoi on concatène "ROLE_" avec la valeur de notre énumération : "ROLE_ADMIN".
+         */
+        return List.of(new SimpleGrantedAuthority("ROLE_" + this.role.name()));
     }
 
     @Override
