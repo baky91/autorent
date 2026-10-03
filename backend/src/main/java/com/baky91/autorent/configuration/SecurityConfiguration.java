@@ -38,6 +38,7 @@ public class SecurityConfiguration {
                         // Endpoints publics (API)
                         .requestMatchers("/api/auth/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/vehicles/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/reservations/vehicle/**").permitAll()
 
                         // Endpoints spécifiques pour l'utilisateur authentifié
                         // (doivent être déclarés AVANT les règles plus générales)

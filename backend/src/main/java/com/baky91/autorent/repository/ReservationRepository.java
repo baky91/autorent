@@ -19,4 +19,9 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long> 
     boolean existsConflictingReservation(@Param("vehicleId") Long vehicleId, 
                                          @Param("startDate") LocalDate startDate, 
                                          @Param("endDate") LocalDate endDate);
+    @Query("SELECT r FROM Reservation r WHERE r.vehicle.id = :vehicleId " +
+           "AND r.status = 'CONFIRMED' " +
+           "AND r.endDate >= :today")
+    List<Reservation> findActiveReservationsForVehicleFromDate(@Param("vehicleId") Long vehicleId, 
+                                                               @Param("today") LocalDate today);
 }

@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -49,6 +50,11 @@ public class ReservationController {
     @GetMapping("/{id}")
     public ReservationDTO.Output getReservation(@PathVariable Long id) throws ObjectNotFoundException {
         return reservationService.getReservationById(id);
+    }
+
+    @GetMapping("/vehicle/{vehicleId}/unavailable-dates")
+    public List<LocalDate> getUnavailableDates(@PathVariable Long vehicleId) {
+        return reservationService.getUnavailableDates(vehicleId);
     }
 
     /* UPDATE (PUT) */

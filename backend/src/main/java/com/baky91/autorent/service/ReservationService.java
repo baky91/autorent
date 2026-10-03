@@ -153,4 +153,29 @@ public class ReservationService {
                 .orElseThrow(() -> new ObjectNotFoundException("La réservation numéro %d n'a pas été trouvé".formatted(id)));
         reservationRepository.delete(foundReservation);
     }
+
+    public List<LocalDate> getUnavailableDates(Long vehicleId) {
+        // 1. On récupère les réservations (confirmées) du véhicule qui ne sont pas encore terminées
+        List<Reservation> activeReservations = reservationRepository.findActiveReservationsForVehicleFromDate(vehicleId, LocalDate.now());
+        
+        // 2. On génère la liste exhaustive des jours
+        List<LocalDate> unavailableDates = new java.util.ArrayList<>();
+        
+        for (Reservation res : activeReservations) {
+            LocalDate current = res.getStartDate();
+            
+            // Si la réservation a commencé hier ou avant, on ne bloque le calendrier qu'à partir d'aujourd'hui
+            if (current.isBefore(LocalDate.now())) {
+                current = LocalDate.now();
+            }
+            
+            // On ajoute chaque jour jusqu'à la date de fin incluse
+            while (!current.isAfter(res.getEndDate())) {
+                unavailableDates.add(current);
+                current = current.plusDays(1);
+            }
+        }
+        
+        return unavailableDates;
+    }
 }
