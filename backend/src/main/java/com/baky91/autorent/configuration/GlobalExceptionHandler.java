@@ -1,6 +1,7 @@
 package com.baky91.autorent.configuration;
 
 import com.baky91.autorent.model.exception.ObjectNotFoundException;
+import com.baky91.autorent.model.exception.ReservationConflictException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
@@ -37,6 +38,17 @@ public class GlobalExceptionHandler {
             errorMessage.append(error.getField()).append(" (").append(error.getDefaultMessage()).append("); ")
         );
         ProblemDetail pd = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, errorMessage.toString());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(pd);
+    }
+    @ExceptionHandler(ReservationConflictException.class)
+    public ResponseEntity<ProblemDetail> handleConflict(ReservationConflictException e) {
+        ProblemDetail pd = ProblemDetail.forStatusAndDetail(HttpStatus.CONFLICT, e.getMessage());
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(pd);
+    }
+    
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<ProblemDetail> handleIllegalArgument(IllegalArgumentException e) {
+        ProblemDetail pd = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, e.getMessage());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(pd);
     }
 

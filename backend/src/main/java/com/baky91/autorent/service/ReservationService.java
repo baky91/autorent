@@ -5,6 +5,7 @@ import com.baky91.autorent.model.Reservation;
 import com.baky91.autorent.model.User;
 import com.baky91.autorent.model.Vehicle;
 import com.baky91.autorent.model.exception.ObjectNotFoundException;
+import com.baky91.autorent.model.exception.ReservationConflictException;
 import com.baky91.autorent.repository.ReservationRepository;
 import com.baky91.autorent.repository.UserRepository;
 import com.baky91.autorent.repository.VehicleRepository;
@@ -67,14 +68,26 @@ public class ReservationService {
         Vehicle vehicle = vehicleRepository.findById(input.vehicleId())
                                            .orElseThrow(() -> new ObjectNotFoundException("Le véhicule numéro %d n'a pas été trouvé".formatted(input.vehicleId())));
 
-        // TODO: Récupérer toutes les dates (début et fin) >= date d'aujourd'hui du véhicule
+        // Vérification logique des dates
+        if (input.startDate().isBefore(LocalDate.now())) {
+            throw new IllegalArgumentException("La date de début ne peut pas être dans le passé.");
+        }
+        if (input.endDate().isBefore(input.startDate())) {
+            throw new IllegalArgumentException("La date de fin ne peut pas être antérieure à la date de début.");
+        }
 
-        // TODO: Vérifier qu'il n'y a aucun conflit de réservation (chevauchement de dates) -> renvoyer une erreur 409 Conflict
+        // Vérification qu'il n'y a aucun conflit de réservation
+        boolean hasConflict = reservationRepository.existsConflictingReservation(vehicle.getId(), input.startDate(), input.endDate());
+        
+        if (hasConflict) {
+            throw new ReservationConflictException("Le véhicule n'est pas disponible pour les dates sélectionnées.");
+        }
 
-        // TODO: Calcul du prix de la réservation : prix journalier du véhicule * nombre de jours calendaires ((endDate - startDate) + 1)
-        BigDecimal totalPrice = BigDecimal.valueOf(0.0);
+        // Calcul du prix de la réservation
+        long days = java.time.temporal.ChronoUnit.DAYS.between(input.startDate(), input.endDate()) + 1;
+        BigDecimal totalPrice = vehicle.getDailyPrice().multiply(BigDecimal.valueOf(days));
 
-        // TODO: Créer la réservation au sauvegarder dans la BDD
+        // Créer la réservation au sauvegarder dans la BDD
         Reservation newReservation = new Reservation(
                 currentUser.get(),
                 vehicle,
