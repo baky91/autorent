@@ -18,6 +18,7 @@ public class Reservation {
     }
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne(fetch = FetchType.EAGER)
@@ -143,7 +144,8 @@ public class Reservation {
                 startDate,
                 endDate,
                 totalPrice,
-                status
+                status,
+                createdAt
         );
     }
 }

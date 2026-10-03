@@ -1,8 +1,10 @@
 package com.baky91.autorent.controller;
 
 import com.baky91.autorent.dto.ReservationDTO;
+import com.baky91.autorent.model.User;
 import com.baky91.autorent.model.exception.ObjectNotFoundException;
 import com.baky91.autorent.service.ReservationService;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,6 +29,13 @@ public class ReservationController {
     @GetMapping
     public List<ReservationDTO.Output> getAllReservations() {
         return reservationService.getAllReservations();
+    }
+
+    @GetMapping("/me")
+    public List<ReservationDTO.Output> getMyReservations(Authentication authentication) {
+        User user = (User) authentication.getPrincipal();
+
+        return reservationService.getReservationsByUserId(user.getId());
     }
 
     @GetMapping("/{id}")

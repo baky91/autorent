@@ -30,4 +30,11 @@ public class ReservationService {
                                     .toList();
     }
 
+    public List<ReservationDTO.Output> getReservationsByUserId(Long userId) {
+        return reservationRepository.findByUserId(userId)
+                                    .stream()
+                                    .map(Reservation::toDto)
+                                    .toList();
+    }
+
 }

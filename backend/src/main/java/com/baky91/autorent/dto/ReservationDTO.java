@@ -3,6 +3,7 @@ package com.baky91.autorent.dto;
 import com.baky91.autorent.model.Reservation;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public class ReservationDTO {
 
@@ -13,7 +14,8 @@ public class ReservationDTO {
         LocalDate startDate,
         LocalDate endDate,
         Double totalPrice,
-        Reservation.Status status
+        Reservation.Status status,
+        LocalDateTime createdAt
     ) {}
 
 }
