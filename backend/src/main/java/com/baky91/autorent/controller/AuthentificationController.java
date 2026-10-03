@@ -22,7 +22,7 @@ public class AuthentificationController {
         this.authentificationService = authentificationService;
     }
 
-    @PostMapping("/signup")
+    @PostMapping("/register")
     public ResponseEntity<User> register(@RequestBody UserDTO.RegisterAndLogin input) {
         User registeredUser = authentificationService.signup(input);
         return ResponseEntity.ok(registeredUser);
