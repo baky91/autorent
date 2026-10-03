@@ -2,19 +2,26 @@ package com.baky91.autorent.service;
 
 import com.baky91.autorent.dto.ReservationDTO;
 import com.baky91.autorent.model.Reservation;
+import com.baky91.autorent.model.User;
+import com.baky91.autorent.model.Vehicle;
 import com.baky91.autorent.model.exception.ObjectNotFoundException;
 import com.baky91.autorent.repository.ReservationRepository;
+import com.baky91.autorent.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ReservationService {
 
     private final ReservationRepository reservationRepository;
+    private final UserRepository userRepository;
 
-    public ReservationService(ReservationRepository reservationRepository){
+    public ReservationService(ReservationRepository reservationRepository, UserRepository userRepository){
         this.reservationRepository = reservationRepository;
+        this.userRepository = userRepository;
     }
 
     public ReservationDTO.Output getReservationById(Long id) {
@@ -37,4 +44,42 @@ public class ReservationService {
                                     .toList();
     }
 
+    public ReservationDTO.Output createReservation(Long id, User user, ReservationDTO.CreateInput input) {
+        // Si on a déjà un objet User on peut le passer directement en paramètre et éviter de faire une recherche dans la BDD à partir de l'id
+        Optional<User> currentUser = null;
+
+        if (id == null && user != null) {
+            currentUser = Optional.of(user);
+        }
+
+        if (user == null && id != null) {
+            currentUser = userRepository.findById(id);
+        }
+
+        if (!currentUser.isPresent()) {
+            throw new ObjectNotFoundException("L'utilisateur %d n'a pas été trouvé".formatted(id));
+        }
+
+        // TODO: Récupérer le véhicule -> renvoyer une erreur 404 si le véhicule n'existe pas
+        Vehicle vehicle = null;
+
+        // TODO: Récupérer toutes les dates (début et fin) >= date d'aujourd'hui du véhicule
+
+        // TODO: Vérifier qu'il n'y a aucun conflit de réservation (chevauchement de dates) -> renvoyer une erreur 409 Conflict
+
+        // TODO: Calcul du prix de la réservation : prix journalier du véhicule * nombre de jours calendaires ((endDate - startDate) + 1)
+        Double totalPrice = 0.0;
+
+        // TODO: Créer la réservation au sauvegarder dans la BDD
+        Reservation newReservation = new Reservation(
+                currentUser.get(),
+                vehicle,
+                input.startDate(),
+                input.endDate(),
+                totalPrice,
+                Reservation.Status.PENDING
+        );
+
+        return newReservation.toDto();
+    }
 }

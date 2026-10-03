@@ -7,6 +7,17 @@ import java.time.LocalDateTime;
 
 public class ReservationDTO {
 
+    public record CreateInput(
+        Long vehicleId,
+        LocalDate startDate,
+        LocalDate endDate
+    ) {}
+
+    public record ChangeStatusInput(
+        Long resId,
+        Reservation.Status status
+    ) {}
+
     public record Output(
         Long id,
         UserDTO.Output user,

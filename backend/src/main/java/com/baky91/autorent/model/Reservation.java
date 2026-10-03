@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 @Table(name = "reservations")
 public class Reservation {
 
+    // TODO: Supprimer un status entre PENDING et CONFIRMED et ajuster le script Python
     public enum Status {
         PENDING,
         CONFIRMED,
@@ -29,12 +30,15 @@ public class Reservation {
     @JoinColumn(name = "vehicle_id", nullable = false)
     private Vehicle vehicle;
 
+    // TODO: Ajouter vérification startDate >= date d'aujourd'hui
     @Column(name = "start_date")
     private LocalDate startDate;
 
+    // TODO: Ajouter vérification endDate >= startDate
     @Column(name = "end_date")
     private LocalDate endDate;
 
+    // TODO: Utiliser un BigDecimal pour l'attribut totalPrice
     @Column(name = "total_price")
     private Double totalPrice;
 
