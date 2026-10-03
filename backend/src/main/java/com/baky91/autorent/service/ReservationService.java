@@ -147,4 +147,10 @@ public class ReservationService {
 
         return reservation.toDto();
     }
+
+    public void deleteReservation(Long id) throws ObjectNotFoundException {
+        Reservation foundReservation = reservationRepository.findById(id)
+                .orElseThrow(() -> new ObjectNotFoundException("La réservation numéro %d n'a pas été trouvé".formatted(id)));
+        reservationRepository.delete(foundReservation);
+    }
 }
