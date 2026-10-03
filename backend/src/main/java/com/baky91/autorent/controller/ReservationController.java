@@ -52,6 +52,17 @@ public class ReservationController {
 
     /* UPDATE (PUT) */
 
+    @PutMapping("/{id}")
+    public ReservationDTO.Output updateReservation(@PathVariable Long id, @RequestBody ReservationDTO.EditInput input) {
+        return reservationService.editReservation(id, input);
+    }
+
+    @PutMapping("/me/{resId}")
+    public ReservationDTO.Output cancelReservation(Authentication authentication, @PathVariable Long resId) {
+        User user = (User) authentication.getPrincipal();
+        return reservationService.cancelReservation(user, resId);
+    }
+
     /* DELETE (DELETE) */
 
 }

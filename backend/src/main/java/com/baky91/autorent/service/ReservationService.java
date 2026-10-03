@@ -100,4 +100,51 @@ public class ReservationService {
 
         return newReservation.toDto();
     }
+
+    public ReservationDTO.Output editReservation(Long id, ReservationDTO.EditInput input) {
+        Reservation reservation = reservationRepository.findById(id)
+                                                       .orElseThrow(() -> new ObjectNotFoundException("La réservation numéro %d n'a pas été trouvée".formatted(id)));
+
+        User user = userRepository.findById(input.userId())
+                                  .orElseThrow(() -> new ObjectNotFoundException("L'utilisateur numéro %d n'a pas été trouvé".formatted(input.userId())));
+
+        Vehicle vehicle = vehicleRepository.findById(input.vehicleId())
+                        .orElseThrow(() -> new ObjectNotFoundException("Le véhicule numéro %d n'a pas été trouvé".formatted(input.vehicleId())));
+
+        reservation.setUser(user);
+        reservation.setVehicle(vehicle);
+        reservation.setStartDate(input.startDate());
+        reservation.setEndDate(input.endDate());
+        reservation.setTotalPrice(input.totalPrice());
+        reservation.setStatus(input.status());
+
+        reservationRepository.save(reservation);
+
+        return reservation.toDto();
+    }
+
+    public ReservationDTO.Output cancelReservation(User user, Long reservationId) {
+        if (user == null) {
+            throw new ObjectNotFoundException("L'utilisateur n'a pas été trouvé");
+        }
+
+        Reservation reservation = reservationRepository.findById(reservationId)
+                .orElseThrow(() -> new ObjectNotFoundException("La réservation numéro %d n'a pas été trouvée".formatted(reservationId)));
+
+        // Vérification que la réservation appartient bien à l'utilisateur
+        if (!reservation.getUser().getId().equals(user.getId())) {
+            throw new org.springframework.security.access.AccessDeniedException("Vous n'êtes pas autorisé à annuler cette réservation.");
+        }
+
+        // Vérification que l'annulation se fait au moins un jour avant (donc aujourd'hui < date de début)
+        if (!LocalDate.now().isBefore(reservation.getStartDate())) {
+            throw new IllegalArgumentException("L'annulation doit se faire au minimum un jour avant le début de la réservation.");
+        }
+
+        // Mise à jour du statut
+        reservation.setStatus(Reservation.Status.CANCELLED);
+        reservationRepository.save(reservation);
+
+        return reservation.toDto();
+    }
 }
