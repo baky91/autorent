@@ -13,7 +13,6 @@ public class Reservation {
 
     // TODO: Supprimer un status entre PENDING et CONFIRMED et ajuster le script Python
     public enum Status {
-        PENDING,
         CONFIRMED,
         CANCELLED,
         COMPLETED

@@ -78,7 +78,7 @@ public class ReservationService {
                 input.startDate(),
                 input.endDate(),
                 totalPrice,
-                Reservation.Status.PENDING
+                Reservation.Status.CONFIRMED
         );
 
         return newReservation.toDto();

@@ -47,7 +47,7 @@ def create_tables(cursor):
             start_date date, 
             end_date date, 
             total_price float, 
-            status varchar(255) not null check ((status in ('PENDING','CONFIRMED','CANCELLED','COMPLETED'))), 
+            status varchar(255) not null check ((status in ('CONFIRMED','CANCELLED','COMPLETED'))),
             created_at timestamp, 
             primary key (id)
         )
@@ -96,7 +96,7 @@ def insert_data(cursor):
 
     reservations_to_insert = [
         (2, 1, '2026-10-01 00:00:00', '2026-10-05 00:00:00', 140.00, 'CONFIRMED', '2026-09-15 10:00:00'),
-        (2, 11, '2026-11-10 00:00:00', '2026-11-13 00:00:00', 225.00, 'PENDING', '2026-09-18 14:30:00'),
+        (2, 11, '2026-11-10 00:00:00', '2026-11-13 00:00:00', 225.00, 'CONFIRMED', '2026-09-18 14:30:00'),
         (3, 6, '2026-08-01 00:00:00', '2026-08-08 00:00:00', 455.00, 'COMPLETED', '2026-07-20 09:15:00'),
         (3, 12, '2026-09-15 00:00:00', '2026-09-18 00:00:00', 174.00, 'CANCELLED', '2026-09-01 16:45:00'),
         (4, 17, '2026-10-15 00:00:00', '2026-10-17 00:00:00', 80.00, 'CONFIRMED', '2026-09-19 11:20:00'),
