@@ -2,6 +2,7 @@ package com.baky91.autorent.dto;
 
 import com.baky91.autorent.model.Reservation;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
@@ -24,7 +25,7 @@ public class ReservationDTO {
         VehicleDTO.Output vehicle,
         LocalDate startDate,
         LocalDate endDate,
-        Double totalPrice,
+        BigDecimal totalPrice,
         Reservation.Status status,
         LocalDateTime createdAt
     ) {}

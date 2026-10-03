@@ -3,6 +3,7 @@ package com.baky91.autorent.model;
 import com.baky91.autorent.dto.ReservationDTO;
 import jakarta.persistence.*;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
@@ -38,9 +39,8 @@ public class Reservation {
     @Column(name = "end_date")
     private LocalDate endDate;
 
-    // TODO: Utiliser un BigDecimal pour l'attribut totalPrice
     @Column(name = "total_price")
-    private Double totalPrice;
+    private BigDecimal totalPrice;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
@@ -58,7 +58,7 @@ public class Reservation {
             Vehicle vehicle,
             LocalDate startDate,
             LocalDate endDate,
-            Double totalPrice,
+            BigDecimal totalPrice,
             Status status
     ) {
         this.user = user;
@@ -116,11 +116,11 @@ public class Reservation {
         this.endDate = endDate;
     }
 
-    public Double getTotalPrice() {
+    public BigDecimal getTotalPrice() {
         return totalPrice;
     }
 
-    public void setTotalPrice(Double totalPrice) {
+    public void setTotalPrice(BigDecimal totalPrice) {
         this.totalPrice = totalPrice;
     }
 

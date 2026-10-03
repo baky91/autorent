@@ -9,6 +9,7 @@ import com.baky91.autorent.repository.ReservationRepository;
 import com.baky91.autorent.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -68,7 +69,7 @@ public class ReservationService {
         // TODO: Vérifier qu'il n'y a aucun conflit de réservation (chevauchement de dates) -> renvoyer une erreur 409 Conflict
 
         // TODO: Calcul du prix de la réservation : prix journalier du véhicule * nombre de jours calendaires ((endDate - startDate) + 1)
-        Double totalPrice = 0.0;
+        BigDecimal totalPrice = BigDecimal.valueOf(0.0);
 
         // TODO: Créer la réservation au sauvegarder dans la BDD
         Reservation newReservation = new Reservation(
