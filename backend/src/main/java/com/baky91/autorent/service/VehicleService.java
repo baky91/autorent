@@ -1,6 +1,7 @@
 package com.baky91.autorent.service;
 
 import com.baky91.autorent.dto.VehicleDTO;
+import com.baky91.autorent.model.Reservation;
 import com.baky91.autorent.model.Vehicle;
 import com.baky91.autorent.model.exception.ObjectNotFoundException;
 import com.baky91.autorent.repository.ReservationRepository;
@@ -23,9 +24,9 @@ public class VehicleService {
     }
 
     public VehicleDTO.Output getVehicleById(long id) throws ObjectNotFoundException {
-        return vehicleRepository.findById(id)
-                                .map(Vehicle::toDto)
-                                .orElseThrow(() -> new ObjectNotFoundException("Le véhicule numéro %d n'a pas été trouvé".formatted(id)));
+        Vehicle vehicle = vehicleRepository.findById(id)
+                .orElseThrow(() -> new ObjectNotFoundException("Le véhicule numéro %d n'a pas été trouvé".formatted(id)));
+        return mapToOutputWithAvailability(vehicle);
     }
 
     public List<VehicleDTO.Output> getAllVehicles(VehicleDTO.QueryParams params) {
@@ -58,7 +59,26 @@ public class VehicleService {
             stream = stream.limit(params.count());
         }
 
-        return stream.map(Vehicle::toDto).toList();
+        return stream.map(this::mapToOutputWithAvailability).toList();
+    }
+
+    private VehicleDTO.Output mapToOutputWithAvailability(Vehicle v) {
+        LocalDate today = LocalDate.now();
+        boolean isCurrentlyAvailable = !reservationRepository.existsConflictingReservation(v.getId(), today, today);
+        LocalDate availableFrom = today;
+
+        if (!isCurrentlyAvailable) {
+            // On cherche la réservation qui est en cours aujourd'hui
+            List<Reservation> activeReservations = reservationRepository.findActiveReservationsForVehicleFromDate(v.getId(), today);
+            for (Reservation r : activeReservations) {
+                if (!r.getStartDate().isAfter(today) && !r.getEndDate().isBefore(today)) {
+                    availableFrom = r.getEndDate().plusDays(1);
+                    break;
+                }
+            }
+        }
+
+        return v.toDto(isCurrentlyAvailable, availableFrom);
     }
 
     public VehicleDTO.Output createVehicle(VehicleDTO.Input data) {

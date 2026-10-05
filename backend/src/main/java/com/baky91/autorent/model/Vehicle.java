@@ -4,6 +4,7 @@ import com.baky91.autorent.dto.VehicleDTO;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "vehicles")
@@ -203,7 +204,7 @@ public class Vehicle {
         this.available = available;
     }
 
-    public VehicleDTO.Output toDto(){
+    public VehicleDTO.Output toDto(Boolean isCurrentlyAvailable, LocalDate availableFrom){
         return new VehicleDTO.Output(
             id,
             brand,
@@ -217,8 +218,15 @@ public class Vehicle {
             transmission,
             kilometrage,
             dailyPrice,
-            available
+            available,
+            isCurrentlyAvailable,
+            availableFrom
         );
+    }
+
+    public VehicleDTO.Output toDto(){
+        // Valeur par défaut
+        return toDto(true, java.time.LocalDate.now());
     }
 
 }

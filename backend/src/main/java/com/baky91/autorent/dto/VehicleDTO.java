@@ -76,7 +76,9 @@ public class VehicleDTO {
         Vehicle.Transmission transmission,
         Integer kilometrage,
         BigDecimal dailyPrice,
-        Boolean available
+        Boolean available,
+        Boolean isCurrentlyAvailable,
+        LocalDate availableFrom
     ) {}
 
 }
