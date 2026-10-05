@@ -17,7 +17,7 @@ public class VehicleController {
 
     private final VehicleService vehicleService;
 
-    public VehicleController(VehicleService vehicleService){
+    public VehicleController(VehicleService vehicleService) {
         this.vehicleService = vehicleService;
     }
 
@@ -29,17 +29,17 @@ public class VehicleController {
 
         // Construit l'URI de la nouvelle ressource : /api/vehicles/{id}
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()
-                                                  .path("/{id}")
-                                                  .buildAndExpand(createdVehicle.id())
-                                                  .toUri();
+                .path("/{id}")
+                .buildAndExpand(createdVehicle.id())
+                .toUri();
         return ResponseEntity.created(location).body(createdVehicle);
     }
 
     /* READ (GET) */
 
     @GetMapping
-    public List<VehicleDTO.Output> getAllVehicles() {
-        return vehicleService.getAllVehicles();
+    public List<VehicleDTO.Output> getAllVehicles(VehicleDTO.QueryParams params) {
+        return vehicleService.getAllVehicles(params);
     }
 
     @GetMapping("/{id}")

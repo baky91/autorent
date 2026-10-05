@@ -7,6 +7,7 @@ import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.PositiveOrZero;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 
 public class VehicleDTO {
 
@@ -50,6 +51,16 @@ public class VehicleDTO {
 
         @NotNull
         Boolean available
+    ) {}
+
+    public record QueryParams(
+        Integer count,
+        LocalDate startDate,
+        LocalDate endDate,
+        Vehicle.Category category,
+        Vehicle.FuelType fuelType,
+        Vehicle.Transmission transmission,
+        BigDecimal maxPrice
     ) {}
 
     public record Output(

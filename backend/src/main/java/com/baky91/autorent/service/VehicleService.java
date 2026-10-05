@@ -3,18 +3,23 @@ package com.baky91.autorent.service;
 import com.baky91.autorent.dto.VehicleDTO;
 import com.baky91.autorent.model.Vehicle;
 import com.baky91.autorent.model.exception.ObjectNotFoundException;
+import com.baky91.autorent.repository.ReservationRepository;
 import com.baky91.autorent.repository.VehicleRepository;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Stream;
 
 @Service
 public class VehicleService {
 
     private final VehicleRepository vehicleRepository;
+    private final ReservationRepository reservationRepository;
 
-    public VehicleService(VehicleRepository vehicleRepository){
+    public VehicleService(VehicleRepository vehicleRepository, ReservationRepository reservationRepository){
         this.vehicleRepository = vehicleRepository;
+        this.reservationRepository = reservationRepository;
     }
 
     public VehicleDTO.Output getVehicleById(long id) throws ObjectNotFoundException {
@@ -23,11 +28,37 @@ public class VehicleService {
                                 .orElseThrow(() -> new ObjectNotFoundException("Le véhicule numéro %d n'a pas été trouvé".formatted(id)));
     }
 
-    public List<VehicleDTO.Output> getAllVehicles() {
-        return vehicleRepository.findAll()
-                                .stream()
-                                .map(Vehicle::toDto)
-                                .toList();
+    public List<VehicleDTO.Output> getAllVehicles(VehicleDTO.QueryParams params) {
+        Stream<Vehicle> stream = vehicleRepository.findAll().stream();
+
+        // On ne montre que les véhicules actifs
+        stream = stream.filter(Vehicle::getAvailable);
+
+        if (params.category() != null) {
+            stream = stream.filter(v -> v.getCategory() == params.category());
+        }
+        if (params.fuelType() != null) {
+            stream = stream.filter(v -> v.getFuelType() == params.fuelType());
+        }
+        if (params.transmission() != null) {
+            stream = stream.filter(v -> v.getTransmission() == params.transmission());
+        }
+        if (params.maxPrice() != null) {
+            stream = stream.filter(v -> v.getDailyPrice().compareTo(params.maxPrice()) <= 0);
+        }
+        if (params.startDate() != null || params.endDate() != null) {
+            // Si une seule date est fournie, on considère par défaut que c'est une location d'une journée
+            LocalDate start = params.startDate() != null ? params.startDate() : params.endDate();
+            LocalDate end = params.endDate() != null ? params.endDate() : params.startDate();
+
+            stream = stream.filter(v -> !reservationRepository.existsConflictingReservation(v.getId(), start, end));
+        }
+
+        if (params.count() != null && params.count() > 0) {
+            stream = stream.limit(params.count());
+        }
+
+        return stream.map(Vehicle::toDto).toList();
     }
 
     public VehicleDTO.Output createVehicle(VehicleDTO.Input data) {
