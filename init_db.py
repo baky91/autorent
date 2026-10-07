@@ -59,14 +59,14 @@ def insert_data(cursor):
     vehicles_to_insert = [
         ('Peugeot', '208', 'SUPERMINI', 2023, 100, '/assets/images/vehicles/peugeot-208.webp', 5, 'PETROL', 'MANUAL', 18500, 35.00, 1),
         ('Renault', 'Clio V', 'SUPERMINI', 2022, 100, '/assets/images/vehicles/renault-clio.webp', 5, 'DIESEL', 'MANUAL', 32000, 38.00, 1),
-        ('Volkswagen', 'Polo 6', 'SUPERMINI', 2023, 95, '/assets/images/vehicles/volkswagen-polo.webp', 5, 'PETROL', 'AUTOMATIC', 12000, 42.00, 1),
+        ('Volkswagen', 'Polo VI', 'SUPERMINI', 2023, 95, '/assets/images/vehicles/volkswagen-polo.webp', 5, 'PETROL', 'AUTOMATIC', 12000, 42.00, 1),
         ('Fiat', '500', 'SUPERMINI', 2022, 70, '/assets/images/vehicles/fiat-500.webp', 4, 'PETROL', 'MANUAL', 25000, 30.00, 1),
         ('Peugeot', 'e-208', 'SUPERMINI', 2024, 136, '/assets/images/vehicles/peugeot-208.webp', 5, 'ELECTRIC', 'AUTOMATIC', 8000, 45.00, 1),
         ('Toyota', 'Yaris', 'SUPERMINI', 2024, 116, '/assets/images/vehicles/toyota-yaris.webp', 5, 'HYBRID', 'AUTOMATIC', 12000, 40.00, 1),
 
         ('Peugeot', '508', 'COMPACT', 2023, 130, '/assets/images/vehicles/peugeot-508.webp', 5, 'DIESEL', 'AUTOMATIC', 28000, 65.00, 1),
         ('Citroën', 'C4', 'COMPACT', 2022, 130, '/assets/images/vehicles/citroen-c4.webp', 5, 'PETROL', 'AUTOMATIC', 34000, 48.00, 1),
-        ('Volkswagen', 'Golf 8', 'COMPACT', 2023, 150, '/assets/images/vehicles/volkswagen-golf.webp', 5, 'PETROL', 'AUTOMATIC', 19000, 52.00, 1),
+        ('Volkswagen', 'Golf VIII', 'COMPACT', 2023, 150, '/assets/images/vehicles/volkswagen-golf.webp', 5, 'PETROL', 'AUTOMATIC', 19000, 52.00, 1),
         ('BMW', 'Série 3', 'COMPACT', 2023, 190, '/assets/images/vehicles/bmw-serie3.webp', 5, 'DIESEL', 'AUTOMATIC', 22000, 85.00, 1),
         ('Audi', 'A5', 'COMPACT', 2024, 204, '/assets/images/vehicles/audi-a5.webp', 5, 'PETROL', 'AUTOMATIC', 15000, 95.00, 1),
         ('Tesla', 'Model 3', 'COMPACT', 2023, 283, '/assets/images/vehicles/tesla-model3.webp', 5, 'ELECTRIC', 'AUTOMATIC', 16000, 75.00, 1),
