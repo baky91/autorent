@@ -1,16 +1,360 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AutoRent</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AutoRent - Location de Véhicules en Ligne</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/icons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/icons/favicon-16x16.png">
+    <link rel="stylesheet" href="css/style.css" />
+    <script type="module" src="js/index.js" defer></script>
 </head>
 
 <body>
-    <h1>AutoRent</h1>
-    <p>Bienvenue sur AutoRent, votre plateforme de location de véhicules.</p>
-    <p>Explorez notre catalogue et trouvez le véhicule parfait pour vos besoins.</p>
+    <!-- HEADER & NAVBAR -->
+    <header class="site-header" id="header">
+        <div class="container nav-container">
+            <!-- Logo -->
+            <a href="index.html" class="brand-logo" aria-label="AutoRent Accueil">
+                <svg class="logo-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path
+                        d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.5 2.8C2.1 11.2 2 11.8 2 12.4V16c0 .6.4 1 1 1h2" />
+                    <circle cx="7" cy="17" r="2" />
+                    <path d="M9 17h6" />
+                    <circle cx="17" cy="17" r="2" />
+                </svg>
+                <span class="brand-name">Auto<span>Rent</span></span>
+            </a>
+
+            <!-- Navigation Links -->
+            <nav class="nav-menu">
+                <a href="index.html" class="nav-link active" data-i18n="nav.home">Accueil</a>
+                <a href="vehicles.html" class="nav-link" data-i18n="nav.vehicles">Véhicules</a>
+                <a href="reservations.html" class="nav-link" data-i18n="nav.myReservations">Réservations</a>
+            </nav>
+
+            <!-- Action Controls (Theme, Language, Auth) -->
+            <div class="nav-actions">
+                <!-- Language Switcher -->
+                <button class="btn-icon" id="btn-lang-toggle" aria-label="Changer de langue" title="Français / English">
+                    <span class="lang-text" id="current-lang">FR</span>
+                </button>
+
+                <!-- Dark/Light Theme Toggle -->
+                <button class="btn-icon" id="btn-theme-toggle" aria-label="Basculer le thème"
+                    title="Thème Clair / Sombre">
+                    <svg class="theme-icon sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2">
+                        <circle cx="12" cy="12" r="4" />
+                        <path
+                            d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41" />
+                    </svg>
+                    <svg class="theme-icon moon-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+                    </svg>
+                </button>
+
+                <!-- Auth Buttons -->
+                <button type="button" class="btn" id="btn-login">
+                    Connexion / Inscription
+                    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+                        stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M5 12h14"></path>
+                        <path d="m13 6 6 6-6 6"></path>
+                    </svg>
+                </button>
+
+                <!-- Mobile Menu Toggle -->
+                <button class="btn-icon mobile-menu-btn" id="mobile-toggle" aria-label="Ouvrir le menu">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="3" y1="12" x2="21" y2="12"></line>
+                        <line x1="3" y1="6" x2="21" y2="6"></line>
+                        <line x1="3" y1="18" x2="21" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <!-- HERO -->
+        <section class="hero-section">
+            <div class="container hero-content">
+
+                <h1 class="hero-title">Location de véhicules en ligne</h1>
+                <p class="hero-subtitle">Trouvez le véhicule parfait pour vos besoins et réservez directement en ligne.
+                </p>
+
+                <div class="hero-actions">
+                    <a href="/vehicles" class="btn">
+                        Explorer les véhicules
+                        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path d="M5 12h14"></path>
+                            <path d="m13 6 6 6-6 6"></path>
+                        </svg>
+                    </a>
+
+                    <button class="btn" id="btn-how-it-works">
+                        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <g transform="matrix(0 1 -1 0 24 0)">
+                                <path d="M5 12h14"></path>
+                                <path d="m13 6 6 6-6 6"></path>
+                            </g>
+                        </svg>
+                        Comment ça marche
+                    </button>
+
+                </div>
+
+                <div class="hero-calculator">
+
+                </div>
+
+            </div>
+
+        </section>
+
+        <!-- HOW IT WORKS -->
+        <section class="how-it-works" id="how-it-works">
+            <div class="container">
+                <div class="section-header">
+                    <span class="section-tag">Fonctionnement</span>
+                    <h2 class="section-title">Comment ça marche ?</h2>
+                    <p class="section-subtitle">La location en 3 étapes simples.</p>
+                </div>
+
+                <div class="steps-grid">
+                    <!-- Step 1 -->
+                    <div class="step-card">
+                        <div class="step-number">01</div>
+                        <div class="step-icon-wrapper">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="11" cy="11" r="8"></circle>
+                                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                            </svg>
+                        </div>
+                        <h3 class="step-title">Trouvez votre modèle</h3>
+                        <p class="step-description">Parcourez le catalogue et filtrez selon vos besoins (boîte, carburant,
+                            tarif).</p>
+                    </div>
+
+                    <!-- Step 2 -->
+                    <div class="step-card">
+                        <div class="step-number">02</div>
+                        <div class="step-icon-wrapper">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                                <line x1="16" y1="2" x2="16" y2="6"></line>
+                                <line x1="8" y1="2" x2="8" y2="6"></line>
+                                <line x1="3" y1="10" x2="21" y2="10"></line>
+                            </svg>
+                        </div>
+                        <h3 class="step-title">Réservez en ligne</h3>
+                        <p class="step-description">Connectez-vous, sélectionnez vos dates et confirmez votre
+                            réservation.</p>
+                    </div>
+
+                    <!-- Step 3 -->
+                    <div class="step-card">
+                        <div class="step-number">03</div>
+                        <div class="step-icon-wrapper">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path
+                                    d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.5 2.8C2.1 11.2 2 11.8 2 12.4V16c0 .6.4 1 1 1h2">
+                                </path>
+                                <circle cx="7" cy="17" r="2"></circle>
+                                <circle cx="17" cy="17" r="2"></circle>
+                            </svg>
+                        </div>
+                        <h3 class="step-title">Prenez la route</h3>
+                        <p class="step-description">Récupérez le véhicule et profitez de votre trajet.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SOME VEHICLES -->
+        <section class="featured-vehicles">
+            <div class="container">
+                <div class="section-header">
+                    <span class="section-tag">Catalogue</span>
+                    <div class="section-header-row">
+                        <h2 class="section-title">Véhicules Disponible</h2>
+                        <a href="/vehicles" class="btn btn-outline">
+                            Voir tout
+                            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <path d="M5 12h14"></path>
+                                <path d="m13 6 6 6-6 6"></path>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Vehicle Cards Grid -->
+                <div class="vehicles-grid">
+
+                    <!-- Vehicle Card 1 -->
+                    <article class="vehicle-card">
+                        <div class="vehicle-card-media">
+                            <span class="category-badge">Citadine</span>
+                            <p class="vehicle-status available">Actuellement disponible <span class="vehicle-status-badge"></span></p>
+                            <img src="../static/assets/images/vehicles/renault-clio.webp" alt="Renault Clio V" class="vehicle-card-img">
+                            <!-- <div class="media-placeholder">
+                                <svg class="placeholder-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                <path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.5 2.8C2.1 11.2 2 11.8 2 12.4V16c0 .6.4 1 1 1h2"/>
+                                <circle cx="7" cy="17" r="2"/>
+                                <circle cx="17" cy="17" r="2"/>
+                                </svg>
+                                <span class="media-label">Renault Clio V</span>
+                            </div> -->
+                        </div>
+
+                        <div class="vehicle-card-content">
+                            <div class="card-header-info">
+                                <div>
+                                    <h3 class="vehicle-brand">Renault</h3>
+                                    <h2 class="vehicle-model">Clio V</h2>
+                                </div>
+                                <span class="vehicle-year">2024</span>
+                            </div>
+                            <div class="specs-list">
+                                <div class="spec-item">
+                                    <span>Diesel</span>
+                                </div>
+                                <div class="spec-item">
+                                    <span>100 ch</span>
+                                </div>
+                                <div class="spec-item">
+                                    <span>Manuelle</span>
+                                </div>
+                                <div class="spec-item">
+                                    <span>5 places</span>
+                                </div>
+                            </div>
+                            <div class="card-footer">
+                                <div class="price-container">
+                                    <span class="price-value">45€</span>
+                                    <span class="price-period">/ jour</span>
+                                </div>
+                                <button class="btn btn-primary btn-open-reservation">Réserver</button>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Vehicle Card 2 -->
+                    <article class="vehicle-card">
+                        <div class="vehicle-card-media">
+                            <span class="category-badge">Compact</span>
+                            <p class="vehicle-status rented">Loué actuellement<span class="vehicle-status-badge"></span></p>
+                            <img src="../static/assets/images/vehicles/volkswagen-golf.webp" alt="Volkswagen Golf VIII" class="vehicle-card-img">
+                            <!-- <div class="media-placeholder">
+                                <svg class="placeholder-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                <path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.5 2.8C2.1 11.2 2 11.8 2 12.4V16c0 .6.4 1 1 1h2"/>
+                                <circle cx="7" cy="17" r="2"/>
+                                <circle cx="17" cy="17" r="2"/>
+                                </svg>
+                                <span class="media-label">Renault Clio V</span>
+                            </div> -->
+                        </div>
+
+                        <div class="vehicle-card-content">
+                            <div class="card-header-info">
+                                <div>
+                                    <h3 class="vehicle-brand">Volkswagen</h3>
+                                    <h2 class="vehicle-model">Golf VIII</h2>
+                                </div>
+                                <span class="vehicle-year">2021</span>
+                            </div>
+                            <div class="specs-list">
+                                <div class="spec-item">
+                                    <span>Diesel</span>
+                                </div>
+                                <div class="spec-item">
+                                    <span>100 ch</span>
+                                </div>
+                                <div class="spec-item">
+                                    <span>Manuelle</span>
+                                </div>
+                                <div class="spec-item">
+                                    <span>5 places</span>
+                                </div>
+                            </div>
+                            <div class="card-footer">
+                                <div class="price-container">
+                                    <span class="price-value">45€</span>
+                                    <span class="price-period">/ jour</span>
+                                </div>
+                                <button class="btn btn-primary btn-open-reservation">Réserver</button>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Vehicle Card 3 -->
+                    <article class="vehicle-card">
+                        <div class="vehicle-card-media">
+                            <span class="category-badge">Compact</span>
+                            <!-- Badge informatif "Disponible dès le..." -->
+                            <span class="vehicle-status rented">
+                                <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" fill="none" stroke-width="2">
+                                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                                    <line x1="16" y1="2" x2="16" y2="6"></line>
+                                    <line x1="8" y1="2" x2="8" y2="6"></line>
+                                    <line x1="3" y1="10" x2="21" y2="10"></line>
+                                </svg>
+                                Disponible dès le 12 Oct.
+                            </span>
+                            <img src="../static/assets/images/vehicles/volkswagen-golf.webp" alt="Volkswagen Golf VIII" class="vehicle-card-img">
+                        </div>
+
+                        <div class="vehicle-card-content">
+                            <div class="card-header-info">
+                                <div>
+                                    <h3 class="vehicle-brand">Volkswagen</h3>
+                                    <h2 class="vehicle-model">Golf VIII</h2>
+                                </div>
+                                <span class="vehicle-year">2021</span>
+                            </div>
+                            <div class="specs-list">
+                                <div class="spec-item">
+                                    <span>Diesel</span>
+                                </div>
+                                <div class="spec-item">
+                                    <span>100 ch</span>
+                                </div>
+                                <div class="spec-item">
+                                    <span>Manuelle</span>
+                                </div>
+                                <div class="spec-item">
+                                    <span>5 places</span>
+                                </div>
+                            </div>
+                            <div class="card-footer">
+                                <div class="price-container">
+                                    <span class="price-value">45€</span>
+                                    <span class="price-period">/ jour</span>
+                                </div>
+                                <button class="btn btn-primary btn-open-reservation">Réserver</button>
+                            </div>
+                        </div>
+                    </article>
+
+                </div>
+
+            </div>
+        </section>
+
+    </main>
+
 </body>
 
 </html>
