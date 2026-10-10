@@ -85,6 +85,7 @@ const ReservationManager = {
         const card = e.target.closest('.vehicle-card');
         const brand = card.querySelector('.vehicle-brand')?.textContent || "Marque inconnue";
         const model = card.querySelector('.vehicle-model')?.textContent || "Modèle inconnu";
+        const category = card.querySelector('.category-badge')?.textContent || "Catégorie";
         const img = card.querySelector('.vehicle-card-img')?.src || "";
         const priceText = card.querySelector('.price-value')?.textContent || "0";
         const price = parseFloat(priceText.replace('€', ''));
@@ -96,6 +97,7 @@ const ReservationManager = {
         this.openModal({
           brand,
           model,
+          category,
           imagePath: img,
           dailyPrice: price,
           specsHtml: specs
@@ -112,6 +114,7 @@ const ReservationManager = {
     document.getElementById("modal-vehicle-img").src = vehicleData.imagePath;
     document.getElementById("modal-vehicle-brand").textContent = vehicleData.brand;
     document.getElementById("modal-vehicle-model").textContent = vehicleData.model;
+    document.getElementById("modal-vehicle-category").textContent = vehicleData.category;
     document.getElementById("modal-vehicle-specs").innerHTML = vehicleData.specsHtml || "";
     document.getElementById("summary-daily-price").textContent = `${this.dailyPrice}€`;
     

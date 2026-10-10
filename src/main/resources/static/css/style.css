@@ -11,6 +11,8 @@
   --text-secondary: #475569;
   --text-muted: #94a3b8;
 
+  --bg-surface-transparent: rgba(15, 23, 42, 0.04);
+
   --primary: #7c3aed;
   --primary-hover: #6d28d9;
   --primary-light: #f5f3ff;
@@ -52,6 +54,8 @@
   --text-primary: #f8fafc;
   --text-secondary: #94a3b8;
   --text-muted: #64748b;
+
+  --bg-surface-transparent: rgba(255, 255, 255, 0.05);
 
   --primary: #8b5cf6;
   --primary-hover: #a78bfa;
@@ -563,7 +567,9 @@ header {
 
 .vehicle-year {
   font-size: 0.8rem;
-  color: var(--text-muted);
+  background-color: var(--bg-surface-transparent);
+  padding: 0.25rem 0.65rem;
+  border-radius: var(--radius-md);
 }
 
 .specs-list {
@@ -784,7 +790,17 @@ header {
 .modal-vehicle-info h2 {
   font-size: 1.75rem;
   font-weight: 800;
+  margin-bottom: 0.5rem;
+}
+
+#modal-vehicle-category {
+  font-size: 1rem;
+  color: var(--text-secondary);
+  position: static;
+  display: inline-block;
   margin-bottom: 1.5rem;
+  background-color: var(--bg-surface-transparent);
+  width: fit-content
 }
 
 .modal-specs {
@@ -792,6 +808,16 @@ header {
   grid-template-columns: 1fr 1fr;
   gap: 1rem;
   margin-top: auto;
+}
+
+.modal-specs .spec-item {
+  background: var(--bg-surface-transparent);
+  padding: 0.75rem 1rem;
+  border-radius: var(--radius-md);
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
 .modal-right {
@@ -896,6 +922,10 @@ header {
   font-weight: 600;
   margin-bottom: 1.5rem;
   text-align: center;
+}
+
+#date-error {
+  display: none;
 }
 
 /* ********************************************* */
