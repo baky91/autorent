@@ -397,6 +397,64 @@
 
     </main>
 
+    <!-- RESERVATION MODAL -->
+    <div id="reservation-modal" class="modal-overlay">
+        <div class="modal-content">
+            <button class="modal-close" id="close-modal-btn" aria-label="Fermer">&times;</button>
+            <div class="modal-grid">
+                <!-- Left: Vehicle Info -->
+                <div class="modal-left">
+                    <img id="modal-vehicle-img" src="" alt="Véhicule">
+                    <div class="modal-vehicle-info">
+                        <h3 id="modal-vehicle-brand">Marque</h3>
+                        <h2 id="modal-vehicle-model">Modèle</h2>
+                    </div>
+                    <div class="modal-specs" id="modal-vehicle-specs">
+                        <!-- Specs injected by JS -->
+                    </div>
+                </div>
+                <!-- Right: Booking Form -->
+                <div class="modal-right">
+                    <h3 class="modal-title">Réserver ce véhicule</h3>
+                    <p class="modal-subtitle">Sélectionnez vos dates pour calculer le prix.</p>
+                    
+                    <form id="reservation-form">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="start-date">Date de départ</label>
+                                <input type="date" id="start-date" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="end-date">Date de retour</label>
+                                <input type="date" id="end-date" required>
+                            </div>
+                        </div>
+
+                        <div id="date-error" class="error-message" style="display: none;">Ces dates ne sont pas disponibles.</div>
+
+                        <div class="price-summary">
+                            <div class="summary-row">
+                                <span>Durée</span>
+                                <span id="summary-days">0 jour</span>
+                            </div>
+                            <div class="summary-row">
+                                <span>Tarif journalier</span>
+                                <span id="summary-daily-price">0€</span>
+                            </div>
+                            <div class="summary-divider"></div>
+                            <div class="summary-row total">
+                                <span>Total</span>
+                                <span id="summary-price">0€</span>
+                            </div>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary btn-block" id="confirm-reservation-btn" disabled>Confirmer la réservation</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </body>
 
 </html>

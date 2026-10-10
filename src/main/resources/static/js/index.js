@@ -27,6 +27,160 @@ const ThemeManager = {
   },
 };
 
+const ReservationManager = {
+  currentVehicle: null,
+  unavailableDates: [],
+  dailyPrice: 0,
+  
+  init() {
+    this.modal = document.getElementById("reservation-modal");
+    if (!this.modal) return;
+    
+    this.closeBtn = document.getElementById("close-modal-btn");
+    this.startDateInput = document.getElementById("start-date");
+    this.endDateInput = document.getElementById("end-date");
+    this.form = document.getElementById("reservation-form");
+    this.errorMsg = document.getElementById("date-error");
+    this.confirmBtn = document.getElementById("confirm-reservation-btn");
+    
+    // Bind events
+    this.closeBtn.addEventListener("click", () => this.closeModal());
+    this.modal.addEventListener("click", (e) => {
+      if (e.target === this.modal) this.closeModal();
+    });
+    
+    this.startDateInput.addEventListener("change", () => this.validateDates());
+    this.endDateInput.addEventListener("change", () => this.validateDates());
+    this.form.addEventListener("submit", (e) => this.handleSubmit(e));
+    
+    // Simulation de dates réservées (ex: de demain à dans 4 jours)
+    const today = new Date();
+    for (let i = 1; i <= 4; i++) {
+      const d = new Date(today);
+      d.setDate(d.getDate() + i);
+      this.unavailableDates.push(d.toISOString().split('T')[0]);
+    }
+
+    // Date minimale = aujourd'hui
+    const todayStr = today.toISOString().split('T')[0];
+    this.startDateInput.min = todayStr;
+    this.endDateInput.min = todayStr;
+    
+    // Bind "Réserver" buttons
+    this.bindButtons();
+  },
+  
+  bindButtons() {
+    const buttons = document.querySelectorAll(".btn-open-reservation");
+    buttons.forEach(btn => {
+      btn.addEventListener("click", (e) => {
+        // Extraction des données de la carte sur laquelle on a cliqué
+        const card = e.target.closest('.vehicle-card');
+        const brand = card.querySelector('.vehicle-brand')?.textContent || "Marque inconnue";
+        const model = card.querySelector('.vehicle-model')?.textContent || "Modèle inconnu";
+        const img = card.querySelector('.vehicle-card-img')?.src || "";
+        const priceText = card.querySelector('.price-value')?.textContent || "0";
+        const price = parseFloat(priceText.replace('€', ''));
+        
+        // On récupère le HTML des specs pour l'injecter dans la modale
+        const specItems = card.querySelectorAll('.spec-item');
+        const specs = Array.from(specItems).map(item => item.outerHTML).join('');
+        
+        this.openModal({
+          brand,
+          model,
+          imagePath: img,
+          dailyPrice: price,
+          specsHtml: specs
+        });
+      });
+    });
+  },
+  
+  openModal(vehicleData) {
+    this.currentVehicle = vehicleData;
+    this.dailyPrice = vehicleData.dailyPrice || 0;
+    
+    // Remplissage des infos à gauche
+    document.getElementById("modal-vehicle-img").src = vehicleData.imagePath;
+    document.getElementById("modal-vehicle-brand").textContent = vehicleData.brand;
+    document.getElementById("modal-vehicle-model").textContent = vehicleData.model;
+    document.getElementById("modal-vehicle-specs").innerHTML = vehicleData.specsHtml || "";
+    document.getElementById("summary-daily-price").textContent = `${this.dailyPrice}€`;
+    
+    // Reset du formulaire à droite
+    this.form.reset();
+    this.errorMsg.style.display = "none";
+    this.confirmBtn.disabled = true;
+    document.getElementById("summary-days").textContent = "0 jour";
+    document.getElementById("summary-price").textContent = "0€";
+    
+    this.modal.classList.add("active");
+  },
+  
+  closeModal() {
+    this.modal.classList.remove("active");
+  },
+  
+  validateDates() {
+    const startVal = this.startDateInput.value;
+    const endVal = this.endDateInput.value;
+    
+    this.errorMsg.style.display = "none";
+    this.confirmBtn.disabled = true;
+    document.getElementById("summary-days").textContent = "0 jour";
+    document.getElementById("summary-price").textContent = "0€";
+    
+    if (!startVal || !endVal) return;
+    
+    const start = new Date(startVal);
+    const end = new Date(endVal);
+    
+    // On met tout à minuit pour comparer précisément
+    start.setHours(0,0,0,0);
+    end.setHours(0,0,0,0);
+    
+    if (end < start) {
+      this.errorMsg.textContent = "La date de retour doit être après la date de départ.";
+      this.errorMsg.style.display = "block";
+      return;
+    }
+    
+    // Vérification s'il y a un conflit avec les dates indisponibles (boucle sur chaque jour)
+    let hasOverlap = false;
+    let currentDate = new Date(start);
+    while (currentDate <= end) {
+      const isoDate = currentDate.toISOString().split('T')[0];
+      if (this.unavailableDates.includes(isoDate)) {
+        hasOverlap = true;
+        break;
+      }
+      currentDate.setDate(currentDate.getDate() + 1);
+    }
+    
+    if (hasOverlap) {
+      this.errorMsg.textContent = "Certaines dates sélectionnées ne sont pas disponibles.";
+      this.errorMsg.style.display = "block";
+      return;
+    }
+    
+    // Les dates sont valides, calcul du prix (différence en millisecondes convertie en jours)
+    const diffTime = Math.abs(end - start);
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) + 1; // +1 pour inclure le jour de départ ET le jour de fin
+    
+    document.getElementById("summary-days").textContent = `${diffDays} jour${diffDays > 1 ? 's' : ''}`;
+    document.getElementById("summary-price").textContent = `${diffDays * this.dailyPrice}€`;
+    
+    this.confirmBtn.disabled = false;
+  },
+  
+  handleSubmit(e) {
+    e.preventDefault();
+    alert(`Réservation confirmée pour le véhicule ${this.currentVehicle.brand} ${this.currentVehicle.model} du ${this.startDateInput.value} au ${this.endDateInput.value} !`);
+    this.closeModal();
+  }
+};
+
 const iconsSvg = {
   fuelType: `<svg viewBox="0 0 24 24" width="15" height="15" stroke="currentColor" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
     <line x1="3" y1="22" x2="15" y2="22"></line>
@@ -64,6 +218,7 @@ function getIconSvg(type) {
 
 document.addEventListener("DOMContentLoaded", async () => {
   ThemeManager.init();
+  ReservationManager.init();
 
   const allVehicles = await getAllVehicles();
   console.log(allVehicles);
