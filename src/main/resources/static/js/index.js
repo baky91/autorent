@@ -45,12 +45,6 @@ const ReservationManager = {
     
     // Bind events
     this.closeBtn.addEventListener("click", () => this.closeModal());
-    this.modal.addEventListener("click", (e) => {
-      if (e.target === this.modal) this.closeModal();
-    });
-    
-    this.startDateInput.addEventListener("change", () => this.validateDates());
-    this.endDateInput.addEventListener("change", () => this.validateDates());
     this.form.addEventListener("submit", (e) => this.handleSubmit(e));
     
     // Simulation de dates réservées (ex: de demain à dans 4 jours)
@@ -58,13 +52,26 @@ const ReservationManager = {
     for (let i = 1; i <= 4; i++) {
       const d = new Date(today);
       d.setDate(d.getDate() + i);
-      this.unavailableDates.push(d.toISOString().split('T')[0]);
+      // On extrait la date locale sans le décalage UTC
+      const y = d.getFullYear();
+      const m = String(d.getMonth() + 1).padStart(2, '0');
+      const day = String(d.getDate()).padStart(2, '0');
+      this.unavailableDates.push(`${y}-${m}-${day}`);
     }
 
-    // Date minimale = aujourd'hui
-    const todayStr = today.toISOString().split('T')[0];
-    this.startDateInput.min = todayStr;
-    this.endDateInput.min = todayStr;
+    // Initialisation de Flatpickr sur les champs de date
+    const flatpickrConfig = {
+      locale: "fr",
+      minDate: "today",
+      dateFormat: "Y-m-d", // Format envoyé au backend
+      altInput: true,      // Affiche un format lisible à l'utilisateur
+      altFormat: "d/m/Y",  // Format affiché (jj/mm/aaaa)
+      disable: this.unavailableDates, // Désactive les dates visuellement
+      onChange: () => this.validateDates()
+    };
+
+    this.startPicker = flatpickr(this.startDateInput, flatpickrConfig);
+    this.endPicker = flatpickr(this.endDateInput, flatpickrConfig);
     
     // Bind "Réserver" buttons
     this.bindButtons();
@@ -110,6 +117,9 @@ const ReservationManager = {
     
     // Reset du formulaire à droite
     this.form.reset();
+    if(this.startPicker) this.startPicker.clear();
+    if(this.endPicker) this.endPicker.clear();
+    
     this.errorMsg.style.display = "none";
     this.confirmBtn.disabled = true;
     document.getElementById("summary-days").textContent = "0 jour";
@@ -150,8 +160,14 @@ const ReservationManager = {
     let hasOverlap = false;
     let currentDate = new Date(start);
     while (currentDate <= end) {
-      const isoDate = currentDate.toISOString().split('T')[0];
-      if (this.unavailableDates.includes(isoDate)) {
+      // Extraction sécurisée de la date locale (YYYY-MM-DD) sans décalage UTC
+      const y = currentDate.getFullYear();
+      const m = String(currentDate.getMonth() + 1).padStart(2, '0');
+      const d = String(currentDate.getDate()).padStart(2, '0');
+      const localDateStr = `${y}-${m}-${d}`;
+
+      if (this.unavailableDates.includes(localDateStr)) {
+        console.log(localDateStr, "est indisponible");
         hasOverlap = true;
         break;
       }

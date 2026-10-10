@@ -12,6 +12,12 @@
     <link rel="icon" type="image/png" sizes="32x32" href="/assets/icons/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/assets/icons/favicon-16x16.png">
     <link rel="stylesheet" href="css/style.css" />
+    
+    <!-- Flatpickr (Calendrier) -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://npmcdn.com/flatpickr/dist/l10n/fr.js"></script>
+    
     <script type="module" src="js/index.js" defer></script>
 </head>
 
@@ -400,7 +406,12 @@
     <!-- RESERVATION MODAL -->
     <div id="reservation-modal" class="modal-overlay">
         <div class="modal-content">
-            <button class="modal-close" id="close-modal-btn" aria-label="Fermer">&times;</button>
+            <button class="modal-close" id="close-modal-btn" aria-label="Fermer">
+                <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </button>
             <div class="modal-grid">
                 <!-- Left: Vehicle Info -->
                 <div class="modal-left">
@@ -422,11 +433,11 @@
                         <div class="form-row">
                             <div class="form-group">
                                 <label for="start-date">Date de départ</label>
-                                <input type="date" id="start-date" required>
+                                <input type="text" id="start-date" placeholder="Sélectionnez une date" required>
                             </div>
                             <div class="form-group">
                                 <label for="end-date">Date de retour</label>
-                                <input type="date" id="end-date" required>
+                                <input type="text" id="end-date" placeholder="Sélectionnez une date" required>
                             </div>
                         </div>
 
