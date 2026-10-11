@@ -302,8 +302,12 @@ header {
   color: var(--text-primary);
 }
 
-.btn-login-short {
+.mobile-menu-actions {
   display: none;
+}
+
+#btn-login {
+  gap: 0.5rem;
 }
 
 
@@ -1097,13 +1101,71 @@ header {
     display: none;
   }
 
-  /* Auth button compact */
-  .btn-login-full {
+  /* Header icons & Auth button */
+  .header-tool {
     display: none;
   }
 
-  .btn-login-short {
-    display: inline;
+  .btn-login-text {
+    display: none;
+  }
+
+  #btn-login {
+    width: 39px;
+    height: 39px;
+    padding: 0;
+    border-radius: 12px;
+    display: grid;
+    place-items: center;
+  }
+
+  .user-login-icon {
+    width: 20px;
+    height: 20px;
+  }
+
+  /* Mobile Menu Actions */
+  .mobile-menu-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+    margin-top: 0.75rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border-color);
+  }
+
+  .mobile-auth-btn {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    font-size: 0.95rem;
+    font-weight: 700;
+    gap: 0.5rem;
+  }
+
+  .mobile-menu-tools {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.65rem;
+  }
+
+  .mobile-tool-btn {
+    background: var(--bg-surface-elevated);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    padding: 0.65rem 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.45rem;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    cursor: pointer;
+    transition: background var(--transition);
+  }
+
+  .mobile-tool-btn:hover {
+    background-color: var(--bg-surface-transparent);
   }
 
   /* Hero */
@@ -1205,12 +1267,9 @@ header {
     height: 22px;
   }
 
-  .btn-login-short {
-    display: none;
-  }
-
   #btn-login {
-    padding: 0.5rem 0.65rem;
+    width: 36px;
+    height: 36px;
   }
 
   .btn-icon {

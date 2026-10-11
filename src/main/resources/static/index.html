@@ -43,17 +43,52 @@
                 <a href="index.html" class="nav-link active" data-i18n="nav.home">Accueil</a>
                 <a href="vehicles.html" class="nav-link" data-i18n="nav.vehicles">Véhicules</a>
                 <a href="reservations.html" class="nav-link" data-i18n="nav.myReservations">Réservations</a>
+
+                <!-- Mobile Menu Actions (visible uniquement sur mobile dans le tiroir) -->
+                <div class="mobile-menu-actions">
+                    <button type="button" class="btn btn-primary btn-block mobile-auth-btn">
+                        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="12" cy="7" r="4"></circle>
+                        </svg>
+                        <span>Connexion / Inscription</span>
+                    </button>
+
+                    <div class="mobile-menu-tools">
+                        <!-- Theme Toggle (Mobile) -->
+                        <button class="mobile-tool-btn btn-theme-toggle" type="button" aria-label="Changer de thème">
+                            <svg class="theme-icon sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="4" />
+                                <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41" />
+                            </svg>
+                            <svg class="theme-icon moon-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+                            </svg>
+                            <span class="tool-label">Mode Sombre / Clair</span>
+                        </button>
+
+                        <!-- Langue (Mobile) -->
+                        <button class="mobile-tool-btn btn-lang-toggle" type="button" aria-label="Changer de langue">
+                            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <line x1="2" y1="12" x2="22" y2="12"></line>
+                                <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+                            </svg>
+                            <span class="tool-label">Langue (FR)</span>
+                        </button>
+                    </div>
+                </div>
             </nav>
 
             <!-- Action Controls (Theme, Language, Auth) -->
             <div class="nav-actions">
-                <!-- Language Switcher -->
-                <button class="btn-icon" id="btn-lang-toggle" aria-label="Changer de langue" title="Français / English">
+                <!-- Language Switcher (Desktop) -->
+                <button class="btn-icon header-tool btn-lang-toggle" id="btn-lang-toggle" aria-label="Changer de langue" title="Français / English">
                     <span class="lang-text" id="current-lang">FR</span>
                 </button>
 
-                <!-- Dark/Light Theme Toggle -->
-                <button class="btn-icon" id="btn-theme-toggle" aria-label="Basculer le thème"
+                <!-- Dark/Light Theme Toggle (Desktop) -->
+                <button class="btn-icon header-tool btn-theme-toggle" id="btn-theme-toggle" aria-label="Basculer le thème"
                     title="Thème Clair / Sombre">
                     <svg class="theme-icon sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                         stroke-width="2">
@@ -68,14 +103,13 @@
                 </button>
 
                 <!-- Auth Buttons -->
-                <button type="button" class="btn" id="btn-login">
-                    <span class="btn-login-full">Connexion / Inscription</span>
-                    <span class="btn-login-short">Connexion</span>
-                    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
-                        stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                        <path d="M5 12h14"></path>
-                        <path d="m13 6 6 6-6 6"></path>
+                <button type="button" class="btn" id="btn-login" aria-label="Connexion ou inscription">
+                    <svg class="user-login-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="12" cy="7" r="4"></circle>
                     </svg>
+                    <span class="btn-login-text">Connexion / Inscription</span>
                 </button>
 
                 <!-- Mobile Menu Toggle -->
