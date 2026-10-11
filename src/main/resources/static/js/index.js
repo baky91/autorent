@@ -47,6 +47,13 @@ const ReservationManager = {
     this.closeBtn.addEventListener("click", () => this.closeModal());
     this.form.addEventListener("submit", (e) => this.handleSubmit(e));
     
+    // Fermer si on clique en dehors du contenu
+    this.modal.addEventListener("click", (e) => {
+      if (e.target === this.modal) {
+        this.closeModal();
+      }
+    });
+    
     // Simulation de dates réservées (ex: de demain à dans 4 jours)
     const today = new Date();
     for (let i = 1; i <= 4; i++) {
