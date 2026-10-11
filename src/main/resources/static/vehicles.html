@@ -18,12 +18,12 @@
 
     <!-- Styles -->
     <link rel="stylesheet" href="css/style.css" />
-    
+
     <!-- Flatpickr (Calendrier) -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script src="https://npmcdn.com/flatpickr/dist/l10n/fr.js"></script>
-    
+
     <script type="module" src="js/index.js" defer></script>
 </head>
 
@@ -54,7 +54,8 @@
                 <!-- Mobile Menu Actions (visible uniquement sur mobile dans le tiroir) -->
                 <div class="mobile-menu-actions">
                     <button type="button" class="btn btn-primary btn-block mobile-auth-btn">
-                        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
                             <circle cx="12" cy="7" r="4"></circle>
                         </svg>
@@ -64,11 +65,14 @@
                     <div class="mobile-menu-tools">
                         <!-- Theme Toggle (Mobile) -->
                         <button class="mobile-tool-btn btn-theme-toggle" type="button" aria-label="Changer de thème">
-                            <svg class="theme-icon sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <svg class="theme-icon sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
                                 <circle cx="12" cy="12" r="4" />
-                                <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41" />
+                                <path
+                                    d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41" />
                             </svg>
-                            <svg class="theme-icon moon-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <svg class="theme-icon moon-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
                                 <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
                             </svg>
                             <span class="tool-label">Mode Sombre / Clair</span>
@@ -76,10 +80,13 @@
 
                         <!-- Langue (Mobile) -->
                         <button class="mobile-tool-btn btn-lang-toggle" type="button" aria-label="Changer de langue">
-                            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                 <circle cx="12" cy="12" r="10"></circle>
                                 <line x1="2" y1="12" x2="22" y2="12"></line>
-                                <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+                                <path
+                                    d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z">
+                                </path>
                             </svg>
                             <span class="tool-label">Langue (FR)</span>
                         </button>
@@ -90,13 +97,14 @@
             <!-- Action Controls (Theme, Language, Auth) -->
             <div class="nav-actions">
                 <!-- Language Switcher (Desktop) -->
-                <button class="btn-icon header-tool btn-lang-toggle" id="btn-lang-toggle" aria-label="Changer de langue" title="Français / English">
+                <button class="btn-icon header-tool btn-lang-toggle" id="btn-lang-toggle" aria-label="Changer de langue"
+                    title="Français / English">
                     <span class="lang-text" id="current-lang">FR</span>
                 </button>
 
                 <!-- Dark/Light Theme Toggle (Desktop) -->
-                <button class="btn-icon header-tool btn-theme-toggle" id="btn-theme-toggle" aria-label="Basculer le thème"
-                    title="Thème Clair / Sombre">
+                <button class="btn-icon header-tool btn-theme-toggle" id="btn-theme-toggle"
+                    aria-label="Basculer le thème" title="Thème Clair / Sombre">
                     <svg class="theme-icon sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                         stroke-width="2">
                         <circle cx="12" cy="12" r="4" />
@@ -111,8 +119,8 @@
 
                 <!-- Auth Buttons -->
                 <button type="button" class="btn" id="btn-login" aria-label="Connexion ou inscription">
-                    <svg class="user-login-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"
-                        stroke-linecap="round" stroke-linejoin="round">
+                    <svg class="user-login-icon" viewBox="0 0 24 24" width="18" height="18" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
                         <circle cx="12" cy="7" r="4"></circle>
                     </svg>
@@ -135,18 +143,21 @@
         <!-- VEHICLES CATALOG -->
         <section class="vehicles-catalog">
             <div class="container">
-                
+
                 <!-- Section Header -->
                 <div class="section-header">
                     <h1 class="page-title">Nos Véhicules</h1>
-                    <p class="page-subtitle">Recherchez et filtrez notre flotte disponible pour trouver le véhicule idéal.</p>
+                    <p class="page-subtitle">Recherchez et filtrez notre flotte disponible pour trouver le véhicule
+                        idéal.</p>
                 </div>
 
-                
+
                 <!-- Mobile Filters Toggle Button -->
                 <div class="mobile-filter-bar">
-                    <button type="button" class="btn btn-outline btn-toggle-filters" id="btn-toggle-filters" aria-expanded="false">
-                        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <button type="button" class="btn btn-outline btn-toggle-filters" id="btn-toggle-filters"
+                        aria-expanded="false">
+                        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
                         </svg>
                         <span>Afficher les filtres</span>
@@ -158,7 +169,8 @@
                     <aside class="vehicles-filters" id="vehicles-filters">
                         <div class="filters-header">
                             <div class="filters-title-group">
-                                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                     <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
                                 </svg>
                                 <h3>Filtres</h3>
@@ -171,11 +183,13 @@
                             <div class="filter-group">
                                 <label for="filter-keyword" class="filter-label">Mot clé</label>
                                 <div class="input-with-icon">
-                                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+                                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor"
+                                        stroke-width="2">
                                         <circle cx="11" cy="11" r="8"></circle>
                                         <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
                                     </svg>
-                                    <input type="text" id="filter-keyword" name="keyword" class="form-input" placeholder="Rechercher...">
+                                    <input type="text" id="filter-keyword" name="keyword" class="form-input"
+                                        placeholder="Rechercher...">
                                 </div>
                             </div>
 
@@ -185,11 +199,13 @@
                                 <div class="filter-row">
                                     <div class="filter-subgroup">
                                         <label for="filter-date-start" class="filter-sublabel">Début</label>
-                                        <input type="text" id="filter-date-start" name="startDate" class="form-input datepicker-input" placeholder="jj/mm/aaaa">
+                                        <input type="text" id="filter-date-start" name="startDate"
+                                            class="form-input datepicker-input" placeholder="jj/mm/aaaa">
                                     </div>
                                     <div class="filter-subgroup">
                                         <label for="filter-date-end" class="filter-sublabel">Fin</label>
-                                        <input type="text" id="filter-date-end" name="endDate" class="form-input datepicker-input" placeholder="jj/mm/aaaa">
+                                        <input type="text" id="filter-date-end" name="endDate"
+                                            class="form-input datepicker-input" placeholder="jj/mm/aaaa">
                                     </div>
                                 </div>
                             </div>
@@ -251,11 +267,13 @@
                                 <div class="filter-row">
                                     <div class="filter-subgroup">
                                         <label for="filter-power-min" class="filter-sublabel">Min</label>
-                                        <input type="number" id="filter-power-min" name="powerMin" class="form-input" placeholder="70" min="0" step="5">
+                                        <input type="number" id="filter-power-min" name="powerMin" class="form-input"
+                                            placeholder="70" min="0" step="5">
                                     </div>
                                     <div class="filter-subgroup">
                                         <label for="filter-power-max" class="filter-sublabel">Max</label>
-                                        <input type="number" id="filter-power-max" name="powerMax" class="form-input" placeholder="400" min="0" step="5">
+                                        <input type="number" id="filter-power-max" name="powerMax" class="form-input"
+                                            placeholder="400" min="0" step="5">
                                     </div>
                                 </div>
                             </div>
@@ -263,7 +281,8 @@
                             <!-- 8. Nombre de sièges (input number) -->
                             <div class="filter-group">
                                 <label for="filter-seats" class="filter-label">Nombre de sièges</label>
-                                <input type="number" id="filter-seats" name="seats" class="form-input" placeholder="Ex: 5" min="1" max="9">
+                                <input type="number" id="filter-seats" name="seats" class="form-input"
+                                    placeholder="Ex: 5" min="1" max="9">
                             </div>
 
                             <!-- 9. Prix journalier (fourchette ajustable min/max) -->
@@ -272,11 +291,13 @@
                                 <div class="filter-row">
                                     <div class="filter-subgroup">
                                         <label for="filter-price-min" class="filter-sublabel">Min (€)</label>
-                                        <input type="number" id="filter-price-min" name="priceMin" class="form-input" placeholder="20" min="0" step="5">
+                                        <input type="number" id="filter-price-min" name="priceMin" class="form-input"
+                                            placeholder="20" min="0" step="5">
                                     </div>
                                     <div class="filter-subgroup">
                                         <label for="filter-price-max" class="filter-sublabel">Max (€)</label>
-                                        <input type="number" id="filter-price-max" name="priceMax" class="form-input" placeholder="250" min="0" step="5">
+                                        <input type="number" id="filter-price-max" name="priceMax" class="form-input"
+                                            placeholder="250" min="0" step="5">
                                     </div>
                                 </div>
                             </div>
@@ -290,7 +311,7 @@
                         <!-- Compteur et Triage au-dessus de la grille -->
                         <div class="vehicles-results-header">
                             <span class="vehicles-count">
-                                <strong>3</strong> véhicules disponibles
+                                <strong id="vehicles-count-value">0</strong> véhicules disponibles
                             </span>
 
                             <div class="vehicles-sort-group">
@@ -307,17 +328,17 @@
 
                         <!-- TODO: Utiliser un script pour remplir automatiquement la liste -->
                         <!-- RIGHT: Vehicle Cards Grid -->
-                        <div class="vehicles-grid">
-    
-                        <!-- Vehicle Card 1 -->
-                        <article class="vehicle-card">
-                            <div class="vehicle-card-media">
-                                <span class="category-badge">Citadine</span>
-                                <p class="vehicle-status available">Actuellement disponible <span
-                                        class="vehicle-status-badge"></span></p>
-                                <img src="./assets/images/vehicles/renault-clio.webp" alt="Renault Clio V"
-                                    class="vehicle-card-img">
-                                <!-- <div class="media-placeholder">
+                        <div id="vehicles-grid">
+
+                            <!-- Vehicle Card 1 -->
+                            <article class="vehicle-card">
+                                <div class="vehicle-card-media">
+                                    <span class="category-badge">Citadine</span>
+                                    <p class="vehicle-status available">Actuellement disponible <span
+                                            class="vehicle-status-badge"></span></p>
+                                    <img src="./assets/images/vehicles/renault-clio.webp" alt="Renault Clio V"
+                                        class="vehicle-card-img">
+                                    <!-- <div class="media-placeholder">
                                     <svg class="placeholder-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
                                     <path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.5 2.8C2.1 11.2 2 11.8 2 12.4V16c0 .6.4 1 1 1h2"/>
                                     <circle cx="7" cy="17" r="2"/>
@@ -325,223 +346,235 @@
                                     </svg>
                                     <span class="media-label">Renault Clio V</span>
                                 </div> -->
-                            </div>
-    
-                            <div class="vehicle-card-content">
-                                <div class="card-header-info">
-                                    <div>
-                                        <h3 class="vehicle-brand">Renault</h3>
-                                        <h2 class="vehicle-model">Clio V</h2>
-                                    </div>
-                                    <span class="vehicle-year">2024</span>
                                 </div>
-                                <div class="specs-list">
-                                    <div class="spec-item">
-                                        <span>Diesel</span>
+
+                                <div class="vehicle-card-content">
+                                    <div class="card-header-info">
+                                        <div>
+                                            <h3 class="vehicle-brand">Renault</h3>
+                                            <h2 class="vehicle-model">Clio V</h2>
+                                        </div>
+                                        <span class="vehicle-year">2024</span>
                                     </div>
-                                    <div class="spec-item">
-                                        <span>100 ch</span>
+                                    <div class="specs-list">
+                                        <div class="spec-item">
+                                            <span>Diesel</span>
+                                        </div>
+                                        <div class="spec-item">
+                                            <span>100 ch</span>
+                                        </div>
+                                        <div class="spec-item">
+                                            <span>Manuelle</span>
+                                        </div>
+                                        <div class="spec-item">
+                                            <span>5 places</span>
+                                        </div>
                                     </div>
-                                    <div class="spec-item">
-                                        <span>Manuelle</span>
-                                    </div>
-                                    <div class="spec-item">
-                                        <span>5 places</span>
-                                    </div>
-                                </div>
-                                <div class="card-footer">
-                                    <div class="price-container">
-                                        <span class="price-value">45€</span>
-                                        <span class="price-period">/ jour</span>
-                                    </div>
-                                    <button class="btn btn-primary btn-open-reservation">Réserver</button>
-                                </div>
-                            </div>
-                        </article>
-    
-                        <!-- Vehicle Card 2 -->
-                        <article class="vehicle-card">
-                            <div class="vehicle-card-media">
-                                <span class="category-badge">Compact</span>
-                                <!-- Badge informatif "Disponible dès le..." -->
-                                <span class="vehicle-status rented">
-                                    <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" fill="none"
-                                        stroke-width="2">
-                                        <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
-                                        <line x1="16" y1="2" x2="16" y2="6"></line>
-                                        <line x1="8" y1="2" x2="8" y2="6"></line>
-                                        <line x1="3" y1="10" x2="21" y2="10"></line>
-                                    </svg>
-                                    Disponible dès le 12 Oct.
-                                    <span class="vehicle-status-badge"></span>
-                                </span>
-                                <div class="media-placeholder">
-                                    <svg class="placeholder-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                                    <path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.5 2.8C2.1 11.2 2 11.8 2 12.4V16c0 .6.4 1 1 1h2"/>
-                                    <circle cx="7" cy="17" r="2"/>
-                                    <circle cx="17" cy="17" r="2"/>
-                                    </svg>
-                                    <span class="media-label">Volkswagen Golf VIII</span>
-                                </div>
-                            </div>
-    
-                            <div class="vehicle-card-content">
-                                <div class="card-header-info">
-                                    <div>
-                                        <h3 class="vehicle-brand">Volkswagen</h3>
-                                        <h2 class="vehicle-model">Golf VIII</h2>
-                                    </div>
-                                    <span class="vehicle-year">2021</span>
-                                </div>
-                                <div class="specs-list">
-                                    <div class="spec-item">
-                                        <svg viewBox="0 0 24 24" width="15" height="15" stroke="currentColor" fill="none"
-                                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                            <line x1="3" y1="22" x2="15" y2="22"></line>
-                                            <line x1="4" y1="9" x2="14" y2="9"></line>
-                                            <path d="M14 22V4a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v18"></path>
-                                            <path
-                                                d="M14 13h2a2 2 0 0 1 2 2v2a2 2 0 0 0 2 2h0a2 2 0 0 0 2-2V9.83a2 2 0 0 0-.59-1.42L18 5">
-                                            </path>
-                                        </svg>
-                                        <span>Diesel</span>
-                                    </div>
-                                    <div class="spec-item">
-                                        <svg viewBox="0 0 24 24" width="15" height="15" stroke="currentColor" fill="none"
-                                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                            <path d="M12 14l4-4"></path>
-                                            <path d="M3.34 19a10 10 0 1 1 17.32 0"></path>
-                                        </svg>
-                                        <span>100 CH</span>
-                                    </div>
-                                    <div class="spec-item">
-                                        <svg viewBox="0 0 24 24" width="15" height="15" stroke="currentColor" fill="none"
-                                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                            <circle cx="12" cy="12" r="3"></circle>
-                                            <path
-                                                d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z">
-                                            </path>
-                                        </svg>
-                                        <span>Manuelle</span>
-                                    </div>
-                                    <div class="spec-item">
-                                        <svg viewBox="0 0 24 24" width="15" height="15" stroke="currentColor" fill="none"
-                                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                            <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
-                                            <circle cx="9" cy="7" r="4"></circle>
-                                            <path d="M22 21v-2a4 4 0 0 0-3-3.87"></path>
-                                            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
-                                        </svg>
-                                        <span>5 places</span>
-                                    </div>
-                                </div>
-                                <div class="card-footer">
-                                    <div class="price-container">
-                                        <span class="price-value">45€</span>
-                                        <span class="price-period">/ jour</span>
-                                    </div>
-                                    <div class="action-wrapper">
-                                        <div class="tooltip-container">
-                                            <span class="tooltip-icon">i</span>
-                                            <div class="tooltip-text">Ce véhicule est actuellement loué, mais vous pouvez le
-                                                réserver pour des dates ultérieures.</div>
+                                    <div class="card-footer">
+                                        <div class="price-container">
+                                            <span class="price-value">45€</span>
+                                            <span class="price-period">/ jour</span>
                                         </div>
                                         <button class="btn btn-primary btn-open-reservation">Réserver</button>
                                     </div>
                                 </div>
-                            </div>
-                        </article>
-                        
-                        <!-- Vehicle Card 3 -->
-                        <article class="vehicle-card">
-                            <div class="vehicle-card-media">
-                                <span class="category-badge">Compact</span>
-                                <!-- Badge informatif "Disponible dès le..." -->
-                                <span class="vehicle-status rented">
-                                    <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" fill="none"
-                                        stroke-width="2">
-                                        <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
-                                        <line x1="16" y1="2" x2="16" y2="6"></line>
-                                        <line x1="8" y1="2" x2="8" y2="6"></line>
-                                        <line x1="3" y1="10" x2="21" y2="10"></line>
-                                    </svg>
-                                    Disponible dès le 12 Oct.
-                                    <span class="vehicle-status-badge"></span>
-                                </span>
-                                <img src="./assets/images/vehicles/volkswagen-golf.webp" alt="Volkswagen Golf VIII"
-                                    class="vehicle-card-img">
-                            </div>
-    
-                            <div class="vehicle-card-content">
-                                <div class="card-header-info">
-                                    <div>
-                                        <h3 class="vehicle-brand">Volkswagen</h3>
-                                        <h2 class="vehicle-model">Golf VIII</h2>
-                                    </div>
-                                    <span class="vehicle-year">2021</span>
-                                </div>
-                                <div class="specs-list">
-                                    <div class="spec-item">
-                                        <svg viewBox="0 0 24 24" width="15" height="15" stroke="currentColor" fill="none"
-                                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                            <line x1="3" y1="22" x2="15" y2="22"></line>
-                                            <line x1="4" y1="9" x2="14" y2="9"></line>
-                                            <path d="M14 22V4a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v18"></path>
+                            </article>
+
+                            <!-- Vehicle Card 2 -->
+                            <article class="vehicle-card">
+                                <div class="vehicle-card-media">
+                                    <span class="category-badge">Compact</span>
+                                    <!-- Badge informatif "Disponible dès le..." -->
+                                    <span class="vehicle-status rented">
+                                        <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor"
+                                            fill="none" stroke-width="2">
+                                            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                                            <line x1="16" y1="2" x2="16" y2="6"></line>
+                                            <line x1="8" y1="2" x2="8" y2="6"></line>
+                                            <line x1="3" y1="10" x2="21" y2="10"></line>
+                                        </svg>
+                                        Disponible dès le 12 Oct.
+                                        <span class="vehicle-status-badge"></span>
+                                    </span>
+                                    <div class="media-placeholder">
+                                        <svg class="placeholder-icon" viewBox="0 0 24 24" fill="none"
+                                            stroke="currentColor" stroke-width="1.5">
                                             <path
-                                                d="M14 13h2a2 2 0 0 1 2 2v2a2 2 0 0 0 2 2h0a2 2 0 0 0 2-2V9.83a2 2 0 0 0-.59-1.42L18 5">
-                                            </path>
+                                                d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.5 2.8C2.1 11.2 2 11.8 2 12.4V16c0 .6.4 1 1 1h2" />
+                                            <circle cx="7" cy="17" r="2" />
+                                            <circle cx="17" cy="17" r="2" />
                                         </svg>
-                                        <span>Diesel</span>
-                                    </div>
-                                    <div class="spec-item">
-                                        <svg viewBox="0 0 24 24" width="15" height="15" stroke="currentColor" fill="none"
-                                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                            <path d="M12 14l4-4"></path>
-                                            <path d="M3.34 19a10 10 0 1 1 17.32 0"></path>
-                                        </svg>
-                                        <span>100 CH</span>
-                                    </div>
-                                    <div class="spec-item">
-                                        <svg viewBox="0 0 24 24" width="15" height="15" stroke="currentColor" fill="none"
-                                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                            <circle cx="12" cy="12" r="3"></circle>
-                                            <path
-                                                d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z">
-                                            </path>
-                                        </svg>
-                                        <span>Manuelle</span>
-                                    </div>
-                                    <div class="spec-item">
-                                        <svg viewBox="0 0 24 24" width="15" height="15" stroke="currentColor" fill="none"
-                                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                            <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
-                                            <circle cx="9" cy="7" r="4"></circle>
-                                            <path d="M22 21v-2a4 4 0 0 0-3-3.87"></path>
-                                            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
-                                        </svg>
-                                        <span>5 places</span>
+                                        <span class="media-label">Volkswagen Golf VIII</span>
                                     </div>
                                 </div>
-                                <div class="card-footer">
-                                    <div class="price-container">
-                                        <span class="price-value">45€</span>
-                                        <span class="price-period">/ jour</span>
-                                    </div>
-                                    <div class="action-wrapper">
-                                        <div class="tooltip-container">
-                                            <span class="tooltip-icon">i</span>
-                                            <div class="tooltip-text">Ce véhicule est actuellement loué, mais vous pouvez le
-                                                réserver pour des dates ultérieures.</div>
+
+                                <div class="vehicle-card-content">
+                                    <div class="card-header-info">
+                                        <div>
+                                            <h3 class="vehicle-brand">Volkswagen</h3>
+                                            <h2 class="vehicle-model">Golf VIII</h2>
                                         </div>
-                                        <button class="btn btn-primary btn-open-reservation">Réserver</button>
+                                        <span class="vehicle-year">2021</span>
+                                    </div>
+                                    <div class="specs-list">
+                                        <div class="spec-item">
+                                            <svg viewBox="0 0 24 24" width="15" height="15" stroke="currentColor"
+                                                fill="none" stroke-width="2" stroke-linecap="round"
+                                                stroke-linejoin="round">
+                                                <line x1="3" y1="22" x2="15" y2="22"></line>
+                                                <line x1="4" y1="9" x2="14" y2="9"></line>
+                                                <path d="M14 22V4a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v18"></path>
+                                                <path
+                                                    d="M14 13h2a2 2 0 0 1 2 2v2a2 2 0 0 0 2 2h0a2 2 0 0 0 2-2V9.83a2 2 0 0 0-.59-1.42L18 5">
+                                                </path>
+                                            </svg>
+                                            <span>Diesel</span>
+                                        </div>
+                                        <div class="spec-item">
+                                            <svg viewBox="0 0 24 24" width="15" height="15" stroke="currentColor"
+                                                fill="none" stroke-width="2" stroke-linecap="round"
+                                                stroke-linejoin="round">
+                                                <path d="M12 14l4-4"></path>
+                                                <path d="M3.34 19a10 10 0 1 1 17.32 0"></path>
+                                            </svg>
+                                            <span>100 CH</span>
+                                        </div>
+                                        <div class="spec-item">
+                                            <svg viewBox="0 0 24 24" width="15" height="15" stroke="currentColor"
+                                                fill="none" stroke-width="2" stroke-linecap="round"
+                                                stroke-linejoin="round">
+                                                <circle cx="12" cy="12" r="3"></circle>
+                                                <path
+                                                    d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z">
+                                                </path>
+                                            </svg>
+                                            <span>Manuelle</span>
+                                        </div>
+                                        <div class="spec-item">
+                                            <svg viewBox="0 0 24 24" width="15" height="15" stroke="currentColor"
+                                                fill="none" stroke-width="2" stroke-linecap="round"
+                                                stroke-linejoin="round">
+                                                <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+                                                <circle cx="9" cy="7" r="4"></circle>
+                                                <path d="M22 21v-2a4 4 0 0 0-3-3.87"></path>
+                                                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                                            </svg>
+                                            <span>5 places</span>
+                                        </div>
+                                    </div>
+                                    <div class="card-footer">
+                                        <div class="price-container">
+                                            <span class="price-value">45€</span>
+                                            <span class="price-period">/ jour</span>
+                                        </div>
+                                        <div class="action-wrapper">
+                                            <div class="tooltip-container">
+                                                <span class="tooltip-icon">i</span>
+                                                <div class="tooltip-text">Ce véhicule est actuellement loué, mais vous
+                                                    pouvez le
+                                                    réserver pour des dates ultérieures.</div>
+                                            </div>
+                                            <button class="btn btn-primary btn-open-reservation">Réserver</button>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        </article>
-    
+                            </article>
+
+                            <!-- Vehicle Card 3 -->
+                            <article class="vehicle-card">
+                                <div class="vehicle-card-media">
+                                    <span class="category-badge">Compact</span>
+                                    <!-- Badge informatif "Disponible dès le..." -->
+                                    <span class="vehicle-status rented">
+                                        <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor"
+                                            fill="none" stroke-width="2">
+                                            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                                            <line x1="16" y1="2" x2="16" y2="6"></line>
+                                            <line x1="8" y1="2" x2="8" y2="6"></line>
+                                            <line x1="3" y1="10" x2="21" y2="10"></line>
+                                        </svg>
+                                        Disponible dès le 12 Oct.
+                                        <span class="vehicle-status-badge"></span>
+                                    </span>
+                                    <img src="./assets/images/vehicles/volkswagen-golf.webp" alt="Volkswagen Golf VIII"
+                                        class="vehicle-card-img">
+                                </div>
+
+                                <div class="vehicle-card-content">
+                                    <div class="card-header-info">
+                                        <div>
+                                            <h3 class="vehicle-brand">Volkswagen</h3>
+                                            <h2 class="vehicle-model">Golf VIII</h2>
+                                        </div>
+                                        <span class="vehicle-year">2021</span>
+                                    </div>
+                                    <div class="specs-list">
+                                        <div class="spec-item">
+                                            <svg viewBox="0 0 24 24" width="15" height="15" stroke="currentColor"
+                                                fill="none" stroke-width="2" stroke-linecap="round"
+                                                stroke-linejoin="round">
+                                                <line x1="3" y1="22" x2="15" y2="22"></line>
+                                                <line x1="4" y1="9" x2="14" y2="9"></line>
+                                                <path d="M14 22V4a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v18"></path>
+                                                <path
+                                                    d="M14 13h2a2 2 0 0 1 2 2v2a2 2 0 0 0 2 2h0a2 2 0 0 0 2-2V9.83a2 2 0 0 0-.59-1.42L18 5">
+                                                </path>
+                                            </svg>
+                                            <span>Diesel</span>
+                                        </div>
+                                        <div class="spec-item">
+                                            <svg viewBox="0 0 24 24" width="15" height="15" stroke="currentColor"
+                                                fill="none" stroke-width="2" stroke-linecap="round"
+                                                stroke-linejoin="round">
+                                                <path d="M12 14l4-4"></path>
+                                                <path d="M3.34 19a10 10 0 1 1 17.32 0"></path>
+                                            </svg>
+                                            <span>100 CH</span>
+                                        </div>
+                                        <div class="spec-item">
+                                            <svg viewBox="0 0 24 24" width="15" height="15" stroke="currentColor"
+                                                fill="none" stroke-width="2" stroke-linecap="round"
+                                                stroke-linejoin="round">
+                                                <circle cx="12" cy="12" r="3"></circle>
+                                                <path
+                                                    d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z">
+                                                </path>
+                                            </svg>
+                                            <span>Manuelle</span>
+                                        </div>
+                                        <div class="spec-item">
+                                            <svg viewBox="0 0 24 24" width="15" height="15" stroke="currentColor"
+                                                fill="none" stroke-width="2" stroke-linecap="round"
+                                                stroke-linejoin="round">
+                                                <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+                                                <circle cx="9" cy="7" r="4"></circle>
+                                                <path d="M22 21v-2a4 4 0 0 0-3-3.87"></path>
+                                                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                                            </svg>
+                                            <span>5 places</span>
+                                        </div>
+                                    </div>
+                                    <div class="card-footer">
+                                        <div class="price-container">
+                                            <span class="price-value">45€</span>
+                                            <span class="price-period">/ jour</span>
+                                        </div>
+                                        <div class="action-wrapper">
+                                            <div class="tooltip-container">
+                                                <span class="tooltip-icon">i</span>
+                                                <div class="tooltip-text">Ce véhicule est actuellement loué, mais vous
+                                                    pouvez le
+                                                    réserver pour des dates ultérieures.</div>
+                                            </div>
+                                            <button class="btn btn-primary btn-open-reservation">Réserver</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </article>
+
+                        </div>
                     </div>
                 </div>
-            </div>
 
             </div>
         </section>
@@ -551,7 +584,8 @@
     <div id="reservation-modal" class="modal-overlay">
         <div class="modal-content">
             <button class="modal-close" id="close-modal-btn" aria-label="Fermer">
-                <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" fill="none" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
                     <line x1="18" y1="6" x2="6" y2="18"></line>
                     <line x1="6" y1="6" x2="18" y2="18"></line>
                 </svg>
@@ -573,7 +607,7 @@
                 <div class="modal-right">
                     <h3 class="modal-title">Réserver ce véhicule</h3>
                     <p class="modal-subtitle">Sélectionnez vos dates pour calculer le prix.</p>
-                    
+
                     <form id="reservation-form">
                         <div class="form-row">
                             <div class="form-group">
@@ -603,8 +637,9 @@
                                 <span id="summary-price">0€</span>
                             </div>
                         </div>
-                        
-                        <button type="submit" class="btn btn-primary btn-block" id="confirm-reservation-btn" disabled>Confirmer la réservation</button>
+
+                        <button type="submit" class="btn btn-primary btn-block" id="confirm-reservation-btn"
+                            disabled>Confirmer la réservation</button>
                     </form>
                 </div>
             </div>

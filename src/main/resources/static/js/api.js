@@ -1,4 +1,4 @@
-const BASE_URL = "http://localhost:8080";
+const BASE_API_URL = "http://localhost:8080";
 
 /* VEHICLES */
 export async function getAllVehicles() {
@@ -59,7 +59,7 @@ export async function logoutUser(auth_token = null) {
     // Appel optionnel au backend pour signifier la déconnexion
     if (auth_token) {
         try {
-            await fetch(`${BASE_URL}/api/auth/logout`, {
+            await fetch(`${BASE_API_URL}/api/auth/logout`, {
                 method: "POST",
                 headers: { "Authorization": auth_token }
             });
@@ -83,7 +83,7 @@ export async function getData(endpoint, authorization_token=null) {
             headers["Authorization"] = authorization_token
         }
 
-        const response = await fetch(`${BASE_URL}${endpoint}`, {
+        const response = await fetch(`${BASE_API_URL}${endpoint}`, {
             headers: headers,
         })
 
@@ -105,7 +105,7 @@ export async function postData(endpoint, payload, authorization_token=null) {
             headers["Authorization"] = authorization_token
         }
 
-        const response = await fetch(`${BASE_URL}${endpoint}`, {
+        const response = await fetch(`${BASE_API_URL}${endpoint}`, {
             method: "POST",
             headers: headers,
             body: JSON.stringify(payload)
@@ -129,7 +129,7 @@ export async function putData(endpoint, payload, authorization_token=null) {
             headers["Authorization"] = authorization_token
         }
 
-        const response = await fetch(`${BASE_URL}${endpoint}`, {
+        const response = await fetch(`${BASE_API_URL}${endpoint}`, {
             method: "PUT",
             headers: headers,
             body: JSON.stringify(payload)
@@ -153,7 +153,7 @@ export async function deleteData(endpoint, authorization_token=null) {
             headers["Authorization"] = authorization_token
         }
 
-        const response = await fetch(`${BASE_URL}${endpoint}`, {
+        const response = await fetch(`${BASE_API_URL}${endpoint}`, {
             method: "DELETE",
             headers: headers,
         })

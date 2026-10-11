@@ -1,5 +1,7 @@
 import { getAllVehicles, getVehicleById } from "./api.js";
 
+const BASE_API_URL = "http://localhost:8080";
+
 const ThemeManager = {
   STORAGE_KEY: "autorent_theme",
 
@@ -26,6 +28,139 @@ const ThemeManager = {
       document.documentElement.getAttribute("data-theme") || "light";
     const newTheme = currentTheme === "light" ? "dark" : "light";
     this.applyTheme(newTheme);
+  },
+};
+
+const CatalogManager = {
+  vehicles: [],
+  filters: {
+    category: null,
+    fuelType: null,
+    minPrice: null,
+    maxPrice: null,
+    transmission: null,
+    seatsCount: null,
+    sort: null,
+  },
+
+  async init() {
+    this.catalogGrid = document.getElementById("vehicles-grid");
+    this.vehiclesCount = document.getElementById("vehicles-count-value");
+
+    this.vehicles = await getAllVehicles();
+    this.displayVehicles(this.vehicles);
+    this.applyFilters();
+  },
+
+  displayVehicles() {
+    this.catalogGrid.innerHTML = "";
+    this.vehiclesCount.innerText = "0";
+
+    this.vehicles.forEach((vehicle) => {
+      const brand = vehicle.brand;
+      const model = vehicle.model;
+      const category = vehicle.category;
+      const year = vehicle.year;
+      const horsePower = vehicle.horsePower;
+      const imagePath = vehicle.imagePath;
+      const seatsCount = vehicle.seatsCount;
+      const fuelType = vehicle.fuelType;
+      const transmission = vehicle.transmission;
+      const dailyPrice = vehicle.dailyPrice;
+      const available = vehicle.available;
+      const isCurrentlyAvailable = vehicle.isCurrentlyAvailable;
+      const availableFrom = vehicle.availableFrom;
+
+      const vehicleCard = document.createElement("article");
+      vehicleCard.classList.add("vehicle-card");
+
+      const status = isCurrentlyAvailable
+        ? `<p class="vehicle-status available">Actuellement disponible <span class="vehicle-status-badge"></span></p>`
+        : `<span class="vehicle-status rented">
+            <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor"
+                fill="none" stroke-width="2">
+                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                <line x1="16" y1="2" x2="16" y2="6"></line>
+                <line x1="8" y1="2" x2="8" y2="6"></line>
+                <line x1="3" y1="10" x2="21" y2="10"></line>
+            </svg>
+            Disponible dès le ${availableFrom}
+            <span class="vehicle-status-badge"></span>
+          </span>`;
+
+      const image = imagePath
+        ? `<img src="${BASE_API_URL}${imagePath}" alt="${brand} ${model}" class="vehicle-card-img">`
+        : `<div class="media-placeholder">
+            <svg class="placeholder-icon" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="1.5">
+                <path
+                    d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.5 2.8C2.1 11.2 2 11.8 2 12.4V16c0 .6.4 1 1 1h2" />
+                <circle cx="7" cy="17" r="2" />
+                <circle cx="17" cy="17" r="2" />
+            </svg>
+            <span class="media-label">${brand} ${model}</span>
+          </div>`;
+
+      const powerUnit = LanguageManager.currentLang.toLowerCase() === "fr" ? "ch" : "hp";
+      const seatsLabel = LanguageManager.currentLang.toLowerCase() === "fr" ? "places" : "seats";
+      const priceLabel = LanguageManager.currentLang.toLowerCase() === "fr" ? "/ jour" : "/ day";
+
+      vehicleCard.innerHTML = `
+        <div class="vehicle-card-media">
+          <span class="category-badge">${category}</span>
+          ${status}
+          ${image}
+        </div>
+
+        <div class="vehicle-card-content">
+          <div class="card-header-info">
+            <div>
+              <h3 class="vehicle-brand">${brand}</h3>
+              <h2 class="vehicle-model">${model}</h2>
+            </div>
+            <span class="vehicle-year">${year}</span>
+          </div>
+
+          <div class="specs-list">
+            <div class="spec-item">
+                ${IconsManager.getIconSvg("fuelType")}
+                <span>${fuelType}</span>
+            </div>
+            <div class="spec-item">
+                ${IconsManager.getIconSvg("power")}
+                <span>${horsePower} ${powerUnit.toUpperCase()}</span>
+            </div>
+            <div class="spec-item">
+                ${IconsManager.getIconSvg("transmission")}
+                <span>${transmission}</span>
+            </div>
+            <div class="spec-item">
+                ${IconsManager.getIconSvg("seats")}
+                <span>${seatsCount} ${seatsLabel}</span>
+            </div>
+          </div>
+          <div class="card-footer">
+            <div class="price-container">
+              <span class="price-value">${dailyPrice}€</span>
+              <span class="price-period">${priceLabel}</span>
+            </div>
+            <button class="btn btn-primary btn-open-reservation">Réserver</button>
+          </div>
+        </div>
+      `;
+
+      this.catalogGrid.appendChild(vehicleCard);
+    });
+    
+    // Mise à jour du compteur
+    this.vehiclesCount.innerText = this.vehicles.length;
+
+    ReservationManager.bindButtons();
+
+  },
+
+  applyFilters() {
+    // TODO : Implémenter l'application des filtres
   },
 };
 
@@ -321,4 +456,5 @@ document.addEventListener("DOMContentLoaded", async () => {
   LanguageManager.init();
   NavigationManager.init();
   ReservationManager.init();
+  CatalogManager.init();
 });
