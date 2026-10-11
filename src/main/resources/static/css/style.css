@@ -302,6 +302,10 @@ header {
   color: var(--text-primary);
 }
 
+.btn-login-short {
+  display: none;
+}
+
 
 /* ********************************************* */
 /*                   HERO                        */
@@ -1023,21 +1027,221 @@ header {
 /*                  RESPONSIVE                   */
 /* ********************************************* */
 
+/* --- Tablette (<= 992px) --- */
+@media (max-width: 992px) {
+  .steps-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* --- Mobile & Petite Tablette (<= 768px) --- */
 @media (max-width: 768px) {
+  /* Layout & Container */
+  .container {
+    width: min(100% - 32px, 1180px);
+  }
+
+  section {
+    padding: 2.75rem 0;
+  }
+
+  .section-title {
+    font-size: 1.65rem;
+  }
+
+  /* Header & Navigation */
+  .nav-container {
+    gap: 0.75rem;
+  }
+
+  .mobile-menu-btn {
+    display: grid;
+  }
+
+  .nav-menu {
+    position: fixed;
+    top: var(--header-height);
+    left: 0;
+    right: 0;
+    background-color: var(--bg-surface);
+    border-bottom: 1px solid var(--border-color);
+    flex-direction: column;
+    padding: 1rem 1.5rem 1.5rem;
+    gap: 0.25rem;
+    box-shadow: var(--shadow-lg);
+    transform: translateY(-130%);
+    opacity: 0;
+    visibility: hidden;
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.2s ease, visibility 0.2s;
+    z-index: 99;
+  }
+
+  .nav-menu.open {
+    transform: translateY(0);
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .nav-menu .nav-link {
+    padding: 0.85rem 0;
+    font-size: 1rem;
+    width: 100%;
+    border-bottom: 1px solid var(--border-color);
+  }
+
+  .nav-menu .nav-link:last-child {
+    border-bottom: none;
+  }
+
+  .nav-menu .nav-link::after {
+    display: none;
+  }
+
+  /* Auth button compact */
+  .btn-login-full {
+    display: none;
+  }
+
+  .btn-login-short {
+    display: inline;
+  }
+
+  /* Hero */
+  .hero-section {
+    padding: 3rem 0 2.5rem;
+  }
+
+  .hero-title {
+    font-size: 2rem;
+  }
+
+  .hero-subtitle {
+    font-size: 0.95rem;
+    margin-bottom: 1.75rem;
+  }
+
+  .hero-actions {
+    flex-direction: column;
+    align-items: stretch;
+    max-width: 320px;
+    margin: 0 auto;
+    gap: 0.75rem;
+  }
+
+  .hero-actions .btn {
+    width: 100%;
+  }
+
+  /* Steps */
+  .steps-grid {
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+
+  .step-card {
+    padding: 1.5rem;
+  }
+
+  /* Catalog */
+  .section-header-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+
+  .vehicles-grid {
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+
+  /* Modal */
+  .modal-content {
+    width: 95%;
+    max-height: 90vh;
+    overflow-y: auto;
+    margin: 1rem;
+  }
+
+  .modal-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .modal-left {
+    padding: 1.5rem;
+  }
+
+  .modal-right {
+    padding: 1.5rem;
+  }
+
+  .modal-left img {
+    height: 150px;
+  }
+
+  /* Footer */
+  .site-footer {
+    padding: 3rem 0 1.5rem;
+    margin-top: 3rem;
+  }
+
+  .footer-container {
+    gap: 2rem;
+  }
+
   .footer-top {
     grid-template-columns: 1fr;
     gap: 2rem;
   }
-  .modal-grid {
+}
+
+/* --- Petit Smartphone (<= 480px) --- */
+@media (max-width: 480px) {
+  .brand-name {
+    font-size: 1.15rem;
+  }
+
+  .logo-icon {
+    width: 22px;
+    height: 22px;
+  }
+
+  .btn-login-short {
+    display: none;
+  }
+
+  #btn-login {
+    padding: 0.5rem 0.65rem;
+  }
+
+  .btn-icon {
+    width: 36px;
+    height: 36px;
+  }
+
+  .hero-title {
+    font-size: 1.65rem;
+  }
+
+  .form-row {
     grid-template-columns: 1fr;
+    gap: 0.75rem;
   }
-  .modal-left {
-    padding: 1.5rem;
+
+  .modal-specs {
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
   }
-  .modal-right {
-    padding: 1.5rem;
+
+  .modal-specs .spec-item {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.8rem;
   }
-  .modal-left img {
-    height: 150px;
+
+  .price-container .price-value {
+    font-size: 1.2rem;
+  }
+
+  .footer-bottom {
+    font-size: 0.8rem;
   }
 }
