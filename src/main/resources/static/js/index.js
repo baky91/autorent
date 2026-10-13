@@ -1,6 +1,7 @@
 import { getAllVehicles, getVehicleById } from "./api.js";
 
-const BASE_API_URL = "http://localhost:8080";
+// const BASE_API_URL = "http://localhost:8080";
+const BASE_API_URL = ""; // Si la page est servie par le serveur contenant l'API REST, on a pas besoin de spécifier le host et le port
 
 const ThemeManager = {
   STORAGE_KEY: "autorent_theme",
@@ -53,6 +54,8 @@ const CatalogManager = {
   },
 
   displayVehicles() {
+    if (!this.catalogGrid) return;
+
     this.catalogGrid.innerHTML = "";
     this.vehiclesCount.innerText = "0";
 

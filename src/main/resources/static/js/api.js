@@ -1,4 +1,5 @@
-const BASE_API_URL = "http://localhost:8080";
+// const BASE_API_URL = "http://localhost:8080";
+const BASE_API_URL = ""; // Si la page est servie par le serveur contenant l'API REST, on a pas besoin de spécifier le host et le port
 
 /* VEHICLES */
 export async function getAllVehicles() {
