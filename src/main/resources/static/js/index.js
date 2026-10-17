@@ -1,4 +1,4 @@
-import { getAllVehicles } from "./api.js";
+import { getAllVehicles, loginUser, registerUser, logoutUser } from "./api.js";
 
 // const BASE_API_URL = "http://localhost:8080";
 const BASE_API_URL = ""; // Si la page est servie par le serveur contenant l'API REST, on a pas besoin de spécifier le host et le port
@@ -34,6 +34,344 @@ const NavigationManager = {
       }
     });
   },
+};
+
+const AuthenticationManager = {
+  tokenKey: "jwt_token",
+  userKey: "auth_username",
+
+  init() {
+    this.renderModal();
+
+    this.closeBtn = document.getElementById("close-auth-modal-btn");
+    this.tabLogin = document.getElementById("auth-tab-login");
+    this.tabRegister = document.getElementById("auth-tab-register");
+    this.loginForm = document.getElementById("login-form");
+    this.registerForm = document.getElementById("register-form");
+    this.alertBox = document.getElementById("auth-alert");
+
+    // Boutons de connexion (desktop et tiroir mobile)
+    this.loginBtns = document.querySelectorAll("#btn-login, .mobile-auth-btn");
+
+    this.bindEvents();
+    this.updateUI();
+  },
+
+  renderModal() {
+    if (document.getElementById("auth-modal")) {
+      this.modal = document.getElementById("auth-modal");
+      return;
+    }
+
+    const modal = document.createElement("div");
+    modal.id = "auth-modal";
+    modal.className = "modal-overlay";
+    modal.innerHTML = `
+      <div class="modal-content auth-modal-content">
+        <button class="modal-close" id="close-auth-modal-btn" aria-label="Fermer">
+          <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+
+        <div class="auth-modal-body">
+          <!-- En-tête : Choix Connexion ou Créer un compte -->
+          <div class="auth-tabs" role="tablist">
+            <button type="button" class="auth-tab-btn active" id="auth-tab-login" role="tab" aria-selected="true">Connexion</button>
+            <button type="button" class="auth-tab-btn" id="auth-tab-register" role="tab" aria-selected="false">Créer un compte</button>
+          </div>
+
+          <!-- Zone de message d'alerte (erreur ou succès) -->
+          <div id="auth-alert" class="auth-alert" style="display: none;"></div>
+
+          <!-- Formulaire de Connexion -->
+          <form id="login-form" class="auth-form">
+            <div class="form-group">
+              <label for="login-username">Nom d'utilisateur</label>
+              <input type="text" id="login-username" name="username" class="form-input" placeholder="Votre nom d'utilisateur" required autocomplete="username">
+            </div>
+            <div class="form-group">
+              <label for="login-password">Mot de passe</label>
+              <input type="password" id="login-password" name="password" class="form-input" placeholder="Votre mot de passe" required autocomplete="current-password">
+            </div>
+            <button type="submit" class="btn btn-primary btn-block" id="btn-submit-login">
+              <span>Se connecter</span>
+            </button>
+          </form>
+
+          <!-- Formulaire de Création de compte -->
+          <form id="register-form" class="auth-form" style="display: none;">
+            <div class="form-group">
+              <label for="register-username">Nom d'utilisateur</label>
+              <input type="text" id="register-username" name="username" class="form-input" placeholder="Choisissez un nom d'utilisateur" required autocomplete="username">
+            </div>
+            <div class="form-group">
+              <label for="register-password">Mot de passe</label>
+              <input type="password" id="register-password" name="password" class="form-input" placeholder="Créez un mot de passe" required autocomplete="new-password">
+            </div>
+            <div class="form-group">
+              <label for="register-confirm-password">Confirmation de mot de passe</label>
+              <input type="password" id="register-confirm-password" name="confirmPassword" class="form-input" placeholder="Confirmez votre mot de passe" required autocomplete="new-password">
+            </div>
+            <button type="submit" class="btn btn-primary btn-block" id="btn-submit-register">
+              <span>Créer un compte</span>
+            </button>
+          </form>
+        </div>
+      </div>
+    `;
+
+    document.body.appendChild(modal);
+    this.modal = modal;
+  },
+
+  bindEvents() {
+    this.loginBtns.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        if (this.isAuthenticated()) {
+          const username = this.getUsername();
+          if (confirm(`Vous êtes connecté en tant que "${username}".\nSouhaitez-vous vous déconnecter ?`)) {
+            this.logout();
+          }
+        } else {
+          this.openModal("login");
+        }
+      });
+    });
+
+    if (this.closeBtn) {
+      this.closeBtn.addEventListener("click", () => this.closeModal());
+    }
+
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && this.modal.classList.contains("active")) {
+        this.closeModal();
+      }
+    });
+
+    if (this.tabLogin) {
+      this.tabLogin.addEventListener("click", () => this.switchTab("login"));
+    }
+    if (this.tabRegister) {
+      this.tabRegister.addEventListener("click", () => this.switchTab("register"));
+    }
+
+    if (this.loginForm) {
+      this.loginForm.addEventListener("submit", (e) => this.handleLogin(e));
+    }
+    if (this.registerForm) {
+      this.registerForm.addEventListener("submit", (e) => this.handleRegister(e));
+    }
+  },
+
+  isAuthenticated() {
+    return !!localStorage.getItem(this.tokenKey);
+  },
+
+  getToken() {
+    return localStorage.getItem(this.tokenKey);
+  },
+
+  getUsername() {
+    return localStorage.getItem(this.userKey) || "Utilisateur";
+  },
+
+  openModal(mode = "login") {
+    this.hideAlert();
+    this.switchTab(mode);
+    this.modal.classList.add("active");
+  },
+
+  closeModal() {
+    this.modal.classList.remove("active");
+    this.hideAlert();
+    if (this.loginForm) this.loginForm.reset();
+    if (this.registerForm) this.registerForm.reset();
+  },
+
+  switchTab(tab) {
+    this.hideAlert();
+    if (tab === "login") {
+      this.tabLogin.classList.add("active");
+      this.tabLogin.setAttribute("aria-selected", "true");
+      this.tabRegister.classList.remove("active");
+      this.tabRegister.setAttribute("aria-selected", "false");
+      this.loginForm.style.display = "flex";
+      this.registerForm.style.display = "none";
+      const field = document.getElementById("login-username");
+      if (field) field.focus();
+    } else {
+      this.tabRegister.classList.add("active");
+      this.tabRegister.setAttribute("aria-selected", "true");
+      this.tabLogin.classList.remove("active");
+      this.tabLogin.setAttribute("aria-selected", "false");
+      this.loginForm.style.display = "none";
+      this.registerForm.style.display = "flex";
+      const field = document.getElementById("register-username");
+      if (field) field.focus();
+    }
+  },
+
+  showAlert(message, type = "error") {
+    if (!this.alertBox) return;
+    this.alertBox.textContent = message;
+    this.alertBox.className = `auth-alert ${type}`;
+    this.alertBox.style.display = "block";
+  },
+
+  hideAlert() {
+    if (!this.alertBox) return;
+    this.alertBox.style.display = "none";
+    this.alertBox.textContent = "";
+  },
+
+  async handleLogin(e) {
+    e.preventDefault();
+    this.hideAlert();
+
+    const usernameInput = document.getElementById("login-username");
+    const passwordInput = document.getElementById("login-password");
+    const submitBtn = document.getElementById("btn-submit-login");
+
+    const username = usernameInput.value.trim();
+    const password = passwordInput.value;
+
+    if (!username || !password) {
+      this.showAlert("Veuillez remplir tous les champs.", "error");
+      return;
+    }
+
+    try {
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = "<span>Connexion en cours...</span>";
+
+      const data = await loginUser(username, password);
+
+      if (data && data.token) {
+        // Stockage du token formaté avec Bearer pour les requêtes authentifiées
+        const tokenWithBearer = data.token.startsWith("Bearer ") ? data.token : `Bearer ${data.token}`;
+        localStorage.setItem(this.tokenKey, tokenWithBearer);
+        localStorage.setItem("raw_jwt_token", data.token);
+        localStorage.setItem(this.userKey, username);
+
+        console.log("JWT récupéré avec succès :", data.token);
+
+        this.showAlert("Connexion réussie !", "success");
+        this.updateUI();
+
+        setTimeout(() => {
+          this.closeModal();
+        }, 800);
+      } else {
+        this.showAlert("Nom d'utilisateur ou mot de passe incorrect.", "error");
+      }
+    } catch (err) {
+      console.error("Erreur de connexion :", err);
+      this.showAlert("Erreur lors de la tentative de connexion.", "error");
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.innerHTML = "<span>Se connecter</span>";
+    }
+  },
+
+  async handleRegister(e) {
+    e.preventDefault();
+    this.hideAlert();
+
+    const usernameInput = document.getElementById("register-username");
+    const passwordInput = document.getElementById("register-password");
+    const confirmInput = document.getElementById("register-confirm-password");
+    const submitBtn = document.getElementById("btn-submit-register");
+
+    const username = usernameInput.value.trim();
+    const password = passwordInput.value;
+    const confirm = confirmInput.value;
+
+    if (!username || !password || !confirm) {
+      this.showAlert("Veuillez renseigner tous les champs.", "error");
+      return;
+    }
+
+    if (password !== confirm) {
+      this.showAlert("Les mots de passe ne correspondent pas.", "error");
+      return;
+    }
+
+    if (password.length < 4) {
+      this.showAlert("Le mot de passe doit comporter au moins 4 caractères.", "error");
+      return;
+    }
+
+    try {
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = "<span>Création du compte...</span>";
+
+      const res = await registerUser(username, password);
+
+      if (res && (res.id || res.username)) {
+        console.log("Compte créé avec succès :", res);
+
+        // Connexion automatique pour récupérer directement le token JWT
+        const loginData = await loginUser(username, password);
+        if (loginData && loginData.token) {
+          const tokenWithBearer = loginData.token.startsWith("Bearer ") ? loginData.token : `Bearer ${loginData.token}`;
+          localStorage.setItem(this.tokenKey, tokenWithBearer);
+          localStorage.setItem("raw_jwt_token", loginData.token);
+          localStorage.setItem(this.userKey, username);
+
+          console.log("JWT récupéré après inscription :", loginData.token);
+
+          this.showAlert("Compte créé et connecté avec succès !", "success");
+          this.updateUI();
+
+          setTimeout(() => {
+            this.closeModal();
+          }, 800);
+        } else {
+          this.showAlert("Compte créé ! Vous pouvez vous connecter.", "success");
+          this.switchTab("login");
+          const loginUserField = document.getElementById("login-username");
+          if (loginUserField) loginUserField.value = username;
+        }
+      } else {
+        this.showAlert("Ce nom d'utilisateur est déjà utilisé ou invalide.", "error");
+      }
+    } catch (err) {
+      console.error("Erreur lors de la création de compte :", err);
+      this.showAlert("Erreur lors de la création du compte.", "error");
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.innerHTML = "<span>Créer un compte</span>";
+    }
+  },
+
+  logout() {
+    const token = this.getToken();
+    logoutUser(token);
+    localStorage.removeItem(this.tokenKey);
+    localStorage.removeItem("raw_jwt_token");
+    localStorage.removeItem(this.userKey);
+    console.log("Utilisateur déconnecté.");
+    this.updateUI();
+  },
+
+  updateUI() {
+    const isAuth = this.isAuthenticated();
+    const username = this.getUsername();
+
+    // Mise à jour du bouton Desktop
+    const loginText = document.querySelector("#btn-login .btn-login-text");
+    if (loginText) {
+      loginText.textContent = isAuth ? username : "Connexion / Inscription";
+    }
+
+    // Mise à jour du bouton Mobile
+    const mobileAuthSpan = document.querySelector(".mobile-auth-btn span");
+    if (mobileAuthSpan) {
+      mobileAuthSpan.textContent = isAuth ? username : "Connexion / Inscription";
+    }
+  }
 };
 
 const ThemeManager = {
@@ -609,6 +947,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   ThemeManager.init();
   LanguageManager.init();
   NavigationManager.init();
+  AuthenticationManager.init();
   ReservationManager.init();
   CatalogManager.init();
 });
