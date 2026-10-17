@@ -1,4 +1,4 @@
-import { getAllVehicles, loginUser, registerUser, logoutUser } from "./api.js";
+import { getAllVehicles, loginUser, registerUser, logoutUser, getMyReservations } from "./api.js";
 
 // const BASE_API_URL = "http://localhost:8080";
 const BASE_API_URL = ""; // Si la page est servie par le serveur contenant l'API REST, on a pas besoin de spécifier le host et le port
@@ -249,16 +249,12 @@ const AuthenticationManager = {
       const data = await loginUser(username, password);
 
       if (data && data.token) {
-        // Stockage du token formaté avec Bearer pour les requêtes authentifiées
-        const tokenWithBearer = data.token.startsWith("Bearer ") ? data.token : `Bearer ${data.token}`;
-        localStorage.setItem(this.tokenKey, tokenWithBearer);
-        localStorage.setItem("raw_jwt_token", data.token);
+        // Stockage du token pour les requêtes authentifiées
+        localStorage.setItem(this.tokenKey, data.token);
         localStorage.setItem(this.userKey, username);
 
-        console.log("JWT récupéré avec succès :", data.token);
-
         this.showAlert("Connexion réussie !", "success");
-        this.updateUI();
+        onAuthStateChanged();
 
         setTimeout(() => {
           this.closeModal();
@@ -323,7 +319,7 @@ const AuthenticationManager = {
           console.log("JWT récupéré après inscription :", loginData.token);
 
           this.showAlert("Compte créé et connecté avec succès !", "success");
-          this.updateUI();
+          onAuthStateChanged();
 
           setTimeout(() => {
             this.closeModal();
@@ -353,7 +349,7 @@ const AuthenticationManager = {
     localStorage.removeItem("raw_jwt_token");
     localStorage.removeItem(this.userKey);
     console.log("Utilisateur déconnecté.");
-    this.updateUI();
+    onAuthStateChanged();
   },
 
   updateUI() {
@@ -426,29 +422,53 @@ const LanguageManager = {
 const IconsManager = {
   iconsSvg: {
     fuelType: `<svg viewBox="0 0 24 24" width="15" height="15" stroke="currentColor" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-    <line x1="3" y1="22" x2="15" y2="22"></line>
-    <line x1="4" y1="9" x2="14" y2="9"></line>
-    <path d="M14 22V4a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v18"></path>
-    <path d="M14 13h2a2 2 0 0 1 2 2v2a2 2 0 0 0 2 2h0a2 2 0 0 0 2-2V9.83a2 2 0 0 0-.59-1.42L18 5"></path>
-  </svg>
-  `,
+      <line x1="3" y1="22" x2="15" y2="22"></line>
+      <line x1="4" y1="9" x2="14" y2="9"></line>
+      <path d="M14 22V4a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v18"></path>
+      <path d="M14 13h2a2 2 0 0 1 2 2v2a2 2 0 0 0 2 2h0a2 2 0 0 0 2-2V9.83a2 2 0 0 0-.59-1.42L18 5"></path>
+    </svg>
+    `,
     power: `<svg viewBox="0 0 24 24" width="15" height="15" stroke="currentColor" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M12 14l4-4"></path>
-    <path d="M3.34 19a10 10 0 1 1 17.32 0"></path>
-  </svg>
-  `,
+      <path d="M12 14l4-4"></path>
+      <path d="M3.34 19a10 10 0 1 1 17.32 0"></path>
+    </svg>
+    `,
     transmission: `<svg viewBox="0 0 24 24" width="15" height="15" stroke="currentColor" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-    <circle cx="12" cy="12" r="3"></circle>
-    <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
-  </svg>
-  `,
+      <circle cx="12" cy="12" r="3"></circle>
+      <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+    </svg>
+    `,
     seats: `<svg viewBox="0 0 24 24" width="15" height="15" stroke="currentColor" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
-    <circle cx="9" cy="7" r="4"></circle>
-    <path d="M22 21v-2a4 4 0 0 0-3-3.87"></path>
-    <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
-  </svg>
-  `,
+      <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+      <circle cx="9" cy="7" r="4"></circle>
+      <path d="M22 21v-2a4 4 0 0 0-3-3.87"></path>
+      <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+    </svg>
+    `,
+    info: `<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="10"></circle>
+        <line x1="12" y1="16" x2="12" y2="12"></line>
+        <line x1="12" y1="8" x2="12.01" y2="8"></line>
+    </svg>
+    `,
+    calendar: `<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+        <line x1="16" y1="2" x2="16" y2="6"></line>
+        <line x1="8" y1="2" x2="8" y2="6"></line>
+        <line x1="3" y1="10" x2="21" y2="10"></line>
+    </svg>
+    `,
+    cancel: `<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="12" r="10"></circle>
+      <line x1="15" y1="9" x2="9" y2="15"></line>
+      <line x1="9" y1="9" x2="15" y2="15"></line>
+    </svg>
+    `,
+    leftArrow: `<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="5" y1="12" x2="19" y2="12"></line>
+        <polyline points="12 5 19 12 12 19"></polyline>
+    </svg>
+    `
   },
   getIconSvg(type) {
     const icon = this.iconsSvg[type];
@@ -473,6 +493,9 @@ const CatalogManager = {
 
   async init() {
     this.catalogGrid = document.getElementById("vehicles-grid");
+    // Si la grille du catalogue n'est pas présente sur la page, on ne fait rien (pas de requête vers /api/vehicles)
+    if (!this.catalogGrid) return;
+
     this.vehiclesCount = document.getElementById("vehicles-count-value");
     
     // Trieur et filtres
@@ -751,55 +774,66 @@ const ReservationManager = {
   dailyPrice: 0,
 
   init() {
-    this.modal = document.getElementById("reservation-modal");
-    if (!this.modal) return;
+    // 1. Affichage de mes réservations (si la liste existe sur la page)
+    this.myReservationsSection = document.getElementById("my-reservations");
+    this.myReservationsList = document.getElementById("my-reservations-list");
 
-    this.closeBtn = document.getElementById("close-modal-btn");
-    this.startDateInput = document.getElementById("start-date");
-    this.endDateInput = document.getElementById("end-date");
-    this.form = document.getElementById("reservation-form");
-    this.errorMsg = document.getElementById("date-error");
-    this.confirmBtn = document.getElementById("confirm-reservation-btn");
-
-    // Bind events
-    this.closeBtn.addEventListener("click", () => this.closeModal());
-    this.form.addEventListener("submit", (e) => this.handleSubmit(e));
-
-    // Fermer si on clique en dehors du contenu
-    this.modal.addEventListener("click", (e) => {
-      if (e.target === this.modal) {
-        this.closeModal();
-      }
-    });
-
-    // Simulation de dates réservées (ex: de demain à dans 4 jours)
-    const today = new Date();
-    for (let i = 1; i <= 4; i++) {
-      const d = new Date(today);
-      d.setDate(d.getDate() + i);
-      // On extrait la date locale sans le décalage UTC
-      const y = d.getFullYear();
-      const m = String(d.getMonth() + 1).padStart(2, "0");
-      const day = String(d.getDate()).padStart(2, "0");
-      this.unavailableDates.push(`${y}-${m}-${day}`);
+    if (this.myReservationsList) {
+      this.displayMyReservations();
     }
 
-    // Initialisation de Flatpickr sur les champs de date
-    const flatpickrConfig = {
-      locale: "fr",
-      minDate: "today",
-      dateFormat: "Y-m-d", // Format envoyé au backend
-      altInput: true, // Affiche un format lisible à l'utilisateur
-      altFormat: "d/m/Y", // Format affiché (jj/mm/aaaa)
-      disable: this.unavailableDates, // Désactive les dates visuellement
-      onChange: () => this.validateDates(),
-    };
+    // 2. Formulaire / modale de réservation (si la modale existe sur la page)
+    this.modal = document.getElementById("reservation-modal");
+    if (this.modal) {
+      this.closeBtn = document.getElementById("close-modal-btn");
+      this.startDateInput = document.getElementById("start-date");
+      this.endDateInput = document.getElementById("end-date");
+      this.form = document.getElementById("reservation-form");
+      this.errorMsg = document.getElementById("date-error");
+      this.confirmBtn = document.getElementById("confirm-reservation-btn");
 
-    this.startPicker = flatpickr(this.startDateInput, flatpickrConfig);
-    this.endPicker = flatpickr(this.endDateInput, flatpickrConfig);
+      // Bind events
+      if (this.closeBtn) this.closeBtn.addEventListener("click", () => this.closeModal());
+      if (this.form) this.form.addEventListener("submit", (e) => this.handleSubmit(e));
 
-    // Bind "Réserver" buttons
-    this.bindButtons();
+      // Fermer si on clique en dehors du contenu
+      this.modal.addEventListener("click", (e) => {
+        if (e.target === this.modal) {
+          this.closeModal();
+        }
+      });
+
+      // Simulation de dates réservées (ex: de demain à dans 4 jours)
+      const today = new Date();
+      this.unavailableDates = [];
+      for (let i = 1; i <= 4; i++) {
+        const d = new Date(today);
+        d.setDate(d.getDate() + i);
+        const y = d.getFullYear();
+        const m = String(d.getMonth() + 1).padStart(2, "0");
+        const day = String(d.getDate()).padStart(2, "0");
+        this.unavailableDates.push(`${y}-${m}-${day}`);
+      }
+
+      // Initialisation de Flatpickr sur les champs de date
+      if (this.startDateInput && this.endDateInput && typeof flatpickr !== "undefined") {
+        const flatpickrConfig = {
+          locale: "fr",
+          minDate: "today",
+          dateFormat: "Y-m-d",
+          altInput: true,
+          altFormat: "d/m/Y",
+          disable: this.unavailableDates,
+          onChange: () => this.validateDates(),
+        };
+
+        this.startPicker = flatpickr(this.startDateInput, flatpickrConfig);
+        this.endPicker = flatpickr(this.endDateInput, flatpickrConfig);
+      }
+
+      // Bind "Réserver" buttons
+      this.bindButtons();
+    }
   },
 
   bindButtons() {
@@ -941,13 +975,110 @@ const ReservationManager = {
     );
     this.closeModal();
   },
+
+  async displayMyReservations() {
+    this.myReservationsList.innerHTML = "";
+    const jwt_token = localStorage.getItem(AuthenticationManager.tokenKey);
+    if (!jwt_token) {
+      this.myReservationsList.innerHTML = "<p>Vous devez être connecté pour voir vos réservations.</p>";
+      return;
+    }
+
+    const tokenWithBearer = jwt_token.startsWith("Bearer ") ? jwt_token : `Bearer ${jwt_token}`
+    const reservations = await getMyReservations(tokenWithBearer)
+
+    // console.log(reservations);
+
+    if (reservations === null) {
+      this.myReservationsList.innerHTML = "<p>Une erreur s'est produite lors du chargement de vos réservations.</p>";
+      return;
+    }
+    
+    if (reservations.length === 0) {
+      this.myReservationsList.innerHTML = "<p>Vous n'avez aucune réservation.</p>";
+      return;
+    }
+
+    reservations.forEach(reservation => {
+      const reservationElement = document.createElement("article");
+      reservationElement.classList.add("reservation-card");
+
+      const vehicle = reservation.vehicle;
+
+      const startDate = new Date(reservation.startDate);
+      const endDate = new Date(reservation.endDate);
+      const diffTime = Math.abs(endDate - startDate);
+      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) + 1;
+
+      reservationElement.innerHTML = `
+        <div class="reservation-media">
+          <img src="${vehicle.imagePath}" alt="${vehicle.brand} ${vehicle.model}" class="reservation-img">
+        </div>
+        <div class="reservation-content">
+          <div class="reservation-header-info">
+            <div class="reservation-title-group">
+              <span class="reservation-id">#${reservation.id}</span>
+              <h2 class="reservation-vehicle-name">${vehicle.brand} ${vehicle.model}</h2>
+              <button type="button" class="btn-vehicle-details" title="Voir les détails du véhicule">
+                ${IconsManager.getIconSvg("info")} <span>Voir les détails</span>
+              </button>
+            </div>
+            <span class="reservation-status status-${reservation.status.toLowerCase()}">
+              <span class="status-dot"></span>
+              ${reservation.status}
+            </span>
+          </div>
+          <div class="reservation-body-info">
+            <div class="reservation-dates-group">
+              <div class="date-item">
+                ${IconsManager.getIconSvg("calendar")}
+                <div class="date-text">
+                  <span class="date-label">Date de début</span>
+                  <strong class="date-value">${reservation.startDate}</strong>
+                </div>
+              </div>
+              <div class="date-arrow">
+                ${IconsManager.getIconSvg("leftArrow")}
+              </div>
+              <div class="date-item">
+                ${IconsManager.getIconSvg("calendar")}
+                <div class="date-text">
+                  <span class="date-label">Date de fin</span>
+                  <strong class="date-value">${reservation.endDate}</strong>
+                </div>
+              </div>
+              <span class="reservation-duration-badge">${diffDays} jours &bull; ${reservation.totalPrice} €</span>
+            </div>
+            <div class="reservation-actions">
+              <button type="button" class="btn-cancel-reservation">
+                ${IconsManager.getIconSvg("cancel")} <span>Annuler la réservation</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      `;
+      this.myReservationsList.appendChild(reservationElement);
+    })
+
+  }
 };
 
-document.addEventListener("DOMContentLoaded", async () => {
+function onAuthStateChanged() {
+  AuthenticationManager.updateUI();
+
+  // Si l'utilisateur est sur la page des réservations, recharger les réservations
+  if (ReservationManager.myReservationsList) {
+    ReservationManager.displayMyReservations();
+  }
+}
+
+async function initAll() {
   ThemeManager.init();
   LanguageManager.init();
   NavigationManager.init();
   AuthenticationManager.init();
   ReservationManager.init();
-  CatalogManager.init();
-});
+  await CatalogManager.init();
+}
+
+document.addEventListener("DOMContentLoaded", () => initAll());
