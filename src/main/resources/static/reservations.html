@@ -5,10 +5,249 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>AutoRent - Réservations</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <!-- Icons -->
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/icons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/icons/favicon-16x16.png">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="css/style.css" />
+
+    <!-- Flatpickr (Calendrier) -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://npmcdn.com/flatpickr/dist/l10n/fr.js"></script>
+
+    <script type="module" src="js/index.js"></script>
 </head>
 
 <body>
-    <h1>Réservations</h1>
+        <!-- HEADER & NAVBAR -->
+    <header class="site-header" id="header">
+        <div class="container nav-container">
+            <!-- Logo -->
+            <a href="index.html" class="brand-logo" aria-label="AutoRent Accueil">
+                <svg class="logo-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path
+                        d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.5 2.8C2.1 11.2 2 11.8 2 12.4V16c0 .6.4 1 1 1h2" />
+                    <circle cx="7" cy="17" r="2" />
+                    <path d="M9 17h6" />
+                    <circle cx="17" cy="17" r="2" />
+                </svg>
+                <span class="brand-name">Auto<span>Rent</span></span>
+            </a>
+
+            <!-- Navigation Links -->
+            <nav class="nav-menu">
+                <a href="/" class="nav-link">Accueil</a>
+                <a href="/vehicles" class="nav-link">Véhicules</a>
+                <a href="/reservations" class="nav-link active">Réservations</a>
+
+                <!-- Mobile Menu Actions (visible uniquement sur mobile dans le tiroir) -->
+                <div class="mobile-menu-actions">
+                    <button type="button" class="btn btn-primary btn-block mobile-auth-btn">
+                        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="12" cy="7" r="4"></circle>
+                        </svg>
+                        <span>Connexion / Inscription</span>
+                    </button>
+
+                    <div class="mobile-menu-tools">
+                        <!-- Theme Toggle (Mobile) -->
+                        <button class="mobile-tool-btn btn-theme-toggle" type="button" aria-label="Changer de thème">
+                            <svg class="theme-icon sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <circle cx="12" cy="12" r="4" />
+                                <path
+                                    d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41" />
+                            </svg>
+                            <svg class="theme-icon moon-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+                            </svg>
+                            <span class="tool-label">Mode Sombre / Clair</span>
+                        </button>
+
+                        <!-- Langue (Mobile) -->
+                        <button class="mobile-tool-btn btn-lang-toggle" type="button" aria-label="Changer de langue">
+                            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <line x1="2" y1="12" x2="22" y2="12"></line>
+                                <path
+                                    d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z">
+                                </path>
+                            </svg>
+                            <span class="tool-label">Langue (FR)</span>
+                        </button>
+                    </div>
+                </div>
+            </nav>
+
+            <!-- Action Controls (Theme, Language, Auth) -->
+            <div class="nav-actions">
+                <!-- Language Switcher (Desktop) -->
+                <button class="btn-icon header-tool btn-lang-toggle" id="btn-lang-toggle" aria-label="Changer de langue"
+                    title="Français / English">
+                    <span class="lang-text" id="current-lang">FR</span>
+                </button>
+
+                <!-- Dark/Light Theme Toggle (Desktop) -->
+                <button class="btn-icon header-tool btn-theme-toggle" id="btn-theme-toggle"
+                    aria-label="Basculer le thème" title="Thème Clair / Sombre">
+                    <svg class="theme-icon sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2">
+                        <circle cx="12" cy="12" r="4" />
+                        <path
+                            d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41" />
+                    </svg>
+                    <svg class="theme-icon moon-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+                    </svg>
+                </button>
+
+                <!-- Auth Buttons -->
+                <button type="button" class="btn" id="btn-login" aria-label="Connexion ou inscription">
+                    <svg class="user-login-icon" viewBox="0 0 24 24" width="18" height="18" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="12" cy="7" r="4"></circle>
+                    </svg>
+                    <span class="btn-login-text">Connexion / Inscription</span>
+                </button>
+
+                <!-- Mobile Menu Toggle -->
+                <button class="btn-icon mobile-menu-btn" id="mobile-toggle" aria-label="Ouvrir le menu">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="3" y1="12" x2="21" y2="12"></line>
+                        <line x1="3" y1="6" x2="21" y2="6"></line>
+                        <line x1="3" y1="18" x2="21" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section class="reservations-hero">
+            <div class="container">
+
+                <!-- Section Header -->
+                <div class="section-header">
+                    <h1 class="page-title">Mes Réservations</h1>
+                    <p class="page-subtitle">
+                        Gérez vos réservations et suivez vos locations de véhicules en temps réel.
+                    </p>
+                </div>
+
+                <!-- Reservations List -->
+                <div class="reservations-list">
+
+                    <!-- Filtres de recherche et options de tri -->
+                    <div class="filters-bar">
+                        <div class="filter-group">
+                            <label for="status-filter">Statut :</label>
+                            <select id="status-filter" class="filter-select">
+                                <option value="all">Tous les statuts</option>
+                                <option value="pending">En Attente</option>
+                                <option value="confirmed">Confirmée</option>
+                                <option value="in_progress">En Cours</option>
+                                <option value="completed">Terminée</option>
+                                <option value="cancelled">Annulée</option>
+                            </select>
+                        </div>
+
+                        <div class="filter-group">
+                            <label for="search-input">Rechercher :</label>
+                            <input type="text" id="search-input" class="search-input" placeholder="Rechercher une réservation...">
+                        </div>
+                    </div>
+
+                    <!-- Liste des réservations -->
+                    <div class="reservations-grid">
+                    </div>
+
+                    <!-- Pagination -->
+                    <div class="pagination">
+                        <button class="pagination-btn" id="prev-page" disabled>
+                            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="15 18 9 12 15 6"></polyline>
+                            </svg>
+                            Précédent
+                        </button>
+                        <span class="pagination-info" id="page-info">Page 1</span>
+                        <button class="pagination-btn" id="next-page">
+                            Suivant
+                            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="9 18 15 12 9 6"></polyline>
+                            </svg>
+                        </button>
+                    </div>
+                    
+                </div>
+            </div>
+        </section>
+    </main>
+    
+    <!-- SITE FOOTER -->
+    <footer class="site-footer">
+        <div class="container footer-container">
+            <div class="footer-top">
+                <!-- Branding & Contexte académique -->
+                <div class="footer-brand-col">
+                    <a href="index.html" class="brand-logo" aria-label="AutoRent Accueil">
+                        <svg class="logo-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <path
+                                d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.5 2.8C2.1 11.2 2 11.8 2 12.4V16c0 .6.4 1 1 1h2" />
+                            <circle cx="7" cy="17" r="2" />
+                            <path d="M9 17h6" />
+                            <circle cx="17" cy="17" r="2" />
+                        </svg>
+                        <span class="brand-name">Auto<span>Rent</span></span>
+                    </a>
+                    <p class="footer-desc">
+                        Application web de location de véhicules développée dans le cadre du module BAWE à l'ENSIIE.
+                    </p>
+                </div>
+
+                <!-- Navigation Links -->
+                <div class="footer-nav-col">
+                    <h4 class="footer-heading">Navigation</h4>
+                    <ul class="footer-nav-links">
+                        <li><a href="index.html" class="footer-link">Accueil</a></li>
+                        <li><a href="vehicles.html" class="footer-link">Véhicules</a></li>
+                        <li><a href="reservations.html" class="footer-link">Réservations</a></li>
+                    </ul>
+                </div>
+
+                <!-- Informations Projet & Stack -->
+                <div class="footer-info-col">
+                    <h4 class="footer-heading">Projet BAWE</h4>
+                    <ul class="footer-meta-list">
+                        <li><span>Module :</span> Bases du Web (BAWE)</li>
+                        <li><span>École :</span> ENSIIE</li>
+                        <li><span>Technologies :</span> Java Spring Boot &bull; HTML / CSS / JS</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; 2026 AutoRent &bull; Projet académique ENSIIE &bull; À but pédagogique</p>
+            </div>
+        </div>
+    </footer>
+
 </body>
 
 </html>
