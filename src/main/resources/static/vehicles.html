@@ -24,7 +24,7 @@
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script src="https://npmcdn.com/flatpickr/dist/l10n/fr.js"></script>
 
-    <script type="module" src="js/index.js" defer></script>
+    <script type="module" src="js/index.js"></script>
 </head>
 
 <body>
@@ -47,9 +47,9 @@
 
             <!-- Navigation Links -->
             <nav class="nav-menu">
-                <a href="index.html" class="nav-link" data-i18n="nav.home">Accueil</a>
-                <a href="vehicles.html" class="nav-link active" data-i18n="nav.vehicles">Véhicules</a>
-                <a href="reservations.html" class="nav-link" data-i18n="nav.myReservations">Réservations</a>
+                <a href="/" class="nav-link">Accueil</a>
+                <a href="/vehicles" class="nav-link active">Véhicules</a>
+                <a href="/reservations" class="nav-link">Réservations</a>
 
                 <!-- Mobile Menu Actions (visible uniquement sur mobile dans le tiroir) -->
                 <div class="mobile-menu-actions">
@@ -144,12 +144,7 @@
         <section class="vehicles-catalog">
             <div class="container">
 
-                <!-- Section Header -->
-                <div class="section-header">
-                    <h1 class="page-title">Nos Véhicules</h1>
-                    <p class="page-subtitle">Recherchez et filtrez notre flotte disponible pour trouver le véhicule
-                        idéal.</p>
-                </div>
+
 
 
                 <!-- Mobile Filters Toggle Button -->
@@ -179,135 +174,146 @@
                         </div>
 
                         <form id="filters-form" class="filters-form">
-                            <!-- 1. Mot clé -->
-                            <div class="filter-group">
-                                <label for="filter-keyword" class="filter-label">Mot clé</label>
-                                <div class="input-with-icon">
-                                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor"
-                                        stroke-width="2">
-                                        <circle cx="11" cy="11" r="8"></circle>
-                                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-                                    </svg>
-                                    <input type="text" id="filter-keyword" name="keyword" class="form-input"
-                                        placeholder="Rechercher...">
+                            <div class="filters-form-content">
+                                <!-- 1. Mot clé -->
+                                <div class="filter-group">
+                                    <label for="filter-keyword" class="filter-label">Mot clé</label>
+                                    <div class="input-with-icon">
+                                        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor"
+                                            stroke-width="2">
+                                            <circle cx="11" cy="11" r="8"></circle>
+                                            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                                        </svg>
+                                        <input type="text" id="filter-keyword" name="keyword" class="form-input"
+                                            placeholder="Rechercher...">
+                                    </div>
+                                </div>
+    
+                                <!-- 2. Dates (début et fin avec Flatpickr) -->
+                                <div class="filter-group">
+                                    <span class="filter-label">Disponibilité</span>
+                                    <div class="filter-row">
+                                        <div class="filter-subgroup">
+                                            <label for="filter-date-start" class="filter-sublabel">Début</label>
+                                            <input type="text" id="filter-date-start" name="startDate"
+                                                class="form-input datepicker-input" placeholder="jj/mm/aaaa">
+                                        </div>
+                                        <div class="filter-subgroup">
+                                            <label for="filter-date-end" class="filter-sublabel">Fin</label>
+                                            <input type="text" id="filter-date-end" name="endDate"
+                                                class="form-input datepicker-input" placeholder="jj/mm/aaaa">
+                                        </div>
+                                    </div>
+                                </div>
+    
+                                <!-- 3. Catégorie -->
+                                <div class="filter-group">
+                                    <label for="filter-category" class="filter-label">Catégorie</label>
+                                    <select id="filter-category" name="category" class="form-select">
+                                        <option value="">Toutes les catégories</option>
+                                        <option value="Citadine">Citadine</option>
+                                        <option value="Compact">Compact</option>
+                                        <option value="Berline">Berline</option>
+                                        <option value="SUV">SUV</option>
+                                        <option value="Utilitaire">Utilitaire</option>
+                                    </select>
+                                </div>
+    
+                                <!-- 4. Marque (Select) -->
+                                <div class="filter-group">
+                                    <label for="filter-brand" class="filter-label">Marque</label>
+                                    <select id="filter-brand" name="brand" class="form-select">
+                                        <option value="">Toutes les marques</option>
+                                        <option value="Renault">Renault</option>
+                                        <option value="Volkswagen">Volkswagen</option>
+                                        <option value="Peugeot">Peugeot</option>
+                                        <option value="BMW">BMW</option>
+                                        <option value="Audi">Audi</option>
+                                        <option value="Mercedes-Benz">Mercedes-Benz</option>
+                                        <option value="Toyota">Toyota</option>
+                                        <option value="Tesla">Tesla</option>
+                                    </select>
+                                </div>
+    
+                                <!-- 5. Carburant -->
+                                <div class="filter-group">
+                                    <label for="filter-fuel" class="filter-label">Carburant</label>
+                                    <select id="filter-fuel" name="fuel" class="form-select">
+                                        <option value="">Tous les carburants</option>
+                                        <option value="Essence">Essence</option>
+                                        <option value="Diesel">Diesel</option>
+                                        <option value="Électrique">Électrique</option>
+                                        <option value="Hybride">Hybride</option>
+                                    </select>
+                                </div>
+    
+                                <!-- 6. Transmission -->
+                                <div class="filter-group">
+                                    <label for="filter-transmission" class="filter-label">Transmission</label>
+                                    <select id="filter-transmission" name="transmission" class="form-select">
+                                        <option value="">Toutes les transmissions</option>
+                                        <option value="Manuelle">Manuelle</option>
+                                        <option value="Automatique">Automatique</option>
+                                    </select>
+                                </div>
+    
+                                <!-- 7. Puissance / Nombre de chevaux (min et max) -->
+                                <div class="filter-group">
+                                    <span class="filter-label">Puissance (ch)</span>
+                                    <div class="filter-row">
+                                        <div class="filter-subgroup">
+                                            <label for="filter-power-min" class="filter-sublabel">Min</label>
+                                            <input type="number" id="filter-power-min" name="powerMin" class="form-input"
+                                                placeholder="70" min="0" step="5">
+                                        </div>
+                                        <div class="filter-subgroup">
+                                            <label for="filter-power-max" class="filter-sublabel">Max</label>
+                                            <input type="number" id="filter-power-max" name="powerMax" class="form-input"
+                                                placeholder="400" min="0" step="5">
+                                        </div>
+                                    </div>
+                                </div>
+    
+                                <!-- 8. Nombre de sièges (input number) -->
+                                <div class="filter-group">
+                                    <label for="filter-seats" class="filter-label">Nombre de sièges</label>
+                                    <input type="number" id="filter-seats" name="seats" class="form-input"
+                                        placeholder="Ex: 5" min="1" max="9">
+                                </div>
+    
+                                <!-- 9. Prix journalier (fourchette ajustable min/max) -->
+                                <div class="filter-group">
+                                    <span class="filter-label">Prix journalier (€ / jour)</span>
+                                    <div class="filter-row">
+                                        <div class="filter-subgroup">
+                                            <label for="filter-price-min" class="filter-sublabel">Min (€)</label>
+                                            <input type="number" id="filter-price-min" name="priceMin" class="form-input"
+                                                placeholder="20" min="0" step="5">
+                                        </div>
+                                        <div class="filter-subgroup">
+                                            <label for="filter-price-max" class="filter-sublabel">Max (€)</label>
+                                            <input type="number" id="filter-price-max" name="priceMax" class="form-input"
+                                                placeholder="250" min="0" step="5">
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
 
-                            <!-- 2. Dates (début et fin avec Flatpickr) -->
-                            <div class="filter-group">
-                                <span class="filter-label">Disponibilité</span>
-                                <div class="filter-row">
-                                    <div class="filter-subgroup">
-                                        <label for="filter-date-start" class="filter-sublabel">Début</label>
-                                        <input type="text" id="filter-date-start" name="startDate"
-                                            class="form-input datepicker-input" placeholder="jj/mm/aaaa">
-                                    </div>
-                                    <div class="filter-subgroup">
-                                        <label for="filter-date-end" class="filter-sublabel">Fin</label>
-                                        <input type="text" id="filter-date-end" name="endDate"
-                                            class="form-input datepicker-input" placeholder="jj/mm/aaaa">
-                                    </div>
-                                </div>
+                            <div class="button-container">
+                                <button type="submit" class="btn btn-primary btn-block">Appliquer les filtres</button>
                             </div>
-
-                            <!-- 3. Catégorie -->
-                            <div class="filter-group">
-                                <label for="filter-category" class="filter-label">Catégorie</label>
-                                <select id="filter-category" name="category" class="form-select">
-                                    <option value="">Toutes les catégories</option>
-                                    <option value="Citadine">Citadine</option>
-                                    <option value="Compact">Compact</option>
-                                    <option value="Berline">Berline</option>
-                                    <option value="SUV">SUV</option>
-                                    <option value="Utilitaire">Utilitaire</option>
-                                </select>
-                            </div>
-
-                            <!-- 4. Marque (Select) -->
-                            <div class="filter-group">
-                                <label for="filter-brand" class="filter-label">Marque</label>
-                                <select id="filter-brand" name="brand" class="form-select">
-                                    <option value="">Toutes les marques</option>
-                                    <option value="Renault">Renault</option>
-                                    <option value="Volkswagen">Volkswagen</option>
-                                    <option value="Peugeot">Peugeot</option>
-                                    <option value="BMW">BMW</option>
-                                    <option value="Audi">Audi</option>
-                                    <option value="Mercedes-Benz">Mercedes-Benz</option>
-                                    <option value="Toyota">Toyota</option>
-                                    <option value="Tesla">Tesla</option>
-                                </select>
-                            </div>
-
-                            <!-- 5. Carburant -->
-                            <div class="filter-group">
-                                <label for="filter-fuel" class="filter-label">Carburant</label>
-                                <select id="filter-fuel" name="fuel" class="form-select">
-                                    <option value="">Tous les carburants</option>
-                                    <option value="Essence">Essence</option>
-                                    <option value="Diesel">Diesel</option>
-                                    <option value="Électrique">Électrique</option>
-                                    <option value="Hybride">Hybride</option>
-                                </select>
-                            </div>
-
-                            <!-- 6. Transmission -->
-                            <div class="filter-group">
-                                <label for="filter-transmission" class="filter-label">Transmission</label>
-                                <select id="filter-transmission" name="transmission" class="form-select">
-                                    <option value="">Toutes les transmissions</option>
-                                    <option value="Manuelle">Manuelle</option>
-                                    <option value="Automatique">Automatique</option>
-                                </select>
-                            </div>
-
-                            <!-- 7. Puissance / Nombre de chevaux (min et max) -->
-                            <div class="filter-group">
-                                <span class="filter-label">Puissance (ch)</span>
-                                <div class="filter-row">
-                                    <div class="filter-subgroup">
-                                        <label for="filter-power-min" class="filter-sublabel">Min</label>
-                                        <input type="number" id="filter-power-min" name="powerMin" class="form-input"
-                                            placeholder="70" min="0" step="5">
-                                    </div>
-                                    <div class="filter-subgroup">
-                                        <label for="filter-power-max" class="filter-sublabel">Max</label>
-                                        <input type="number" id="filter-power-max" name="powerMax" class="form-input"
-                                            placeholder="400" min="0" step="5">
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- 8. Nombre de sièges (input number) -->
-                            <div class="filter-group">
-                                <label for="filter-seats" class="filter-label">Nombre de sièges</label>
-                                <input type="number" id="filter-seats" name="seats" class="form-input"
-                                    placeholder="Ex: 5" min="1" max="9">
-                            </div>
-
-                            <!-- 9. Prix journalier (fourchette ajustable min/max) -->
-                            <div class="filter-group">
-                                <span class="filter-label">Prix journalier (€ / jour)</span>
-                                <div class="filter-row">
-                                    <div class="filter-subgroup">
-                                        <label for="filter-price-min" class="filter-sublabel">Min (€)</label>
-                                        <input type="number" id="filter-price-min" name="priceMin" class="form-input"
-                                            placeholder="20" min="0" step="5">
-                                    </div>
-                                    <div class="filter-subgroup">
-                                        <label for="filter-price-max" class="filter-sublabel">Max (€)</label>
-                                        <input type="number" id="filter-price-max" name="priceMax" class="form-input"
-                                            placeholder="250" min="0" step="5">
-                                    </div>
-                                </div>
-                            </div>
-
-                            <button type="submit" class="btn btn-primary btn-block">Appliquer les filtres</button>
                         </form>
                     </aside>
 
                     <!-- RIGHT: Vehicles Content Area -->
                     <div class="vehicles-content-area">
+
+                        <!-- Section Header -->
+                        <div class="section-header">
+                            <h1 class="page-title">Nos Véhicules</h1>
+                            <p class="page-subtitle">Recherchez et filtrez notre flotte disponible pour trouver le véhicule
+                                idéal.</p>
+                        </div>
                         <!-- Compteur et Triage au-dessus de la grille -->
                         <div class="vehicles-results-header">
                             <span class="vehicles-count">
@@ -450,7 +456,6 @@
             </div>
         </div>
     </footer>
-
 
 </body>
 
