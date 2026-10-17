@@ -144,9 +144,6 @@
         <section class="vehicles-catalog">
             <div class="container">
 
-
-
-
                 <!-- Mobile Filters Toggle Button -->
                 <div class="mobile-filter-bar">
                     <button type="button" class="btn btn-outline btn-toggle-filters" id="btn-toggle-filters"
@@ -211,11 +208,10 @@
                                     <label for="filter-category" class="filter-label">Catégorie</label>
                                     <select id="filter-category" name="category" class="form-select">
                                         <option value="">Toutes les catégories</option>
-                                        <option value="Citadine">Citadine</option>
-                                        <option value="Compact">Compact</option>
-                                        <option value="Berline">Berline</option>
+                                        <option value="SUPERMINI">Citadine</option>
+                                        <option value="COMPACT">Compact</option>
                                         <option value="SUV">SUV</option>
-                                        <option value="Utilitaire">Utilitaire</option>
+                                        <option value="COMMERCIAL">Utilitaire</option>
                                     </select>
                                 </div>
     
@@ -238,12 +234,12 @@
                                 <!-- 5. Carburant -->
                                 <div class="filter-group">
                                     <label for="filter-fuel" class="filter-label">Carburant</label>
-                                    <select id="filter-fuel" name="fuel" class="form-select">
+                                    <select id="filter-fuel" name="fuelType" class="form-select">
                                         <option value="">Tous les carburants</option>
-                                        <option value="Essence">Essence</option>
-                                        <option value="Diesel">Diesel</option>
-                                        <option value="Électrique">Électrique</option>
-                                        <option value="Hybride">Hybride</option>
+                                        <option value="PETROL">Essence</option>
+                                        <option value="DIESEL">Diesel</option>
+                                        <option value="ELECTRIC">Électrique</option>
+                                        <option value="HYBRID">Hybride</option>
                                     </select>
                                 </div>
     
@@ -252,8 +248,8 @@
                                     <label for="filter-transmission" class="filter-label">Transmission</label>
                                     <select id="filter-transmission" name="transmission" class="form-select">
                                         <option value="">Toutes les transmissions</option>
-                                        <option value="Manuelle">Manuelle</option>
-                                        <option value="Automatique">Automatique</option>
+                                        <option value="MANUAL">Manuelle</option>
+                                        <option value="AUTOMATIC">Automatique</option>
                                     </select>
                                 </div>
     
@@ -300,7 +296,7 @@
                             </div>
 
                             <div class="button-container">
-                                <button type="submit" class="btn btn-primary btn-block">Appliquer les filtres</button>
+                                <!-- <button type="submit" class="btn btn-primary btn-block">Appliquer les filtres</button> -->
                             </div>
                         </form>
                     </aside>

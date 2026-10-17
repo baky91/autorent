@@ -1,7 +1,40 @@
-import { getAllVehicles, getVehicleById } from "./api.js";
+import { getAllVehicles } from "./api.js";
 
 // const BASE_API_URL = "http://localhost:8080";
 const BASE_API_URL = ""; // Si la page est servie par le serveur contenant l'API REST, on a pas besoin de spécifier le host et le port
+
+const NavigationManager = {
+  init() {
+    const mobileBtn = document.getElementById("mobile-toggle");
+    const navMenu = document.querySelector(".nav-menu");
+    if (!mobileBtn || !navMenu) return;
+
+    mobileBtn.addEventListener("click", () => {
+      const isOpen = navMenu.classList.toggle("open");
+      mobileBtn.setAttribute("aria-expanded", isOpen);
+    });
+
+    // Fermer le menu lors d'un clic sur un lien ou sur le bouton d'authentification mobile
+    navMenu.querySelectorAll(".nav-link, .mobile-auth-btn").forEach((item) => {
+      item.addEventListener("click", () => {
+        navMenu.classList.remove("open");
+        mobileBtn.setAttribute("aria-expanded", "false");
+      });
+    });
+
+    // Fermer le menu si on clique en dehors
+    document.addEventListener("click", (e) => {
+      if (
+        navMenu.classList.contains("open") &&
+        !navMenu.contains(e.target) &&
+        !mobileBtn.contains(e.target)
+      ) {
+        navMenu.classList.remove("open");
+        mobileBtn.setAttribute("aria-expanded", "false");
+      }
+    });
+  },
+};
 
 const ThemeManager = {
   STORAGE_KEY: "autorent_theme",
@@ -32,6 +65,62 @@ const ThemeManager = {
   },
 };
 
+const LanguageManager = {
+  currentLang: "FR",
+  init() {
+    const langBtns = document.querySelectorAll(".btn-lang-toggle");
+    langBtns.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        this.currentLang = this.currentLang === "FR" ? "EN" : "FR";
+        const langText = document.getElementById("current-lang");
+        if (langText) langText.textContent = this.currentLang;
+        const mobileLabels = document.querySelectorAll(
+          ".mobile-tool-btn.btn-lang-toggle .tool-label",
+        );
+        mobileLabels.forEach(
+          (lbl) => (lbl.textContent = `Langue (${this.currentLang})`),
+        );
+      });
+    });
+  },
+};
+
+const IconsManager = {
+  iconsSvg: {
+    fuelType: `<svg viewBox="0 0 24 24" width="15" height="15" stroke="currentColor" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <line x1="3" y1="22" x2="15" y2="22"></line>
+    <line x1="4" y1="9" x2="14" y2="9"></line>
+    <path d="M14 22V4a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v18"></path>
+    <path d="M14 13h2a2 2 0 0 1 2 2v2a2 2 0 0 0 2 2h0a2 2 0 0 0 2-2V9.83a2 2 0 0 0-.59-1.42L18 5"></path>
+  </svg>
+  `,
+    power: `<svg viewBox="0 0 24 24" width="15" height="15" stroke="currentColor" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M12 14l4-4"></path>
+    <path d="M3.34 19a10 10 0 1 1 17.32 0"></path>
+  </svg>
+  `,
+    transmission: `<svg viewBox="0 0 24 24" width="15" height="15" stroke="currentColor" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="12" cy="12" r="3"></circle>
+    <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+  </svg>
+  `,
+    seats: `<svg viewBox="0 0 24 24" width="15" height="15" stroke="currentColor" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+    <circle cx="9" cy="7" r="4"></circle>
+    <path d="M22 21v-2a4 4 0 0 0-3-3.87"></path>
+    <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+  </svg>
+  `,
+  },
+  getIconSvg(type) {
+    const icon = this.iconsSvg[type];
+
+    if (!icon) return `<p>Icon type '${type}' not found.</p>`;
+
+    return icon;
+  },
+};
+
 const CatalogManager = {
   vehicles: [],
   filters: {
@@ -47,19 +136,110 @@ const CatalogManager = {
   async init() {
     this.catalogGrid = document.getElementById("vehicles-grid");
     this.vehiclesCount = document.getElementById("vehicles-count-value");
+    
+    // Trieur et filtres
+    this.filtersForm = document.getElementById("filters-form");
+    this.sortSelect = document.getElementById("vehicles-sort");
+
+    if (this.sortSelect) {
+      this.sortSelect.addEventListener("change", () => {
+        this.onApplyFilters(this.filtersForm);
+      });
+    }
+
+    if (this.filtersForm) {
+      // Écouter "input" pour réagir immédiatement lors de la frappe (text, number)
+      this.filtersForm.addEventListener("input", () => {
+        this.onApplyFilters(this.filtersForm);
+      });
+
+      // Écouter "change" pour les listes déroulantes (<select>)
+      this.filtersForm.addEventListener("change", () => {
+        this.onApplyFilters(this.filtersForm);
+      });
+
+      // Réinitialisation propre du formulaire et des calendriers
+      this.filtersForm.addEventListener("reset", () => {
+        setTimeout(() => {
+          // Passer false à clear() pour éviter d'émettre un événement change indésirable
+          if (this.filterStartPicker) {
+            this.filterStartPicker.clear(false);
+          }
+          if (this.filterEndPicker) {
+            this.filterEndPicker.clear(false);
+            this.filterEndPicker.set("minDate", "today");
+          }
+          if (this.sortSelect) {
+            this.sortSelect.value = "none";
+          }
+          this.displayVehicles(this.vehicles);
+        }, 0);
+      });
+    }
+
+    // Gestion du bouton mobile pour afficher/masquer les filtres
+    const toggleFiltersBtn = document.getElementById("btn-toggle-filters");
+    const filtersAside = document.getElementById("vehicles-filters");
+    if (toggleFiltersBtn && filtersAside) {
+      toggleFiltersBtn.addEventListener("click", () => {
+        const isOpen = filtersAside.classList.toggle("open");
+        toggleFiltersBtn.setAttribute("aria-expanded", isOpen);
+        const span = toggleFiltersBtn.querySelector("span");
+        if (span) {
+          span.textContent = isOpen ? "Masquer les filtres" : "Afficher les filtres";
+        }
+      });
+    }
+
+    // Initialisation Flatpickr pour les filtres de dates
+    this.initDatePickers();
 
     this.vehicles = await getAllVehicles();
     this.displayVehicles(this.vehicles);
-    this.applyFilters();
   },
 
-  displayVehicles() {
+  initDatePickers() {
+    this.startDateInput = document.getElementById("filter-date-start");
+    this.endDateInput = document.getElementById("filter-date-end");
+
+    if (!this.startDateInput || !this.endDateInput || typeof flatpickr === "undefined") {
+      return;
+    }
+
+    const flatpickrConfig = {
+      locale: "fr",
+      minDate: "today",
+      dateFormat: "Y-m-d", // Format YYYY-MM-DD standard pour FormData
+      altInput: true,      // Affiche un format lisible jj/mm/aaaa
+      altFormat: "d/m/Y",
+    };
+
+    this.filterStartPicker = flatpickr(this.startDateInput, {
+      ...flatpickrConfig,
+      onChange: (selectedDates) => {
+        // La date de retour ne peut pas être avant la date de début
+        if (selectedDates.length > 0 && this.filterEndPicker) {
+          this.filterEndPicker.set("minDate", selectedDates[0]);
+        }
+        this.onApplyFilters(this.filtersForm);
+      },
+    });
+
+    this.filterEndPicker = flatpickr(this.endDateInput, {
+      ...flatpickrConfig,
+      onChange: () => {
+        this.onApplyFilters(this.filtersForm);
+      },
+    });
+  },
+
+  displayVehicles(vehiclesList) {
     if (!this.catalogGrid) return;
 
     this.catalogGrid.innerHTML = "";
     this.vehiclesCount.innerText = "0";
 
-    this.vehicles.forEach((vehicle) => {
+    vehiclesList.forEach((vehicle) => {
       const brand = vehicle.brand;
       const model = vehicle.model;
       const category = vehicle.category;
@@ -156,15 +336,75 @@ const CatalogManager = {
     });
     
     // Mise à jour du compteur
-    this.vehiclesCount.innerText = this.vehicles.length;
+    this.vehiclesCount.innerText = vehiclesList.length;
 
     ReservationManager.bindButtons();
 
   },
 
-  applyFilters() {
-    // TODO : Implémenter l'application des filtres
-  },
+  onApplyFilters(formElement = this.filtersForm) {
+    if (!formElement) return;
+
+    const formData = new FormData(formElement);
+    const values = Object.fromEntries(formData);
+
+    const filteredVehicles = this.vehicles.filter((vehicle) => {
+      // Date de début : le véhicule est disponible si sa date de disponibilité est antérieure ou égale
+      const availableMatch = !values.startDate || (vehicle.availableFrom && vehicle.availableFrom <= values.startDate);
+
+      // Catégorie
+      const categoryMatch = !values.category || values.category === vehicle.category;
+
+      // Marque
+      const brandMatch = !values.brand || vehicle.brand.toLowerCase() === values.brand.toLowerCase();
+
+      // Carburant
+      const fuelTypeMatch = !values.fuelType || vehicle.fuelType === values.fuelType;
+
+      // Transmission
+      const transmissionMatch = !values.transmission || vehicle.transmission === values.transmission;
+
+      // Puissance (conversion numérique)
+      const powerMin = values.powerMin !== "" && values.powerMin !== undefined ? Number(values.powerMin) : null;
+      const powerMax = values.powerMax !== "" && values.powerMax !== undefined ? Number(values.powerMax) : null;
+      const powerMatch = 
+        (powerMin === null || vehicle.horsePower >= powerMin) &&
+        (powerMax === null || vehicle.horsePower <= powerMax);
+
+      // Nombre de sièges
+      const selectedSeats = values.seats || values.seatsCount;
+      const seatsMatch = !selectedSeats || vehicle.seatsCount === Number(selectedSeats);
+
+      // Prix journalier (conversion numérique)
+      const priceMin = values.priceMin !== "" && values.priceMin !== undefined ? Number(values.priceMin) : null;
+      const priceMax = values.priceMax !== "" && values.priceMax !== undefined ? Number(values.priceMax) : null;
+      const priceMatch = 
+        (priceMin === null || vehicle.dailyPrice >= priceMin) &&
+        (priceMax === null || vehicle.dailyPrice <= priceMax);
+
+      // Mot-clé
+      const keyword = values.keyword ? values.keyword.trim().toLowerCase() : "";
+      const keywordMatch = !keyword ||
+        vehicle.brand.toLowerCase().includes(keyword) ||
+        vehicle.model.toLowerCase().includes(keyword);
+
+      return availableMatch && categoryMatch && brandMatch && fuelTypeMatch && transmissionMatch && powerMatch && seatsMatch && priceMatch && keywordMatch;
+    });
+
+    // Tri dynamique
+    const sortValue = this.sortSelect ? this.sortSelect.value : "none";
+    if (sortValue === "price-asc") {
+      filteredVehicles.sort((a, b) => a.dailyPrice - b.dailyPrice);
+    } else if (sortValue === "price-desc") {
+      filteredVehicles.sort((a, b) => b.dailyPrice - a.dailyPrice);
+    } else if (sortValue === "year-asc") {
+      filteredVehicles.sort((a, b) => a.year - b.year);
+    } else if (sortValue === "year-desc") {
+      filteredVehicles.sort((a, b) => b.year - a.year);
+    }
+
+    this.displayVehicles(filteredVehicles);
+  }
 };
 
 const ReservationManager = {
@@ -362,95 +602,6 @@ const ReservationManager = {
       `Réservation confirmée pour le véhicule ${this.currentVehicle.brand} ${this.currentVehicle.model} du ${this.startDateInput.value} au ${this.endDateInput.value} !`,
     );
     this.closeModal();
-  },
-};
-
-const IconsManager = {
-  iconsSvg: {
-    fuelType: `<svg viewBox="0 0 24 24" width="15" height="15" stroke="currentColor" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-    <line x1="3" y1="22" x2="15" y2="22"></line>
-    <line x1="4" y1="9" x2="14" y2="9"></line>
-    <path d="M14 22V4a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v18"></path>
-    <path d="M14 13h2a2 2 0 0 1 2 2v2a2 2 0 0 0 2 2h0a2 2 0 0 0 2-2V9.83a2 2 0 0 0-.59-1.42L18 5"></path>
-  </svg>
-  `,
-    power: `<svg viewBox="0 0 24 24" width="15" height="15" stroke="currentColor" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M12 14l4-4"></path>
-    <path d="M3.34 19a10 10 0 1 1 17.32 0"></path>
-  </svg>
-  `,
-    transmission: `<svg viewBox="0 0 24 24" width="15" height="15" stroke="currentColor" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-    <circle cx="12" cy="12" r="3"></circle>
-    <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
-  </svg>
-  `,
-    seats: `<svg viewBox="0 0 24 24" width="15" height="15" stroke="currentColor" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
-    <circle cx="9" cy="7" r="4"></circle>
-    <path d="M22 21v-2a4 4 0 0 0-3-3.87"></path>
-    <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
-  </svg>
-  `,
-  },
-  getIconSvg(type) {
-    const icon = this.iconsSvg[type];
-
-    if (!icon) return `<p>Icon type '${type}' not found.</p>`;
-
-    return icon;
-  },
-};
-
-const NavigationManager = {
-  init() {
-    const mobileBtn = document.getElementById("mobile-toggle");
-    const navMenu = document.querySelector(".nav-menu");
-    if (!mobileBtn || !navMenu) return;
-
-    mobileBtn.addEventListener("click", () => {
-      const isOpen = navMenu.classList.toggle("open");
-      mobileBtn.setAttribute("aria-expanded", isOpen);
-    });
-
-    // Fermer le menu lors d'un clic sur un lien ou sur le bouton d'authentification mobile
-    navMenu.querySelectorAll(".nav-link, .mobile-auth-btn").forEach((item) => {
-      item.addEventListener("click", () => {
-        navMenu.classList.remove("open");
-        mobileBtn.setAttribute("aria-expanded", "false");
-      });
-    });
-
-    // Fermer le menu si on clique en dehors
-    document.addEventListener("click", (e) => {
-      if (
-        navMenu.classList.contains("open") &&
-        !navMenu.contains(e.target) &&
-        !mobileBtn.contains(e.target)
-      ) {
-        navMenu.classList.remove("open");
-        mobileBtn.setAttribute("aria-expanded", "false");
-      }
-    });
-  },
-};
-
-const LanguageManager = {
-  currentLang: "FR",
-  init() {
-    const langBtns = document.querySelectorAll(".btn-lang-toggle");
-    langBtns.forEach((btn) => {
-      btn.addEventListener("click", () => {
-        this.currentLang = this.currentLang === "FR" ? "EN" : "FR";
-        const langText = document.getElementById("current-lang");
-        if (langText) langText.textContent = this.currentLang;
-        const mobileLabels = document.querySelectorAll(
-          ".mobile-tool-btn.btn-lang-toggle .tool-label",
-        );
-        mobileLabels.forEach(
-          (lbl) => (lbl.textContent = `Langue (${this.currentLang})`),
-        );
-      });
-    });
   },
 };
 
