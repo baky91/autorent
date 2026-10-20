@@ -1,4 +1,12 @@
-import { getVehicles, loginUser, registerUser, logoutUser, getMyReservations, getUnavailableDates, createReservation } from "./api.js";
+import {
+  getVehicles,
+  loginUser,
+  registerUser,
+  logoutUser,
+  getMyReservations,
+  getUnavailableDates,
+  createReservation,
+} from "./api.js";
 
 // const BASE_API_URL = "http://localhost:8080";
 const BASE_API_URL = ""; // Si la page est servie par le serveur contenant l'API REST, on a pas besoin de spécifier le host et le port
@@ -131,7 +139,11 @@ const AuthenticationManager = {
       btn.addEventListener("click", () => {
         if (this.isAuthenticated()) {
           const username = this.getUsername();
-          if (confirm(`Vous êtes connecté en tant que "${username}".\nSouhaitez-vous vous déconnecter ?`)) {
+          if (
+            confirm(
+              `Vous êtes connecté en tant que "${username}".\nSouhaitez-vous vous déconnecter ?`,
+            )
+          ) {
             this.logout();
           }
         } else {
@@ -154,14 +166,18 @@ const AuthenticationManager = {
       this.tabLogin.addEventListener("click", () => this.switchTab("login"));
     }
     if (this.tabRegister) {
-      this.tabRegister.addEventListener("click", () => this.switchTab("register"));
+      this.tabRegister.addEventListener("click", () =>
+        this.switchTab("register"),
+      );
     }
 
     if (this.loginForm) {
       this.loginForm.addEventListener("submit", (e) => this.handleLogin(e));
     }
     if (this.registerForm) {
-      this.registerForm.addEventListener("submit", (e) => this.handleRegister(e));
+      this.registerForm.addEventListener("submit", (e) =>
+        this.handleRegister(e),
+      );
     }
   },
 
@@ -295,7 +311,10 @@ const AuthenticationManager = {
     }
 
     if (password.length < 4) {
-      this.showAlert("Le mot de passe doit comporter au moins 4 caractères.", "error");
+      this.showAlert(
+        "Le mot de passe doit comporter au moins 4 caractères.",
+        "error",
+      );
       return;
     }
 
@@ -311,7 +330,9 @@ const AuthenticationManager = {
         // Connexion automatique pour récupérer directement le token JWT
         const loginData = await loginUser(username, password);
         if (loginData && loginData.token) {
-          const tokenWithBearer = loginData.token.startsWith("Bearer ") ? loginData.token : `Bearer ${loginData.token}`;
+          const tokenWithBearer = loginData.token.startsWith("Bearer ")
+            ? loginData.token
+            : `Bearer ${loginData.token}`;
           localStorage.setItem(this.tokenKey, tokenWithBearer);
           localStorage.setItem("raw_jwt_token", loginData.token);
           localStorage.setItem(this.userKey, username);
@@ -325,13 +346,19 @@ const AuthenticationManager = {
             this.closeModal();
           }, 800);
         } else {
-          this.showAlert("Compte créé ! Vous pouvez vous connecter.", "success");
+          this.showAlert(
+            "Compte créé ! Vous pouvez vous connecter.",
+            "success",
+          );
           this.switchTab("login");
           const loginUserField = document.getElementById("login-username");
           if (loginUserField) loginUserField.value = username;
         }
       } else {
-        this.showAlert("Ce nom d'utilisateur est déjà utilisé ou invalide.", "error");
+        this.showAlert(
+          "Ce nom d'utilisateur est déjà utilisé ou invalide.",
+          "error",
+        );
       }
     } catch (err) {
       console.error("Erreur lors de la création de compte :", err);
@@ -365,9 +392,11 @@ const AuthenticationManager = {
     // Mise à jour du bouton Mobile
     const mobileAuthSpan = document.querySelector(".mobile-auth-btn span");
     if (mobileAuthSpan) {
-      mobileAuthSpan.textContent = isAuth ? username : "Connexion / Inscription";
+      mobileAuthSpan.textContent = isAuth
+        ? username
+        : "Connexion / Inscription";
     }
-  }
+  },
 };
 
 const ThemeManager = {
@@ -468,7 +497,7 @@ const IconsManager = {
         <line x1="5" y1="12" x2="19" y2="12"></line>
         <polyline points="12 5 19 12 12 19"></polyline>
     </svg>
-    `
+    `,
   },
   getIconSvg(type) {
     const icon = this.iconsSvg[type];
@@ -495,17 +524,17 @@ const CatalogManager = {
     this.catalogGrid = document.getElementById("vehicles-grid");
     // Si la grille du catalogue n'est pas présente sur la page, on ne fait rien (pas de requête vers /api/vehicles)
     if (!this.catalogGrid) return;
-    
+
     // Si c'est la page d'accueil, on affiche trois véhicules actuellement disponibles
     if (window.location.pathname === "/") {
-      const today = new Date().toISOString().split('T')[0];
+      const today = new Date().toISOString().split("T")[0];
       const vehicles = await getVehicles(3, today, today);
       this.displayVehicles(vehicles);
       return;
     }
 
     this.vehiclesCount = document.getElementById("vehicles-count-value");
-    
+
     // Trieur et filtres
     this.filtersForm = document.getElementById("filters-form");
     this.sortSelect = document.getElementById("vehicles-sort");
@@ -555,7 +584,9 @@ const CatalogManager = {
         toggleFiltersBtn.setAttribute("aria-expanded", isOpen);
         const span = toggleFiltersBtn.querySelector("span");
         if (span) {
-          span.textContent = isOpen ? "Masquer les filtres" : "Afficher les filtres";
+          span.textContent = isOpen
+            ? "Masquer les filtres"
+            : "Afficher les filtres";
         }
       });
     }
@@ -571,7 +602,11 @@ const CatalogManager = {
     this.startDateInput = document.getElementById("filter-date-start");
     this.endDateInput = document.getElementById("filter-date-end");
 
-    if (!this.startDateInput || !this.endDateInput || typeof flatpickr === "undefined") {
+    if (
+      !this.startDateInput ||
+      !this.endDateInput ||
+      typeof flatpickr === "undefined"
+    ) {
       return;
     }
 
@@ -579,7 +614,7 @@ const CatalogManager = {
       locale: "fr",
       minDate: "today",
       dateFormat: "Y-m-d", // Format YYYY-MM-DD standard pour FormData
-      altInput: true,      // Affiche un format lisible jj/mm/aaaa
+      altInput: true, // Affiche un format lisible jj/mm/aaaa
       altFormat: "d/m/Y",
     };
 
@@ -609,27 +644,46 @@ const CatalogManager = {
     if (this.vehiclesCount) this.vehiclesCount.innerText = "0";
 
     vehiclesList.forEach((vehicle) => {
-      const brand = vehicle.brand;
-      const model = vehicle.model;
-      const category = vehicle.category;
-      const year = vehicle.year;
-      const horsePower = vehicle.horsePower;
-      const imagePath = vehicle.imagePath;
-      const seatsCount = vehicle.seatsCount;
-      const fuelType = vehicle.fuelType;
-      const transmission = vehicle.transmission;
-      const dailyPrice = vehicle.dailyPrice;
-      const available = vehicle.available;
-      const isCurrentlyAvailable = vehicle.isCurrentlyAvailable;
-      const availableFrom = vehicle.availableFrom;
+      this.createOrReplaceVehicleCard(vehicle);
+    });
 
-      const vehicleCard = document.createElement("article");
+    // Mise à jour du compteur
+    if (this.vehiclesCount) this.vehiclesCount.innerText = vehiclesList.length;
+
+    ReservationManager.bindButtons();
+  },
+
+  // TODO: fonction qui permet également de remplacer le contenu d'une carte existante dans le cas où un véhicule a été réservé (éviter de refaire toute la liste)
+  createOrReplaceVehicleCard(vehicle) {
+    const existingCard = document.querySelector(`article[data-vehicle-id="${vehicle.id}"]`);
+    let vehicleCard;
+
+    if (existingCard) {
+      vehicleCard = existingCard;
+      vehicleCard.innerHTML = "";
+    } else {
+      vehicleCard = document.createElement("article");
       vehicleCard.classList.add("vehicle-card");
       vehicleCard.dataset.vehicleId = vehicle.id;
+    }
 
-      const status = isCurrentlyAvailable
-        ? `<p class="vehicle-status available">Actuellement disponible <span class="vehicle-status-badge"></span></p>`
-        : `<span class="vehicle-status rented">
+    const brand = vehicle.brand;
+    const model = vehicle.model;
+    const category = vehicle.category;
+    const year = vehicle.year;
+    const horsePower = vehicle.horsePower;
+    const imagePath = vehicle.imagePath;
+    const seatsCount = vehicle.seatsCount;
+    const fuelType = vehicle.fuelType;
+    const transmission = vehicle.transmission;
+    const dailyPrice = vehicle.dailyPrice;
+    const available = vehicle.available;
+    const isCurrentlyAvailable = vehicle.isCurrentlyAvailable;
+    const availableFrom = vehicle.availableFrom;
+
+    const status = isCurrentlyAvailable
+      ? `<p class="vehicle-status available">Actuellement disponible <span class="vehicle-status-badge"></span></p>`
+      : `<span class="vehicle-status rented">
             <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor"
                 fill="none" stroke-width="2">
                 <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
@@ -641,9 +695,9 @@ const CatalogManager = {
             <span class="vehicle-status-badge"></span>
           </span>`;
 
-      const image = imagePath
-        ? `<img src="${BASE_API_URL}${imagePath}" alt="${brand} ${model}" class="vehicle-card-img">`
-        : `<div class="media-placeholder">
+    const image = imagePath
+      ? `<img src="${BASE_API_URL}${imagePath}" alt="${brand} ${model}" class="vehicle-card-img">`
+      : `<div class="media-placeholder">
             <svg class="placeholder-icon" viewBox="0 0 24 24" fill="none"
                 stroke="currentColor" stroke-width="1.5">
                 <path
@@ -654,11 +708,14 @@ const CatalogManager = {
             <span class="media-label">${brand} ${model}</span>
           </div>`;
 
-      const powerUnit = LanguageManager.currentLang.toLowerCase() === "fr" ? "ch" : "hp";
-      const seatsLabel = LanguageManager.currentLang.toLowerCase() === "fr" ? "places" : "seats";
-      const priceLabel = LanguageManager.currentLang.toLowerCase() === "fr" ? "/ jour" : "/ day";
+    const powerUnit =
+      LanguageManager.currentLang.toLowerCase() === "fr" ? "ch" : "hp";
+    const seatsLabel =
+      LanguageManager.currentLang.toLowerCase() === "fr" ? "places" : "seats";
+    const priceLabel =
+      LanguageManager.currentLang.toLowerCase() === "fr" ? "/ jour" : "/ day";
 
-      vehicleCard.innerHTML = `
+    vehicleCard.innerHTML = `
         <div class="vehicle-card-media">
           <span class="category-badge">${category}</span>
           ${status}
@@ -698,25 +755,22 @@ const CatalogManager = {
               <span class="price-period">${priceLabel}</span>
             </div>
             <div class="action-wrapper">
-              ${isCurrentlyAvailable ? ``: `
+              ${
+                isCurrentlyAvailable
+                  ? ``
+                  : `
                 <div class="tooltip-container">
                   <span class="tooltip-icon">i</span>
                   <div class="tooltip-text">Ce véhicule est actuellement loué, mais vous pouvez le réserver pour des dates ultérieures.</div>
-                </div>`}
+                </div>`
+              }
               <button class="btn btn-primary btn-open-reservation" data-vehicle-id="${vehicle.id}">Réserver</button>
             </div>
           </div>
         </div>
       `;
 
-      this.catalogGrid.appendChild(vehicleCard);
-    });
-    
-    // Mise à jour du compteur
-    if (this.vehiclesCount) this.vehiclesCount.innerText = vehiclesList.length;
-
-    ReservationManager.bindButtons();
-
+    this.catalogGrid.appendChild(vehicleCard);
   },
 
   onApplyFilters(formElement = this.filtersForm) {
@@ -727,45 +781,76 @@ const CatalogManager = {
 
     const filteredVehicles = this.vehicles.filter((vehicle) => {
       // Date de début : le véhicule est disponible si sa date de disponibilité est antérieure ou égale
-      const availableMatch = !values.startDate || (vehicle.availableFrom && vehicle.availableFrom <= values.startDate);
+      const availableMatch =
+        !values.startDate ||
+        (vehicle.availableFrom && vehicle.availableFrom <= values.startDate);
 
       // Catégorie
-      const categoryMatch = !values.category || values.category === vehicle.category;
+      const categoryMatch =
+        !values.category || values.category === vehicle.category;
 
       // Marque
-      const brandMatch = !values.brand || vehicle.brand.toLowerCase() === values.brand.toLowerCase();
+      const brandMatch =
+        !values.brand ||
+        vehicle.brand.toLowerCase() === values.brand.toLowerCase();
 
       // Carburant
-      const fuelTypeMatch = !values.fuelType || vehicle.fuelType === values.fuelType;
+      const fuelTypeMatch =
+        !values.fuelType || vehicle.fuelType === values.fuelType;
 
       // Transmission
-      const transmissionMatch = !values.transmission || vehicle.transmission === values.transmission;
+      const transmissionMatch =
+        !values.transmission || vehicle.transmission === values.transmission;
 
       // Puissance (conversion numérique)
-      const powerMin = values.powerMin !== "" && values.powerMin !== undefined ? Number(values.powerMin) : null;
-      const powerMax = values.powerMax !== "" && values.powerMax !== undefined ? Number(values.powerMax) : null;
-      const powerMatch = 
+      const powerMin =
+        values.powerMin !== "" && values.powerMin !== undefined
+          ? Number(values.powerMin)
+          : null;
+      const powerMax =
+        values.powerMax !== "" && values.powerMax !== undefined
+          ? Number(values.powerMax)
+          : null;
+      const powerMatch =
         (powerMin === null || vehicle.horsePower >= powerMin) &&
         (powerMax === null || vehicle.horsePower <= powerMax);
 
       // Nombre de sièges
       const selectedSeats = values.seats || values.seatsCount;
-      const seatsMatch = !selectedSeats || vehicle.seatsCount === Number(selectedSeats);
+      const seatsMatch =
+        !selectedSeats || vehicle.seatsCount === Number(selectedSeats);
 
       // Prix journalier (conversion numérique)
-      const priceMin = values.priceMin !== "" && values.priceMin !== undefined ? Number(values.priceMin) : null;
-      const priceMax = values.priceMax !== "" && values.priceMax !== undefined ? Number(values.priceMax) : null;
-      const priceMatch = 
+      const priceMin =
+        values.priceMin !== "" && values.priceMin !== undefined
+          ? Number(values.priceMin)
+          : null;
+      const priceMax =
+        values.priceMax !== "" && values.priceMax !== undefined
+          ? Number(values.priceMax)
+          : null;
+      const priceMatch =
         (priceMin === null || vehicle.dailyPrice >= priceMin) &&
         (priceMax === null || vehicle.dailyPrice <= priceMax);
 
       // Mot-clé
       const keyword = values.keyword ? values.keyword.trim().toLowerCase() : "";
-      const keywordMatch = !keyword ||
+      const keywordMatch =
+        !keyword ||
         vehicle.brand.toLowerCase().includes(keyword) ||
         vehicle.model.toLowerCase().includes(keyword);
 
-      return availableMatch && categoryMatch && brandMatch && fuelTypeMatch && transmissionMatch && powerMatch && seatsMatch && priceMatch && keywordMatch;
+      return (
+        availableMatch &&
+        categoryMatch &&
+        brandMatch &&
+        fuelTypeMatch &&
+        transmissionMatch &&
+        powerMatch &&
+        seatsMatch &&
+        priceMatch &&
+        keywordMatch
+      );
     });
 
     // Tri dynamique
@@ -781,7 +866,7 @@ const CatalogManager = {
     }
 
     this.displayVehicles(filteredVehicles);
-  }
+  },
 };
 
 const ReservationManager = {
@@ -809,8 +894,10 @@ const ReservationManager = {
       this.confirmBtn = document.getElementById("confirm-reservation-btn");
 
       // Bind events
-      if (this.closeBtn) this.closeBtn.addEventListener("click", () => this.closeModal());
-      if (this.form) this.form.addEventListener("submit", (e) => this.handleSubmit(e));
+      if (this.closeBtn)
+        this.closeBtn.addEventListener("click", () => this.closeModal());
+      if (this.form)
+        this.form.addEventListener("submit", (e) => this.handleSubmit(e));
 
       // Fermer si on clique en dehors du contenu
       this.modal.addEventListener("click", (e) => {
@@ -822,7 +909,11 @@ const ReservationManager = {
       this.unavailableDates = [];
 
       // Initialisation de Flatpickr sur les champs de date
-      if (this.startDateInput && this.endDateInput && typeof flatpickr !== "undefined") {
+      if (
+        this.startDateInput &&
+        this.endDateInput &&
+        typeof flatpickr !== "undefined"
+      ) {
         const flatpickrConfig = {
           locale: "fr",
           minDate: "today",
@@ -866,7 +957,8 @@ const ReservationManager = {
           card?.querySelector(".vehicle-brand")?.textContent ||
           "Marque inconnue";
         const model =
-          card?.querySelector(".vehicle-model")?.textContent || "Modèle inconnu";
+          card?.querySelector(".vehicle-model")?.textContent ||
+          "Modèle inconnu";
         const category =
           card?.querySelector(".category-badge")?.textContent || "Catégorie";
         const img = card?.querySelector(".vehicle-card-img")?.src || "";
@@ -1010,6 +1102,7 @@ const ReservationManager = {
     this.confirmBtn.disabled = false;
   },
 
+  // TODO: Supprimer les alert, mettre à jour l'affichage
   async handleSubmit(e) {
     e.preventDefault();
 
@@ -1028,7 +1121,8 @@ const ReservationManager = {
     const endDate = this.endDateInput.value;
 
     if (!startDate || !endDate) {
-      this.errorMsg.textContent = "Veuillez sélectionner des dates de début et de fin.";
+      this.errorMsg.textContent =
+        "Veuillez sélectionner des dates de début et de fin.";
       this.errorMsg.style.display = "block";
       return;
     }
@@ -1038,13 +1132,20 @@ const ReservationManager = {
       this.confirmBtn.textContent = "Réservation en cours...";
 
       const token = AuthenticationManager.getToken();
-      const tokenWithBearer = token.startsWith("Bearer ") ? token : `Bearer ${token}`;
+      const tokenWithBearer = token.startsWith("Bearer ")
+        ? token
+        : `Bearer ${token}`;
 
-      const res = await createReservation(this.currentVehicle.id, startDate, endDate, tokenWithBearer);
+      const res = await createReservation(
+        this.currentVehicle.id,
+        startDate,
+        endDate,
+        tokenWithBearer,
+      );
 
       if (res && res.id) {
         alert(
-          `Réservation #${res.id} confirmée avec succès pour le véhicule ${this.currentVehicle.brand} ${this.currentVehicle.model} du ${startDate} au ${endDate} !`
+          `Réservation #${res.id} confirmée avec succès pour le véhicule ${this.currentVehicle.brand} ${this.currentVehicle.model} du ${startDate} au ${endDate} !`,
         );
         this.closeModal();
 
@@ -1052,13 +1153,20 @@ const ReservationManager = {
         if (this.myReservationsList) {
           this.displayMyReservations();
         }
+
+        // Mettre à jour l'affichage de la voiture présente dans le catalogue
+        if (CatalogManager.catalogGrid) {
+          CatalogManager.createOrReplaceVehicleCard(res.vehicle);
+        }
       } else {
-        this.errorMsg.textContent = "Impossible de créer la réservation. Veuillez vérifier vos dates.";
+        this.errorMsg.textContent =
+          "Impossible de créer la réservation. Veuillez vérifier vos dates.";
         this.errorMsg.style.display = "block";
       }
     } catch (err) {
       console.error("Erreur lors de la réservation :", err);
-      this.errorMsg.textContent = "Une erreur est survenue lors de la réservation.";
+      this.errorMsg.textContent =
+        "Une erreur est survenue lors de la réservation.";
       this.errorMsg.style.display = "block";
     } finally {
       this.confirmBtn.disabled = false;
@@ -1066,30 +1174,39 @@ const ReservationManager = {
     }
   },
 
+  // TODO: Trier les réservation par date de début décroissant
+  // TODO: Faire une ligne démarquant les réservations terminée (date de fin < date du jour)
+  // TODO: Pour chaque réservation, on affiche le nombre de jours restants (arrondi à l'entier supérieur)
+  // TODO: Si la réservation n'a pas encore commencé, on garde le bouton "Annuler"
   async displayMyReservations() {
     this.myReservationsList.innerHTML = "";
     const jwt_token = localStorage.getItem(AuthenticationManager.tokenKey);
     if (!jwt_token) {
-      this.myReservationsList.innerHTML = "<p>Vous devez être connecté pour voir vos réservations.</p>";
+      this.myReservationsList.innerHTML =
+        "<p>Vous devez être connecté pour voir vos réservations.</p>";
       return;
     }
 
-    const tokenWithBearer = jwt_token.startsWith("Bearer ") ? jwt_token : `Bearer ${jwt_token}`
-    const reservations = await getMyReservations(tokenWithBearer)
+    const tokenWithBearer = jwt_token.startsWith("Bearer ")
+      ? jwt_token
+      : `Bearer ${jwt_token}`;
+    const reservations = await getMyReservations(tokenWithBearer);
 
     // console.log(reservations);
 
     if (reservations === null) {
-      this.myReservationsList.innerHTML = "<p>Une erreur s'est produite lors du chargement de vos réservations.</p>";
-      return;
-    }
-    
-    if (reservations.length === 0) {
-      this.myReservationsList.innerHTML = "<p>Vous n'avez aucune réservation.</p>";
+      this.myReservationsList.innerHTML =
+        "<p>Une erreur s'est produite lors du chargement de vos réservations.</p>";
       return;
     }
 
-    reservations.forEach(reservation => {
+    if (reservations.length === 0) {
+      this.myReservationsList.innerHTML =
+        "<p>Vous n'avez aucune réservation.</p>";
+      return;
+    }
+
+    reservations.forEach((reservation) => {
       const reservationElement = document.createElement("article");
       reservationElement.classList.add("reservation-card");
 
@@ -1148,9 +1265,8 @@ const ReservationManager = {
         </div>
       `;
       this.myReservationsList.appendChild(reservationElement);
-    })
-
-  }
+    });
+  },
 };
 
 function onAuthStateChanged() {
