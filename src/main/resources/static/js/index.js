@@ -1,4 +1,4 @@
-import { getVehicles, loginUser, registerUser, logoutUser, getMyReservations } from "./api.js";
+import { getVehicles, loginUser, registerUser, logoutUser, getMyReservations, getUnavailableDates, createReservation } from "./api.js";
 
 // const BASE_API_URL = "http://localhost:8080";
 const BASE_API_URL = ""; // Si la page est servie par le serveur contenant l'API REST, on a pas besoin de spécifier le host et le port
@@ -625,6 +625,7 @@ const CatalogManager = {
 
       const vehicleCard = document.createElement("article");
       vehicleCard.classList.add("vehicle-card");
+      vehicleCard.dataset.vehicleId = vehicle.id;
 
       const status = isCurrentlyAvailable
         ? `<p class="vehicle-status available">Actuellement disponible <span class="vehicle-status-badge"></span></p>`
@@ -702,7 +703,7 @@ const CatalogManager = {
                   <span class="tooltip-icon">i</span>
                   <div class="tooltip-text">Ce véhicule est actuellement loué, mais vous pouvez le réserver pour des dates ultérieures.</div>
                 </div>`}
-              <button class="btn btn-primary btn-open-reservation">Réserver</button>
+              <button class="btn btn-primary btn-open-reservation" data-vehicle-id="${vehicle.id}">Réserver</button>
             </div>
           </div>
         </div>
@@ -818,17 +819,7 @@ const ReservationManager = {
         }
       });
 
-      // Simulation de dates réservées (ex: de demain à dans 4 jours)
-      const today = new Date();
       this.unavailableDates = [];
-      for (let i = 1; i <= 4; i++) {
-        const d = new Date(today);
-        d.setDate(d.getDate() + i);
-        const y = d.getFullYear();
-        const m = String(d.getMonth() + 1).padStart(2, "0");
-        const day = String(d.getDate()).padStart(2, "0");
-        this.unavailableDates.push(`${y}-${m}-${day}`);
-      }
 
       // Initialisation de Flatpickr sur les champs de date
       if (this.startDateInput && this.endDateInput && typeof flatpickr !== "undefined") {
@@ -838,12 +829,22 @@ const ReservationManager = {
           dateFormat: "Y-m-d",
           altInput: true,
           altFormat: "d/m/Y",
-          disable: this.unavailableDates,
-          onChange: () => this.validateDates(),
+          disable: [],
         };
 
-        this.startPicker = flatpickr(this.startDateInput, flatpickrConfig);
-        this.endPicker = flatpickr(this.endDateInput, flatpickrConfig);
+        this.startPicker = flatpickr(this.startDateInput, {
+          ...flatpickrConfig,
+          onChange: (selectedDates) => {
+            if (selectedDates.length > 0 && this.endPicker) {
+              this.endPicker.set("minDate", selectedDates[0]);
+            }
+            this.validateDates();
+          },
+        });
+        this.endPicker = flatpickr(this.endDateInput, {
+          ...flatpickrConfig,
+          onChange: () => this.validateDates(),
+        });
       }
 
       // Bind "Réserver" buttons
@@ -854,28 +855,33 @@ const ReservationManager = {
   bindButtons() {
     const buttons = document.querySelectorAll(".btn-open-reservation");
     buttons.forEach((btn) => {
+      if (btn.dataset.boundReservation) return;
+      btn.dataset.boundReservation = "true";
+
       btn.addEventListener("click", (e) => {
         // Extraction des données de la carte sur laquelle on a cliqué
         const card = e.target.closest(".vehicle-card");
+        const vehicleId = btn.dataset.vehicleId || card?.dataset.vehicleId;
         const brand =
-          card.querySelector(".vehicle-brand")?.textContent ||
+          card?.querySelector(".vehicle-brand")?.textContent ||
           "Marque inconnue";
         const model =
-          card.querySelector(".vehicle-model")?.textContent || "Modèle inconnu";
+          card?.querySelector(".vehicle-model")?.textContent || "Modèle inconnu";
         const category =
-          card.querySelector(".category-badge")?.textContent || "Catégorie";
-        const img = card.querySelector(".vehicle-card-img")?.src || "";
+          card?.querySelector(".category-badge")?.textContent || "Catégorie";
+        const img = card?.querySelector(".vehicle-card-img")?.src || "";
         const priceText =
-          card.querySelector(".price-value")?.textContent || "0";
+          card?.querySelector(".price-value")?.textContent || "0";
         const price = parseFloat(priceText.replace("€", ""));
 
         // On récupère le HTML des specs pour l'injecter dans la modale
-        const specItems = card.querySelectorAll(".spec-item");
+        const specItems = card ? card.querySelectorAll(".spec-item") : [];
         const specs = Array.from(specItems)
           .map((item) => item.outerHTML)
           .join("");
 
         this.openModal({
+          id: vehicleId,
           brand,
           model,
           category,
@@ -887,7 +893,7 @@ const ReservationManager = {
     });
   },
 
-  openModal(vehicleData) {
+  async openModal(vehicleData) {
     this.currentVehicle = vehicleData;
     this.dailyPrice = vehicleData.dailyPrice || 0;
 
@@ -906,13 +912,34 @@ const ReservationManager = {
 
     // Reset du formulaire à droite
     this.form.reset();
-    if (this.startPicker) this.startPicker.clear();
-    if (this.endPicker) this.endPicker.clear();
-
     this.errorMsg.style.display = "none";
     this.confirmBtn.disabled = true;
     document.getElementById("summary-days").textContent = "0 jour";
     document.getElementById("summary-price").textContent = "0€";
+
+    // Récupération des dates indisponibles ce véhicule
+    this.unavailableDates = [];
+    if (vehicleData.id) {
+      try {
+        const dates = await getUnavailableDates(vehicleData.id);
+        if (Array.isArray(dates)) {
+          this.unavailableDates = dates;
+        }
+      } catch (err) {
+        console.error("Erreur récupération dates indisponibles :", err);
+      }
+    }
+
+    // Mise à jour de Flatpickr avec les dates
+    if (this.startPicker) {
+      this.startPicker.set("disable", this.unavailableDates);
+      this.startPicker.clear();
+    }
+    if (this.endPicker) {
+      this.endPicker.set("disable", this.unavailableDates);
+      this.endPicker.set("minDate", "today");
+      this.endPicker.clear();
+    }
 
     this.modal.classList.add("active");
   },
@@ -983,12 +1010,60 @@ const ReservationManager = {
     this.confirmBtn.disabled = false;
   },
 
-  handleSubmit(e) {
+  async handleSubmit(e) {
     e.preventDefault();
-    alert(
-      `Réservation confirmée pour le véhicule ${this.currentVehicle.brand} ${this.currentVehicle.model} du ${this.startDateInput.value} au ${this.endDateInput.value} !`,
-    );
-    this.closeModal();
+
+    if (!AuthenticationManager.isAuthenticated()) {
+      alert("Vous devez être connecté pour réserver un véhicule.");
+      AuthenticationManager.openModal("login");
+      return;
+    }
+
+    if (!this.currentVehicle || !this.currentVehicle.id) {
+      alert("Identifiant du véhicule introuvable.");
+      return;
+    }
+
+    const startDate = this.startDateInput.value;
+    const endDate = this.endDateInput.value;
+
+    if (!startDate || !endDate) {
+      this.errorMsg.textContent = "Veuillez sélectionner des dates de début et de fin.";
+      this.errorMsg.style.display = "block";
+      return;
+    }
+
+    try {
+      this.confirmBtn.disabled = true;
+      this.confirmBtn.textContent = "Réservation en cours...";
+
+      const token = AuthenticationManager.getToken();
+      const tokenWithBearer = token.startsWith("Bearer ") ? token : `Bearer ${token}`;
+
+      const res = await createReservation(this.currentVehicle.id, startDate, endDate, tokenWithBearer);
+
+      if (res && res.id) {
+        alert(
+          `Réservation #${res.id} confirmée avec succès pour le véhicule ${this.currentVehicle.brand} ${this.currentVehicle.model} du ${startDate} au ${endDate} !`
+        );
+        this.closeModal();
+
+        // Si la liste des réservations est présente sur la page, la rafraîchir
+        if (this.myReservationsList) {
+          this.displayMyReservations();
+        }
+      } else {
+        this.errorMsg.textContent = "Impossible de créer la réservation. Veuillez vérifier vos dates.";
+        this.errorMsg.style.display = "block";
+      }
+    } catch (err) {
+      console.error("Erreur lors de la réservation :", err);
+      this.errorMsg.textContent = "Une erreur est survenue lors de la réservation.";
+      this.errorMsg.style.display = "block";
+    } finally {
+      this.confirmBtn.disabled = false;
+      this.confirmBtn.textContent = "Confirmer la réservation";
+    }
   },
 
   async displayMyReservations() {

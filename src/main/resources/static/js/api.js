@@ -30,6 +30,10 @@ export async function getVehicleById(id) {
 }
 
 /* RESERVATIONS */
+export async function getUnavailableDates(vehicleId) {
+    return await getData(`/api/reservations/vehicle/${vehicleId}/unavailable-dates`);
+}
+
 export async function getMyReservations(auth_token=null) {
     if (!auth_token) {
         throw new Error("No token provided");
@@ -42,7 +46,7 @@ export async function createReservation(vehicleId, startDate, endDate, auth_toke
         throw new Error("No token provided");
     }
     const payload = {
-        vehicle_id: vehicleId,
+        vehicleId: vehicleId,
         startDate: startDate,
         endDate: endDate,
     }
@@ -55,7 +59,7 @@ export async function cancelReservation(reservationId, auth_token=null) {
         throw new Error("No token provided");
     }
 
-    return await getData(`/api/reservations/${reservationId}`, auth_token);
+    return await putData(`/api/reservations/me/${reservationId}`, {}, auth_token);
 }
 
 /* USERS & AUTH */
