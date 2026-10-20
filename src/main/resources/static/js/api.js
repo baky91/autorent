@@ -2,8 +2,27 @@
 const BASE_API_URL = ""; // Si la page est servie par le serveur contenant l'API REST, on a pas besoin de spécifier le host et le port
 
 /* VEHICLES */
-export async function getAllVehicles() {
-    return await getData("/api/vehicles");
+export async function getVehicles(count = null, startDate = null, endDate = null) {
+    let endpoint = "/api/vehicles";
+
+    // Construction des paramètres de la requête
+    const params = new URLSearchParams();
+    if (count) {
+        params.append("count", count);
+    }
+    if (startDate) {
+        params.append("startDate", startDate);
+    }
+    if (endDate) {
+        params.append("endDate", endDate);
+    }
+
+    // Ajout des paramètres à l'endpoint s'il y en a
+    if (params.toString()) {
+        endpoint += `?${params.toString()}`;
+    }
+
+    return await getData(endpoint);
 }
 
 export async function getVehicleById(id) {

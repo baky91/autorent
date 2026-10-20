@@ -1,4 +1,4 @@
-import { getAllVehicles, loginUser, registerUser, logoutUser, getMyReservations } from "./api.js";
+import { getVehicles, loginUser, registerUser, logoutUser, getMyReservations } from "./api.js";
 
 // const BASE_API_URL = "http://localhost:8080";
 const BASE_API_URL = ""; // Si la page est servie par le serveur contenant l'API REST, on a pas besoin de spécifier le host et le port
@@ -495,6 +495,14 @@ const CatalogManager = {
     this.catalogGrid = document.getElementById("vehicles-grid");
     // Si la grille du catalogue n'est pas présente sur la page, on ne fait rien (pas de requête vers /api/vehicles)
     if (!this.catalogGrid) return;
+    
+    // Si c'est la page d'accueil, on affiche trois véhicules actuellement disponibles
+    if (window.location.pathname === "/") {
+      const today = new Date().toISOString().split('T')[0];
+      const vehicles = await getVehicles(3, today, today);
+      this.displayVehicles(vehicles);
+      return;
+    }
 
     this.vehiclesCount = document.getElementById("vehicles-count-value");
     
@@ -555,7 +563,7 @@ const CatalogManager = {
     // Initialisation Flatpickr pour les filtres de dates
     this.initDatePickers();
 
-    this.vehicles = await getAllVehicles();
+    this.vehicles = await getVehicles();
     this.displayVehicles(this.vehicles);
   },
 
@@ -598,7 +606,7 @@ const CatalogManager = {
     if (!this.catalogGrid) return;
 
     this.catalogGrid.innerHTML = "";
-    this.vehiclesCount.innerText = "0";
+    if (this.vehiclesCount) this.vehiclesCount.innerText = "0";
 
     vehiclesList.forEach((vehicle) => {
       const brand = vehicle.brand;
@@ -688,7 +696,14 @@ const CatalogManager = {
               <span class="price-value">${dailyPrice}€</span>
               <span class="price-period">${priceLabel}</span>
             </div>
-            <button class="btn btn-primary btn-open-reservation">Réserver</button>
+            <div class="action-wrapper">
+              ${isCurrentlyAvailable ? ``: `
+                <div class="tooltip-container">
+                  <span class="tooltip-icon">i</span>
+                  <div class="tooltip-text">Ce véhicule est actuellement loué, mais vous pouvez le réserver pour des dates ultérieures.</div>
+                </div>`}
+              <button class="btn btn-primary btn-open-reservation">Réserver</button>
+            </div>
           </div>
         </div>
       `;
@@ -697,7 +712,7 @@ const CatalogManager = {
     });
     
     // Mise à jour du compteur
-    this.vehiclesCount.innerText = vehiclesList.length;
+    if (this.vehiclesCount) this.vehiclesCount.innerText = vehiclesList.length;
 
     ReservationManager.bindButtons();
 
