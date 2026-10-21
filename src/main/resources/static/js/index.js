@@ -643,6 +643,14 @@ const CatalogManager = {
     this.catalogGrid.innerHTML = "";
     if (this.vehiclesCount) this.vehiclesCount.innerText = "0";
 
+    if (vehiclesList === null) {
+      this.catalogGrid.innerHTML = "<p>Une erreur s'est produite lors du chargement des véhicules.</p>"
+    }
+
+    if (vehiclesList.length === 0) {
+      this.catalogGrid.innerHTML = "<p>Il n'y a aucun véhicule dans le catalogue.</p>"
+    }
+
     vehiclesList.forEach((vehicle) => {
       this.createOrReplaceVehicleCard(vehicle);
     });
