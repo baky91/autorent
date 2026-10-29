@@ -6,6 +6,7 @@ import {
   getMyReservations,
   getUnavailableDates,
   createReservation,
+  cancelReservation,
 } from "./api.js";
 
 // const BASE_API_URL = "http://localhost:8080";
@@ -1216,7 +1217,8 @@ const ReservationManager = {
     const categories = {
       current: [],
       incomming: [],
-      finished: []
+      finished: [],
+      cancelled: []
     }
 
     reservations.forEach((reservation) => {
@@ -1226,12 +1228,16 @@ const ReservationManager = {
       startDate.setHours(0, 0, 0, 0)
       endDate.setHours(0, 0, 0, 0)
 
-      if (endDate < today) {
+      if (reservation.status === "CANCELLED"){
+        categories.cancelled.push(reservation)
+      }
+      else if (endDate < today) {
         categories.finished.push(reservation)
       } else if (startDate <= today && today <= endDate) {
         categories.current.push(reservation)
       } else {
-        categories.incomming.push(reservation)
+        // Placement au début de la liste pour afficher d'abord les réservations les plus proches dans le temps
+        categories.incomming.unshift(reservation)
       }
     })
 
@@ -1240,6 +1246,7 @@ const ReservationManager = {
       {key: "current", label: "Réservations en cours"},
       {key: "incomming", label: "Réservations à venir"},
       {key: "finished", label: "Réservations terminées"},
+      {key: "cancelled", label: "Réservations annulées"}
     ]
 
     // Affichage des sections et des réservations
@@ -1279,8 +1286,8 @@ const ReservationManager = {
           daysLeftText = `<span class="days-left text-gray">Terminée</span>`;
         }
 
-        const cancelButtonHtml = (section.key === "incomming") 
-          ? `<button type="button" class="btn-cancel-reservation">
+        const cancelButtonHtml = (section.key === "incomming")
+          ? `<button type="button" class="btn-cancel-reservation" data-id="${reservation.id}">
               ${IconsManager.getIconSvg("cancel")} <span>Annuler la réservation</span>
              </button>`
           : "";
@@ -1335,7 +1342,31 @@ const ReservationManager = {
 
       })
     });
+
+    this.myReservationsList.addEventListener("click", async (e) => {
+      const cancelButton = e.target.closest(".btn-cancel-reservation")
+
+      if (cancelButton) {
+        const resId = cancelButton.dataset.id
+
+        const confirmed = confirm(`Voulez-vous vraiment annuler la réservation #${resId}`)
+
+        if (confirmed) {
+          const data = await cancelReservation(resId, tokenWithBearer)
+        
+          console.log(`La réservation #${resId} a bien été annulée`)
+        }
+
+      }
+
+    })
+
   },
+
+  async handleCancel() {
+    console.log("Cancel reservation")
+  }
+
 };
 
 function onAuthStateChanged() {
