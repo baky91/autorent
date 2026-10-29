@@ -1,8 +1,10 @@
 package com.baky91.autorent.repository;
 
 import com.baky91.autorent.model.Reservation;
+import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import java.time.LocalDate;
@@ -24,4 +26,13 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long> 
            "AND r.endDate >= :today")
     List<Reservation> findActiveReservationsForVehicleFromDate(@Param("vehicleId") Long vehicleId, 
                                                                @Param("today") LocalDate today);
+
+    @Transactional
+    @Modifying
+    @Query("UPDATE Reservation r SET r.status = :newStatus WHERE r.status = :oldStatus AND r.endDate <= :today")
+    int markConfirmedReservationAsCompleted(
+            @Param("oldStatus") Reservation.Status oldStatus,
+            @Param("newStatus") Reservation.Status newStatus,
+            @Param("today") LocalDate today
+    );
 }
