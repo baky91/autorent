@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>AutoRent - Location de Véhicules en Ligne</title>
+    <title data-i18n="head.home.title"></title>
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -46,9 +46,9 @@
 
             <!-- Navigation Links -->
             <nav class="nav-menu">
-                <a href="/" class="nav-link active">Accueil</a>
-                <a href="/vehicles" class="nav-link">Véhicules</a>
-                <a href="/reservations" class="nav-link">Réservations</a>
+                <a href="/" class="nav-link active" data-i18n="nav.home">Accueil</a>
+                <a href="/vehicles" class="nav-link" data-i18n="nav.vehicles">Véhicules</a>
+                <a href="/reservations" class="nav-link" data-i18n="nav.reservations">Réservations</a>
 
                 <!-- Mobile Menu Actions (visible uniquement sur mobile dans le tiroir) -->
                 <div class="mobile-menu-actions">
@@ -57,7 +57,7 @@
                             <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
                             <circle cx="12" cy="7" r="4"></circle>
                         </svg>
-                        <span>Connexion / Inscription</span>
+                        <span data-i18n="nav.login-register"></span>
                     </button>
 
                     <div class="mobile-menu-tools">
@@ -70,7 +70,7 @@
                             <svg class="theme-icon moon-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
                             </svg>
-                            <span class="tool-label">Mode Sombre / Clair</span>
+                            <span class="tool-label" data-i18n="nav.switch-theme"></span>
                         </button>
 
                         <!-- Langue (Mobile) -->
@@ -119,7 +119,7 @@
                         <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
                         <circle cx="12" cy="7" r="4"></circle>
                     </svg>
-                    <span class="btn-login-text">Connexion / Inscription</span>
+                    <span class="btn-login-text" data-i18n="nav.login-register">Connexion / Inscription</span>
                 </button>
 
                 <!-- Mobile Menu Toggle -->
@@ -139,13 +139,12 @@
         <section class="hero-section">
             <div class="container hero-content">
 
-                <h1 class="hero-title">Location de véhicules en ligne</h1>
-                <p class="hero-subtitle">Trouvez le véhicule parfait pour vos besoins et réservez directement en ligne.
-                </p>
+                <h1 class="hero-title" data-i18n="hero.title"></h1>
+                <p class="hero-subtitle" data-i18n="hero.subtitle"></p>
 
                 <div class="hero-actions">
                     <a href="/vehicles" class="btn">
-                        Explorer les véhicules
+                        <span data-i18n="hero.action.explore"></span>
                         <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                             stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                             <path d="M5 12h14"></path>
@@ -161,13 +160,12 @@
                                 <path d="m13 6 6 6-6 6"></path>
                             </g>
                         </svg>
-                        Comment ça marche
+                        <span data-i18n="home.how-it-works"></span>
                     </button>
 
                 </div>
 
                 <div class="hero-calculator">
-
                 </div>
 
             </div>

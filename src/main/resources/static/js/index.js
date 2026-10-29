@@ -9,6 +9,7 @@ import {
   cancelReservation,
   getVehicleById,
 } from "./api.js";
+import { TRANSLATIONS } from "./translations.js";
 
 // const BASE_API_URL = "http://localhost:8080";
 const BASE_API_URL = ""; // Si la page est servie par le serveur contenant l'API REST, on a pas besoin de spécifier le host et le port
@@ -431,23 +432,43 @@ const ThemeManager = {
 };
 
 const LanguageManager = {
-  currentLang: "FR",
+  STORAGE_KEY: "autorent_lang",
+
   init() {
-    const langBtns = document.querySelectorAll(".btn-lang-toggle");
-    langBtns.forEach((btn) => {
-      btn.addEventListener("click", () => {
-        this.currentLang = this.currentLang === "FR" ? "EN" : "FR";
-        const langText = document.getElementById("current-lang");
-        if (langText) langText.textContent = this.currentLang;
-        const mobileLabels = document.querySelectorAll(
-          ".mobile-tool-btn.btn-lang-toggle .tool-label",
-        );
-        mobileLabels.forEach(
-          (lbl) => (lbl.textContent = `Langue (${this.currentLang})`),
-        );
-      });
-    });
+    const savedLang = localStorage.getItem(this.STORAGE_KEY) || "fr";
+
+    this.applyLanguage(savedLang);
+
+    const langSelect = document.getElementById("lang-select")
+    if (langSelect) {
+      langSelect.value = savedLang
+      langSelect.addEventListener("change", (e) => {
+        const lang = e.target.value
+        this.applyLanguage(lang)
+      })
+    }
   },
+
+  applyLanguage(lang) {
+    console.log(lang)
+    const elements = document.querySelectorAll('[data-i18n]')
+
+    elements.forEach(element => {
+      const key = element.getAttribute("data-i18n")
+      if (TRANSLATIONS[lang] && TRANSLATIONS[lang][key]) {
+        element.textContent = TRANSLATIONS[lang][key]
+      }
+    });
+
+    document.documentElement.lang = lang
+    localStorage.setItem(this.STORAGE_KEY, lang)
+
+  },
+
+  currentLang() {
+    return localStorage.getItem(this.STORAGE_KEY)
+  }
+
 };
 
 const IconsManager = {
@@ -718,11 +739,11 @@ const CatalogManager = {
           </div>`;
 
     const powerUnit =
-      LanguageManager.currentLang.toLowerCase() === "fr" ? "ch" : "hp";
+      LanguageManager.currentLang().toLowerCase() === "fr" ? "ch" : "hp";
     const seatsLabel =
-      LanguageManager.currentLang.toLowerCase() === "fr" ? "places" : "seats";
+      LanguageManager.currentLang().toLowerCase() === "fr" ? "places" : "seats";
     const priceLabel =
-      LanguageManager.currentLang.toLowerCase() === "fr" ? "/ jour" : "/ day";
+      LanguageManager.currentLang().toLowerCase() === "fr" ? "/ jour" : "/ day";
 
     vehicleCard.innerHTML = `
         <div class="vehicle-card-media">
