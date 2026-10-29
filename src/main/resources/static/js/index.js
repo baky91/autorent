@@ -1362,6 +1362,9 @@ const ReservationManager = {
           const data = await cancelReservation(resId, tokenWithBearer)
         
           console.log(`La réservation #${resId} a bien été annulée`)
+
+          // TODO: logique de raffraichissement, éviter de scroll tout en haut
+          this.displayMyReservations()
         }
 
       }
