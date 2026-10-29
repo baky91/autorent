@@ -1182,8 +1182,7 @@ const ReservationManager = {
     }
   },
 
-  // TODO: Trier les réservation par date de début décroissant
-  // TODO: Faire une ligne démarquant les réservations terminée (date de fin < date du jour)
+  // TODO: Faire des lignes démarquant les réservations terminée (date de fin < date du jour), les réservations en cours (date debut <= date du jour <= date fin) et les réservations à venir
   // TODO: Pour chaque réservation, on affiche le nombre de jours restants (arrondi à l'entier supérieur)
   // TODO: Si la réservation n'a pas encore commencé, on garde le bouton "Annuler"
   async displayMyReservations() {
