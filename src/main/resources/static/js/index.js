@@ -1182,9 +1182,6 @@ const ReservationManager = {
     }
   },
 
-  // TODO: Faire des lignes démarquant les réservations terminée (date de fin < date du jour), les réservations en cours (date debut <= date du jour <= date fin) et les réservations à venir
-  // TODO: Pour chaque réservation, on affiche le nombre de jours restants (arrondi à l'entier supérieur)
-  // TODO: Si la réservation n'a pas encore commencé, on garde le bouton "Annuler"
   async displayMyReservations() {
     this.myReservationsList.innerHTML = "";
     const jwt_token = localStorage.getItem(AuthenticationManager.tokenKey);
@@ -1199,8 +1196,6 @@ const ReservationManager = {
       : `Bearer ${jwt_token}`;
     const reservations = await getMyReservations(tokenWithBearer);
 
-    // console.log(reservations);
-
     if (reservations === null) {
       this.myReservationsList.innerHTML =
         "<p>Une erreur s'est produite lors du chargement de vos réservations.</p>";
@@ -1213,65 +1208,132 @@ const ReservationManager = {
       return;
     }
 
+    // Initialisation de la date du jour à minuit pour une comparaison juste
+    const today = new Date()
+    today.setHours(0, 0, 0, 0)
+
+    // Groupement des réservations par statut temporel
+    const categories = {
+      current: [],
+      incomming: [],
+      finished: []
+    }
+
     reservations.forEach((reservation) => {
-      const reservationElement = document.createElement("article");
-      reservationElement.classList.add("reservation-card");
-
-      const vehicle = reservation.vehicle;
-
       const startDate = new Date(reservation.startDate);
       const endDate = new Date(reservation.endDate);
-      const diffTime = Math.abs(endDate - startDate);
-      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) + 1;
 
-      reservationElement.innerHTML = `
-        <div class="reservation-media">
-          <img src="${vehicle.imagePath}" alt="${vehicle.brand} ${vehicle.model}" class="reservation-img">
-        </div>
-        <div class="reservation-content">
-          <div class="reservation-header-info">
-            <div class="reservation-title-group">
-              <span class="reservation-id">#${reservation.id}</span>
-              <h2 class="reservation-vehicle-name">${vehicle.brand} ${vehicle.model}</h2>
-              <button type="button" class="btn-vehicle-details" title="Voir les détails du véhicule">
-                ${IconsManager.getIconSvg("info")} <span>Voir les détails</span>
-              </button>
-            </div>
-            <span class="reservation-status status-${reservation.status.toLowerCase()}">
-              <span class="status-dot"></span>
-              ${reservation.status}
-            </span>
+      startDate.setHours(0, 0, 0, 0)
+      endDate.setHours(0, 0, 0, 0)
+
+      if (endDate < today) {
+        categories.finished.push(reservation)
+      } else if (startDate <= today && today <= endDate) {
+        categories.current.push(reservation)
+      } else {
+        categories.incomming.push(reservation)
+      }
+    })
+
+    // Structure pour itérer proprement sur les catégories et ajouter les lignes démarcation
+    const sections = [
+      {key: "current", label: "Réservations en cours"},
+      {key: "incomming", label: "Réservations à venir"},
+      {key: "finished", label: "Réservations terminées"},
+    ]
+
+    // Affichage des sections et des réservations
+    sections.forEach(section => {
+      const list = categories[section.key]
+      if (list.length === 0) return
+
+      const sectionHeader = document.createElement("div");
+      sectionHeader.className = `reservation-section-title`;
+      sectionHeader.innerHTML = `<h3>${section.label} (${list.length})</h3><hr>`;
+      this.myReservationsList.appendChild(sectionHeader);
+
+      // Génération des lignes de réservations
+      list.forEach(reservation => {
+        const reservationElement = document.createElement("article");
+        reservationElement.classList.add("reservation-card");
+    
+        const vehicle = reservation.vehicle;
+        const startDate = new Date(reservation.startDate)
+        const endDate = new Date(reservation.endDate)
+
+        const diffTime = Math.abs(endDate - startDate);
+        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) + 1;
+        
+        // Calcul du nombre de jours restant
+        let daysLeftText = ""
+        const diffTimeLeft = endDate - today
+        const diffDaysLeft = Math.ceil(diffTimeLeft / (1000 * 60 * 60 * 24))
+
+        if (section.key === "current") {
+          daysLeftText = `<span class="days-left text-orange">${diffDaysLeft} jour(s) restant(s)</span>`;
+        } else if (section.key === "incomming") {
+          const diffTimeBeforeStart = startDate - today;
+          const diffDaysBeforeStart = Math.ceil(diffTimeBeforeStart / (1000 * 60 * 60 * 24));
+          daysLeftText = `<span class="days-left text-blue">Débute dans ${diffDaysBeforeStart} jour(s)</span>`;
+        } else {
+          daysLeftText = `<span class="days-left text-gray">Terminée</span>`;
+        }
+
+        const cancelButtonHtml = (section.key === "incomming") 
+          ? `<button type="button" class="btn-cancel-reservation">
+              ${IconsManager.getIconSvg("cancel")} <span>Annuler la réservation</span>
+             </button>`
+          : "";
+
+        reservationElement.innerHTML = `
+          <div class="reservation-media">
+            <img src="${vehicle.imagePath}" alt="${vehicle.brand} ${vehicle.model}" class="reservation-img">
           </div>
-          <div class="reservation-body-info">
-            <div class="reservation-dates-group">
-              <div class="date-item">
-                ${IconsManager.getIconSvg("calendar")}
-                <div class="date-text">
-                  <span class="date-label">Date de début</span>
-                  <strong class="date-value">${reservation.startDate}</strong>
-                </div>
+          <div class="reservation-content">
+            <div class="reservation-header-info">
+              <div class="reservation-title-group">
+                <span class="reservation-id">#${reservation.id}</span>
+                <h2 class="reservation-vehicle-name">${vehicle.brand} ${vehicle.model}</h2>
+                <button type="button" class="btn-vehicle-details" title="Voir les détails du véhicule">
+                  ${IconsManager.getIconSvg("info")} <span>Voir les détails</span>
+                </button>
               </div>
-              <div class="date-arrow">
-                ${IconsManager.getIconSvg("leftArrow")}
-              </div>
-              <div class="date-item">
-                ${IconsManager.getIconSvg("calendar")}
-                <div class="date-text">
-                  <span class="date-label">Date de fin</span>
-                  <strong class="date-value">${reservation.endDate}</strong>
-                </div>
-              </div>
-              <span class="reservation-duration-badge">${diffDays} jours &bull; ${reservation.totalPrice} €</span>
+              <span class="reservation-status status-${reservation.status.toLowerCase()}">
+                <span class="status-dot"></span>
+                ${reservation.status}
+              </span>
             </div>
-            <div class="reservation-actions">
-              <button type="button" class="btn-cancel-reservation">
-                ${IconsManager.getIconSvg("cancel")} <span>Annuler la réservation</span>
-              </button>
+            <div class="reservation-body-info">
+              <div class="reservation-dates-group">
+                <div class="date-item">
+                  ${IconsManager.getIconSvg("calendar")}
+                  <div class="date-text">
+                    <span class="date-label">Date de début</span>
+                    <strong class="date-value">${reservation.startDate}</strong>
+                  </div>
+                </div>
+                <div class="date-arrow">
+                  ${IconsManager.getIconSvg("leftArrow")}
+                </div>
+                <div class="date-item">
+                  ${IconsManager.getIconSvg("calendar")}
+                  <div class="date-text">
+                    <span class="date-label">Date de fin</span>
+                    <strong class="date-value">${reservation.endDate}</strong>
+                  </div>
+                </div>
+                <span class="reservation-duration-badge">${diffDays} jours &bull; ${reservation.totalPrice} €</span>
+                ${daysLeftText}
+              </div>
+              <div class="reservation-actions">
+                ${cancelButtonHtml}
+              </div>
             </div>
           </div>
-        </div>
-      `;
-      this.myReservationsList.appendChild(reservationElement);
+        `;
+        this.myReservationsList.appendChild(reservationElement);
+
+      })
     });
   },
 };
