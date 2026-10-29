@@ -7,6 +7,7 @@ import {
   getUnavailableDates,
   createReservation,
   cancelReservation,
+  getVehicleById,
 } from "./api.js";
 
 // const BASE_API_URL = "http://localhost:8080";
@@ -527,7 +528,7 @@ const CatalogManager = {
     if (!this.catalogGrid) return;
 
     // Si c'est la page d'accueil, on affiche trois véhicules actuellement disponibles
-    if (window.location.pathname === "/") {
+    if (window.location.pathname === "/" || window.location.pathname === "/index.html") {
       const today = new Date().toISOString().split("T")[0];
       const vehicles = await getVehicles(3, today, today);
       this.displayVehicles(vehicles);
@@ -669,7 +670,6 @@ const CatalogManager = {
 
     if (existingCard) {
       vehicleCard = existingCard;
-      vehicleCard.innerHTML = "";
     } else {
       vehicleCard = document.createElement("article");
       vehicleCard.classList.add("vehicle-card");
@@ -779,7 +779,12 @@ const CatalogManager = {
         </div>
       `;
 
-    this.catalogGrid.appendChild(vehicleCard);
+    if (!existingCard) {
+      this.catalogGrid.appendChild(vehicleCard);
+    }
+
+    ReservationManager.bindButtons()
+
   },
 
   onApplyFilters(formElement = this.filtersForm) {
@@ -1165,7 +1170,9 @@ const ReservationManager = {
 
         // Mettre à jour l'affichage de la voiture présente dans le catalogue
         if (CatalogManager.catalogGrid) {
-          CatalogManager.createOrReplaceVehicleCard(res.vehicle);
+          // TODO: ? modifier le DTO de Reservation pour renvoyer le véhicule avec les changements
+          const vehicle = await getVehicleById(res.vehicle.id)
+          CatalogManager.createOrReplaceVehicleCard(vehicle);
         }
       } else {
         this.errorMsg.textContent =
