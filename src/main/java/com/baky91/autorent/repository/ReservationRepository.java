@@ -9,7 +9,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 public interface ReservationRepository extends JpaRepository<Reservation, Long> {
-    List<Reservation> findByUserId(Long userId);
+    List<Reservation> findByUserIdOrderByStartDateDesc(Long userId);
 
     @Query("SELECT CASE WHEN COUNT(r) > 0 THEN true ELSE false END FROM Reservation r " +
            "WHERE r.vehicle.id = :vehicleId " +

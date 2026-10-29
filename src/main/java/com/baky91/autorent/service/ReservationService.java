@@ -43,7 +43,7 @@ public class ReservationService {
     }
 
     public List<ReservationDTO.Output> getReservationsByUserId(Long userId) {
-        return reservationRepository.findByUserId(userId)
+        return reservationRepository.findByUserIdOrderByStartDateDesc(userId)
                                     .stream()
                                     .map(Reservation::toDto)
                                     .toList();
