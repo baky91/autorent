@@ -15,7 +15,7 @@ Toutes les étapes entre le téléchargement et l'affichage de la page.
 | Outil | Version | Usage |
 | --- | --- | --- |
 | JDK | 21 | Exécution du serveur |
-| Python 3 + paquet `bcrypt` **ou** SQLite (`sqlite3`) | — | Remplissage de la base : `init_db.py` (Python) **ou** `data/init_data.sql` (sans Python) |
+| Python 3 + paquet `bcrypt` **ou** SQLite (`sqlite3`) | — | Remplissage de la base : `init_db.py` (Python) **ou** `init_db.sql` (sans Python) |
 | Connexion Internet | — | Chargement des polices Google Fonts et du calendrier Flatpickr (CDN) |
 
 Maven n'est **pas** à installer : le wrapper `mvnw` / `mvnw.cmd` fourni télécharge ce qu'il faut.
@@ -36,13 +36,13 @@ Maven n'est **pas** à installer : le wrapper `mvnw` / `mvnw.cmd` fourni téléc
    ```
    Ensuite, passer directement à l'étape 3.
 
-   **Option B — sans Python, avec le script SQL `data/init_data.sql`** :
+   **Option B — sans Python, avec le script SQL `init_db.sql`** :
 
    Ce script ne crée pas les tables : c'est **Spring Boot (Hibernate) qui les crée au premier lancement du serveur**. Il doit donc être exécuté **après le premier lancement** :
    1. Lancer le serveur une première fois (étape 3), puis l'arrêter (`Ctrl+C`).
    2. Exécuter le script sur la base :
       ```bash
-      sqlite3 data/autorent.db < data/init_data.sql
+      sqlite3 data/autorent.db < init_db.sql
       ```
       (ou, sans ligne de commande, avec _DB Browser for SQLite_ : ouvrir `data/autorent.db`, onglet « Exécuter le SQL », coller le contenu du fichier, puis « Écrire les modifications ».)
    3. Relancer le serveur. Ce redémarrage est nécessaire : le serveur met la liste des véhicules en cache et ne voit pas les modifications faites directement dans la base.
@@ -152,7 +152,7 @@ Le serveur suit l'architecture en couches classique de Spring (_controller → s
 | `pom.xml` | Dépendances Maven (Spring Boot 4.1.1, JPA, Security, validation, JWT, SQLite) et version de Java (21) |
 | `mvnw`, `mvnw.cmd`, `.mvn/` | Wrapper Maven : lance le projet sans installer Maven |
 | `init_db.py` | Crée les tables SQLite et insère les données initiales (mots de passe hachés BCrypt) |
-| `data/init_data.sql` | Même jeu de données en SQL pur, pour une exécution sans Python (à lancer après le premier démarrage du serveur, qui crée les tables) |
+| `init_db.sql` | Même jeu de données en SQL pur, pour une exécution sans Python (à lancer après le premier démarrage du serveur, qui crée les tables) |
 | `src/main/resources/application.properties` | Port 8080, chemin de la base SQLite, clé et durée de vie du JWT |
 | `docs/` | Cahier des charges, schéma relationnel, diagramme de cas d'utilisation, sujet |
 
@@ -193,7 +193,7 @@ Le serveur suit l'architecture en couches classique de Spring (_controller → s
 
 ## 5. Base de données
 
-SQLite, fichier `data/autorent.db`. Les tables sont créées automatiquement par Spring Boot (Hibernate, `ddl-auto=update`) au premier lancement du serveur, ou par `init_db.py`. Les données initiales viennent de `init_db.py` ou de `data/init_data.sql`.
+SQLite, fichier `data/autorent.db`. Les tables sont créées automatiquement par Spring Boot (Hibernate, `ddl-auto=update`) au premier lancement du serveur, ou par `init_db.py`. Les données initiales viennent de `init_db.py` ou de `init_db.sql`.
 
 ![Schéma relationnel](docs/schema_relationnel.jpg)
 
@@ -211,7 +211,7 @@ SQLite, fichier `data/autorent.db`. Les tables sont créées automatiquement par
 4. Une réservation ne peut être annulée que par son propriétaire, au moins un jour avant son début.
 5. Les réservations confirmées dont la date de fin est passée sont marquées `COMPLETED` chaque jour à 18 h.
 
-> Le dossier `data/scripts/` contient d'anciens scripts SQL d'un schéma antérieur ; ils ne sont **pas** utilisés. Les références sont `init_db.py` et `data/init_data.sql`.
+> Le dossier `data/scripts/` contient d'anciens scripts SQL d'un schéma antérieur ; ils ne sont **pas** utilisés. Les références sont `init_db.py` et `init_db.sql`.
 
 ---
 

@@ -7,7 +7,8 @@
 --      (users, vehicles, reservations) dans data/autorent.db.
 --   2. Arrêter le serveur.
 --   3. Exécuter ce script sur data/autorent.db, par exemple :
---        sqlite3 data/autorent.db < data/init_data.sql
+--        sqlite3 data/autorent.db < init_db.sql
+--      (commande à lancer depuis la racine du projet, là où se trouve ce fichier)
 --      (ou avec « DB Browser for SQLite » : Fichier > Importer, ou onglet
 --       « Exécuter le SQL » puis coller le contenu de ce fichier).
 --   4. Relancer le serveur (nécessaire : le serveur garde la liste des
