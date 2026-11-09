@@ -139,12 +139,15 @@ const AuthenticationManager = {
 
   bindEvents() {
     this.loginBtns.forEach((btn) => {
-      btn.addEventListener("click", () => {
+      btn.addEventListener("click", async () => {
         if (this.isAuthenticated()) {
           const username = this.getUsername();
-          if (
-            confirm(LanguageManager.t("auth.logout-confirm", username))
-          ) {
+          const confirmed = await ConfirmManager.ask({
+            title: LanguageManager.t("auth.logout-title"),
+            message: LanguageManager.t("auth.logout-confirm", username),
+            confirmLabel: LanguageManager.t("auth.logout-submit"),
+          });
+          if (confirmed) {
             this.logout();
           }
         } else {
@@ -396,6 +399,130 @@ const AuthenticationManager = {
         label.textContent = LanguageManager.t("nav.login-register");
       }
     });
+  },
+};
+
+// Notifications non bloquantes affichées dans l'interface (remplace alert())
+const ToastManager = {
+  DURATION_MS: 5000,
+
+  getContainer() {
+    let container = document.getElementById("toast-container");
+    if (!container) {
+      container = document.createElement("div");
+      container.id = "toast-container";
+      container.className = "toast-container";
+      container.setAttribute("role", "status");
+      container.setAttribute("aria-live", "polite");
+      document.body.appendChild(container);
+    }
+    return container;
+  },
+
+  // type : "success" | "error" | "warning" | "info"
+  show(message, type = "info") {
+    const toast = document.createElement("div");
+    toast.className = `toast toast-${type}`;
+
+    const text = document.createElement("span");
+    text.className = "toast-message";
+    text.textContent = message;
+
+    const closeBtn = document.createElement("button");
+    closeBtn.type = "button";
+    closeBtn.className = "toast-close";
+    closeBtn.innerHTML = "&times;";
+    closeBtn.setAttribute("aria-label", LanguageManager.t("common.close"));
+
+    toast.append(text, closeBtn);
+    this.getContainer().appendChild(toast);
+
+    // Déclenche la transition d'entrée
+    requestAnimationFrame(() => toast.classList.add("visible"));
+
+    let timer = setTimeout(() => this.dismiss(toast), this.DURATION_MS);
+    // Pause du compte à rebours tant que la souris survole le message
+    toast.addEventListener("mouseenter", () => clearTimeout(timer));
+    toast.addEventListener("mouseleave", () => {
+      timer = setTimeout(() => this.dismiss(toast), this.DURATION_MS);
+    });
+    closeBtn.addEventListener("click", () => this.dismiss(toast));
+  },
+
+  dismiss(toast) {
+    toast.classList.remove("visible");
+    toast.addEventListener("transitionend", () => toast.remove(), { once: true });
+    // Filet de sécurité si la transition ne se déclenche pas
+    setTimeout(() => toast.remove(), 400);
+  },
+};
+
+// Boîte de dialogue de confirmation dans l'interface (remplace confirm())
+// Usage : const ok = await ConfirmManager.ask({ title, message, confirmLabel, danger });
+const ConfirmManager = {
+  overlay: null,
+  resolver: null,
+
+  build() {
+    const overlay = document.createElement("div");
+    overlay.className = "modal-overlay confirm-overlay";
+    overlay.innerHTML = `
+      <div class="modal-content confirm-modal-content" role="alertdialog" aria-modal="true" aria-labelledby="confirm-title" aria-describedby="confirm-message">
+        <h3 id="confirm-title" class="confirm-title"></h3>
+        <p id="confirm-message" class="confirm-message"></p>
+        <div class="confirm-actions">
+          <button type="button" class="btn btn-ghost" id="confirm-cancel-btn"></button>
+          <button type="button" class="btn btn-primary" id="confirm-accept-btn"></button>
+        </div>
+      </div>
+    `;
+    document.body.appendChild(overlay);
+    this.overlay = overlay;
+
+    this.titleEl = overlay.querySelector("#confirm-title");
+    this.messageEl = overlay.querySelector("#confirm-message");
+    this.cancelBtn = overlay.querySelector("#confirm-cancel-btn");
+    this.acceptBtn = overlay.querySelector("#confirm-accept-btn");
+
+    this.cancelBtn.addEventListener("click", () => this.close(false));
+    this.acceptBtn.addEventListener("click", () => this.close(true));
+    overlay.addEventListener("click", (e) => {
+      if (e.target === overlay) this.close(false);
+    });
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && overlay.classList.contains("active")) {
+        this.close(false);
+      }
+    });
+  },
+
+  // Renvoie une Promise résolue à true (confirmé) ou false (annulé / fermé)
+  ask({ title = "", message = "", confirmLabel, danger = false } = {}) {
+    if (!this.overlay) this.build();
+    if (this.resolver) this.close(false); // une seule question à la fois
+
+    this.titleEl.textContent = title;
+    this.titleEl.style.display = title ? "" : "none";
+    this.messageEl.textContent = message;
+    this.cancelBtn.textContent = LanguageManager.t("confirm.back");
+    this.acceptBtn.textContent = confirmLabel || LanguageManager.t("confirm.accept");
+    this.acceptBtn.classList.toggle("btn-danger", danger);
+    this.acceptBtn.classList.toggle("btn-primary", !danger);
+
+    this.overlay.classList.add("active");
+    // Focus sur "Retour" : une validation accidentelle avec Entrée n'a pas d'effet destructeur
+    this.cancelBtn.focus();
+
+    return new Promise((resolve) => {
+      this.resolver = resolve;
+    });
+  },
+
+  close(result) {
+    this.overlay.classList.remove("active");
+    const resolve = this.resolver;
+    this.resolver = null;
+    if (resolve) resolve(result);
   },
 };
 
@@ -1237,13 +1364,13 @@ const ReservationManager = {
     e.preventDefault();
 
     if (!AuthenticationManager.isAuthenticated()) {
-      alert(LanguageManager.t("modal.alert.login-required"));
+      ToastManager.show(LanguageManager.t("modal.alert.login-required"), "warning");
       AuthenticationManager.openModal("login");
       return;
     }
 
     if (!this.currentVehicle || !this.currentVehicle.id) {
-      alert(LanguageManager.t("modal.alert.vehicle-not-found"));
+      ToastManager.show(LanguageManager.t("modal.alert.vehicle-not-found"), "error");
       return;
     }
 
@@ -1272,13 +1399,14 @@ const ReservationManager = {
       );
 
       if (res && res.id) {
-        alert(
+        ToastManager.show(
           LanguageManager.t("modal.alert.success", {
             id: res.id,
             vehicle: `${this.currentVehicle.brand} ${this.currentVehicle.model}`,
             start: startDate,
             end: endDate,
           }),
+          "success",
         );
         this.closeModal();
 
@@ -1475,7 +1603,13 @@ const ReservationManager = {
     if (!cancelButton || !cancelButton.dataset.id) return;
 
     const resId = cancelButton.dataset.id;
-    if (!confirm(LanguageManager.t("reservations.cancel-confirm", resId))) return;
+    const confirmed = await ConfirmManager.ask({
+      title: LanguageManager.t("reservations.cancel"),
+      message: LanguageManager.t("reservations.cancel-confirm", resId),
+      confirmLabel: LanguageManager.t("reservations.cancel-confirm-btn"),
+      danger: true,
+    });
+    if (!confirmed) return;
 
     // Token lu au moment du clic (il peut avoir changé depuis le dernier rendu)
     const token = localStorage.getItem(AuthenticationManager.tokenKey);
