@@ -47,9 +47,9 @@
 
             <!-- Navigation Links -->
             <nav class="nav-menu">
-                <a href="/" class="nav-link">Accueil</a>
-                <a href="/vehicles" class="nav-link active">Véhicules</a>
-                <a href="/reservations" class="nav-link">Réservations</a>
+                <a href="/" class="nav-link" data-i18n="nav.home">Accueil</a>
+                <a href="/vehicles" class="nav-link active" data-i18n="nav.vehicles">Véhicules</a>
+                <a href="/reservations" class="nav-link" data-i18n="nav.reservations">Réservations</a>
 
                 <!-- Mobile Menu Actions (visible uniquement sur mobile dans le tiroir) -->
                 <div class="mobile-menu-actions">
@@ -59,12 +59,12 @@
                             <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
                             <circle cx="12" cy="7" r="4"></circle>
                         </svg>
-                        <span>Connexion / Inscription</span>
+                        <span data-i18n="nav.login-register">Connexion / Inscription</span>
                     </button>
 
                     <div class="mobile-menu-tools">
                         <!-- Theme Toggle (Mobile) -->
-                        <button class="mobile-tool-btn btn-theme-toggle" type="button" aria-label="Changer de thème">
+                        <button class="mobile-tool-btn btn-theme-toggle" type="button" aria-label="Changer de thème" data-i18n-aria-label="nav.toggle-theme">
                             <svg class="theme-icon sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                 stroke-width="2">
                                 <circle cx="12" cy="12" r="4" />
@@ -75,21 +75,14 @@
                                 stroke-width="2">
                                 <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
                             </svg>
-                            <span class="tool-label">Mode Sombre / Clair</span>
+                            <span class="tool-label" data-i18n="nav.switch-theme">Mode Sombre / Clair</span>
                         </button>
 
                         <!-- Langue (Mobile) -->
-                        <button class="mobile-tool-btn btn-lang-toggle" type="button" aria-label="Changer de langue">
-                            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor"
-                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <circle cx="12" cy="12" r="10"></circle>
-                                <line x1="2" y1="12" x2="22" y2="12"></line>
-                                <path
-                                    d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z">
-                                </path>
-                            </svg>
-                            <span class="tool-label">Langue (FR)</span>
-                        </button>
+                        <select class="lang-select mobile-lang-select" aria-label="Langue" data-i18n-aria-label="nav.language">
+                            <option value="fr">&#x1f1eb;&#x1f1f7; Français</option>
+                            <option value="en">&#x1f1ec;&#x1f1e7; English</option>
+                        </select>
                     </div>
                 </div>
             </nav>
@@ -97,14 +90,15 @@
             <!-- Action Controls (Theme, Language, Auth) -->
             <div class="nav-actions">
                 <!-- Language Switcher (Desktop) -->
-                <button class="btn-icon header-tool btn-lang-toggle" id="btn-lang-toggle" aria-label="Changer de langue"
-                    title="Français / English">
-                    <span class="lang-text" id="current-lang">FR</span>
-                </button>
+                <select class="lang-select header-tool" name="lang-select" id="lang-select" aria-label="Langue" data-i18n-aria-label="nav.language">
+                    <option value="fr">&#x1f1eb;&#x1f1f7; FR</option>
+                    <option value="en">&#x1f1ec;&#x1f1e7; EN</option>
+                </select>
 
                 <!-- Dark/Light Theme Toggle (Desktop) -->
                 <button class="btn-icon header-tool btn-theme-toggle" id="btn-theme-toggle"
-                    aria-label="Basculer le thème" title="Thème Clair / Sombre">
+                    aria-label="Basculer le thème" data-i18n-aria-label="nav.toggle-theme"
+                    title="Thème Clair / Sombre" data-i18n-title="nav.theme-title">
                     <svg class="theme-icon sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                         stroke-width="2">
                         <circle cx="12" cy="12" r="4" />
@@ -118,17 +112,17 @@
                 </button>
 
                 <!-- Auth Buttons -->
-                <button type="button" class="btn" id="btn-login" aria-label="Connexion ou inscription">
+                <button type="button" class="btn" id="btn-login" aria-label="Connexion ou inscription" data-i18n-aria-label="nav.login-aria">
                     <svg class="user-login-icon" viewBox="0 0 24 24" width="18" height="18" fill="none"
                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
                         <circle cx="12" cy="7" r="4"></circle>
                     </svg>
-                    <span class="btn-login-text">Connexion / Inscription</span>
+                    <span class="btn-login-text" data-i18n="nav.login-register">Connexion / Inscription</span>
                 </button>
 
                 <!-- Mobile Menu Toggle -->
-                <button class="btn-icon mobile-menu-btn" id="mobile-toggle" aria-label="Ouvrir le menu">
+                <button class="btn-icon mobile-menu-btn" id="mobile-toggle" aria-label="Ouvrir le menu" data-i18n-aria-label="nav.open-menu">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <line x1="3" y1="12" x2="21" y2="12"></line>
                         <line x1="3" y1="6" x2="21" y2="6"></line>
@@ -152,7 +146,7 @@
                             stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
                         </svg>
-                        <span>Afficher les filtres</span>
+                        <span data-i18n="filters.show">Afficher les filtres</span>
                     </button>
                 </div>
 
@@ -165,16 +159,16 @@
                                     stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                     <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
                                 </svg>
-                                <h3>Filtres</h3>
+                                <h3 data-i18n="filters.title">Filtres</h3>
                             </div>
-                            <button type="reset" form="filters-form" class="btn-reset-filters">Réinitialiser</button>
+                            <button type="reset" form="filters-form" class="btn-reset-filters" data-i18n="filters.reset">Réinitialiser</button>
                         </div>
 
                         <form id="filters-form" class="filters-form">
                             <div class="filters-form-content">
                                 <!-- 1. Mot clé -->
                                 <div class="filter-group">
-                                    <label for="filter-keyword" class="filter-label">Mot clé</label>
+                                    <label for="filter-keyword" class="filter-label" data-i18n="filters.keyword">Mot clé</label>
                                     <div class="input-with-icon">
                                         <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor"
                                             stroke-width="2">
@@ -182,21 +176,21 @@
                                             <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
                                         </svg>
                                         <input type="text" id="filter-keyword" name="keyword" class="form-input"
-                                            placeholder="Rechercher...">
+                                            placeholder="Rechercher..." data-i18n-placeholder="filters.search-placeholder">
                                     </div>
                                 </div>
     
                                 <!-- 2. Dates (début et fin avec Flatpickr) -->
                                 <div class="filter-group">
-                                    <span class="filter-label">Disponibilité</span>
+                                    <span class="filter-label" data-i18n="filters.availability">Disponibilité</span>
                                     <div class="filter-row">
                                         <div class="filter-subgroup">
-                                            <label for="filter-date-start" class="filter-sublabel">Début</label>
+                                            <label for="filter-date-start" class="filter-sublabel" data-i18n="filters.start">Début</label>
                                             <input type="text" id="filter-date-start" name="startDate"
                                                 class="form-input datepicker-input" placeholder="jj/mm/aaaa">
                                         </div>
                                         <div class="filter-subgroup">
-                                            <label for="filter-date-end" class="filter-sublabel">Fin</label>
+                                            <label for="filter-date-end" class="filter-sublabel" data-i18n="filters.end">Fin</label>
                                             <input type="text" id="filter-date-end" name="endDate"
                                                 class="form-input datepicker-input" placeholder="jj/mm/aaaa">
                                         </div>
@@ -205,21 +199,21 @@
     
                                 <!-- 3. Catégorie -->
                                 <div class="filter-group">
-                                    <label for="filter-category" class="filter-label">Catégorie</label>
+                                    <label for="filter-category" class="filter-label" data-i18n="filters.category">Catégorie</label>
                                     <select id="filter-category" name="category" class="form-select">
-                                        <option value="">Toutes les catégories</option>
-                                        <option value="SUPERMINI">Citadine</option>
-                                        <option value="COMPACT">Compact</option>
-                                        <option value="SUV">SUV</option>
-                                        <option value="COMMERCIAL">Utilitaire</option>
+                                        <option value="" data-i18n="filters.category.all">Toutes les catégories</option>
+                                        <option value="SUPERMINI" data-i18n="category.SUPERMINI">Citadine</option>
+                                        <option value="COMPACT" data-i18n="category.COMPACT">Compact</option>
+                                        <option value="SUV" data-i18n="category.SUV">SUV</option>
+                                        <option value="COMMERCIAL" data-i18n="category.COMMERCIAL">Utilitaire</option>
                                     </select>
                                 </div>
     
                                 <!-- 4. Marque (Select) -->
                                 <div class="filter-group">
-                                    <label for="filter-brand" class="filter-label">Marque</label>
+                                    <label for="filter-brand" class="filter-label" data-i18n="filters.brand">Marque</label>
                                     <select id="filter-brand" name="brand" class="form-select">
-                                        <option value="">Toutes les marques</option>
+                                        <option value="" data-i18n="filters.brand.all">Toutes les marques</option>
                                         <option value="Renault">Renault</option>
                                         <option value="Volkswagen">Volkswagen</option>
                                         <option value="Peugeot">Peugeot</option>
@@ -233,37 +227,37 @@
     
                                 <!-- 5. Carburant -->
                                 <div class="filter-group">
-                                    <label for="filter-fuel" class="filter-label">Carburant</label>
+                                    <label for="filter-fuel" class="filter-label" data-i18n="filters.fuel">Carburant</label>
                                     <select id="filter-fuel" name="fuelType" class="form-select">
-                                        <option value="">Tous les carburants</option>
-                                        <option value="PETROL">Essence</option>
-                                        <option value="DIESEL">Diesel</option>
-                                        <option value="ELECTRIC">Électrique</option>
-                                        <option value="HYBRID">Hybride</option>
+                                        <option value="" data-i18n="filters.fuel.all">Tous les carburants</option>
+                                        <option value="PETROL" data-i18n="fuel.PETROL">Essence</option>
+                                        <option value="DIESEL" data-i18n="fuel.DIESEL">Diesel</option>
+                                        <option value="ELECTRIC" data-i18n="fuel.ELECTRIC">Électrique</option>
+                                        <option value="HYBRID" data-i18n="fuel.HYBRID">Hybride</option>
                                     </select>
                                 </div>
     
                                 <!-- 6. Transmission -->
                                 <div class="filter-group">
-                                    <label for="filter-transmission" class="filter-label">Transmission</label>
+                                    <label for="filter-transmission" class="filter-label" data-i18n="filters.transmission">Transmission</label>
                                     <select id="filter-transmission" name="transmission" class="form-select">
-                                        <option value="">Toutes les transmissions</option>
-                                        <option value="MANUAL">Manuelle</option>
-                                        <option value="AUTOMATIC">Automatique</option>
+                                        <option value="" data-i18n="filters.transmission.all">Toutes les transmissions</option>
+                                        <option value="MANUAL" data-i18n="transmission.MANUAL">Manuelle</option>
+                                        <option value="AUTOMATIC" data-i18n="transmission.AUTOMATIC">Automatique</option>
                                     </select>
                                 </div>
     
                                 <!-- 7. Puissance / Nombre de chevaux (min et max) -->
                                 <div class="filter-group">
-                                    <span class="filter-label">Puissance (ch)</span>
+                                    <span class="filter-label" data-i18n="filters.power">Puissance (ch)</span>
                                     <div class="filter-row">
                                         <div class="filter-subgroup">
-                                            <label for="filter-power-min" class="filter-sublabel">Min</label>
+                                            <label for="filter-power-min" class="filter-sublabel" data-i18n="filters.min">Min</label>
                                             <input type="number" id="filter-power-min" name="powerMin" class="form-input"
                                                 placeholder="70" min="0" step="5">
                                         </div>
                                         <div class="filter-subgroup">
-                                            <label for="filter-power-max" class="filter-sublabel">Max</label>
+                                            <label for="filter-power-max" class="filter-sublabel" data-i18n="filters.max">Max</label>
                                             <input type="number" id="filter-power-max" name="powerMax" class="form-input"
                                                 placeholder="400" min="0" step="5">
                                         </div>
@@ -272,22 +266,22 @@
     
                                 <!-- 8. Nombre de sièges (input number) -->
                                 <div class="filter-group">
-                                    <label for="filter-seats" class="filter-label">Nombre de sièges</label>
+                                    <label for="filter-seats" class="filter-label" data-i18n="filters.seats">Nombre de sièges</label>
                                     <input type="number" id="filter-seats" name="seats" class="form-input"
-                                        placeholder="Ex: 5" min="1" max="9">
+                                        placeholder="Ex: 5" data-i18n-placeholder="filters.seats-placeholder" min="1" max="9">
                                 </div>
     
                                 <!-- 9. Prix journalier (fourchette ajustable min/max) -->
                                 <div class="filter-group">
-                                    <span class="filter-label">Prix journalier (€ / jour)</span>
+                                    <span class="filter-label" data-i18n="filters.price">Prix journalier (€ / jour)</span>
                                     <div class="filter-row">
                                         <div class="filter-subgroup">
-                                            <label for="filter-price-min" class="filter-sublabel">Min (€)</label>
+                                            <label for="filter-price-min" class="filter-sublabel" data-i18n="filters.min-eur">Min (€)</label>
                                             <input type="number" id="filter-price-min" name="priceMin" class="form-input"
                                                 placeholder="20" min="0" step="5">
                                         </div>
                                         <div class="filter-subgroup">
-                                            <label for="filter-price-max" class="filter-sublabel">Max (€)</label>
+                                            <label for="filter-price-max" class="filter-sublabel" data-i18n="filters.max-eur">Max (€)</label>
                                             <input type="number" id="filter-price-max" name="priceMax" class="form-input"
                                                 placeholder="250" min="0" step="5">
                                         </div>
@@ -306,24 +300,23 @@
 
                         <!-- Section Header -->
                         <div class="section-header">
-                            <h1 class="page-title">Nos Véhicules</h1>
-                            <p class="page-subtitle">Recherchez et filtrez notre flotte disponible pour trouver le véhicule
-                                idéal.</p>
+                            <h1 class="page-title" data-i18n="catalog.title">Nos Véhicules</h1>
+                            <p class="page-subtitle" data-i18n="catalog.subtitle">Recherchez et filtrez notre flotte disponible pour trouver le véhicule idéal.</p>
                         </div>
                         <!-- Compteur et Triage au-dessus de la grille -->
                         <div class="vehicles-results-header">
                             <span class="vehicles-count">
-                                <strong id="vehicles-count-value">0</strong> véhicules disponibles
+                                <strong id="vehicles-count-value">0</strong> <span data-i18n="catalog.count">véhicules disponibles</span>
                             </span>
 
                             <div class="vehicles-sort-group">
-                                <label for="vehicles-sort" class="sort-label">Trier par :</label>
+                                <label for="vehicles-sort" class="sort-label" data-i18n="catalog.sort.label">Trier par :</label>
                                 <select id="vehicles-sort" name="sort" class="form-select sort-select">
-                                    <option value="none">Aucun</option>
-                                    <option value="price-asc">Prix croissant</option>
-                                    <option value="price-desc">Prix décroissant</option>
-                                    <option value="year-asc">Année croissante</option>
-                                    <option value="year-desc">Année décroissante</option>
+                                    <option value="none" data-i18n="catalog.sort.none">Aucun</option>
+                                    <option value="price-asc" data-i18n="catalog.sort.price-asc">Prix croissant</option>
+                                    <option value="price-desc" data-i18n="catalog.sort.price-desc">Prix décroissant</option>
+                                    <option value="year-asc" data-i18n="catalog.sort.year-asc">Année croissante</option>
+                                    <option value="year-desc" data-i18n="catalog.sort.year-desc">Année décroissante</option>
                                 </select>
                             </div>
                         </div>
@@ -341,7 +334,7 @@
     <!-- RESERVATION MODAL -->
     <div id="reservation-modal" class="modal-overlay">
         <div class="modal-content">
-            <button class="modal-close" id="close-modal-btn" aria-label="Fermer">
+            <button class="modal-close" id="close-modal-btn" aria-label="Fermer" data-i18n-aria-label="common.close">
                 <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" fill="none" stroke-width="2"
                     stroke-linecap="round" stroke-linejoin="round">
                     <line x1="18" y1="6" x2="6" y2="18"></line>
@@ -356,48 +349,48 @@
                         <h3 id="modal-vehicle-brand">Marque</h3>
                         <h2 id="modal-vehicle-model">Modèle</h2>
                     </div>
-                    <span id="modal-vehicle-category" class="category-badge">Catégorie</span>
+                    <span id="modal-vehicle-category" class="category-badge" data-i18n="modal.category-default">Catégorie</span>
                     <div class="modal-specs" id="modal-vehicle-specs">
                         <!-- Specs injected by JS -->
                     </div>
                 </div>
                 <!-- Right: Booking Form -->
                 <div class="modal-right">
-                    <h3 class="modal-title">Réserver ce véhicule</h3>
-                    <p class="modal-subtitle">Sélectionnez vos dates pour calculer le prix.</p>
+                    <h3 class="modal-title" data-i18n="modal.title">Réserver ce véhicule</h3>
+                    <p class="modal-subtitle" data-i18n="modal.subtitle">Sélectionnez vos dates pour calculer le prix.</p>
 
                     <form id="reservation-form">
                         <div class="form-row">
                             <div class="form-group">
-                                <label for="start-date">Date de départ</label>
-                                <input type="text" id="start-date" placeholder="Sélectionnez une date" required>
+                                <label for="start-date" data-i18n="modal.start">Date de départ</label>
+                                <input type="text" id="start-date" placeholder="Sélectionnez une date" data-i18n-placeholder="modal.select-date" required>
                             </div>
                             <div class="form-group">
-                                <label for="end-date">Date de retour</label>
-                                <input type="text" id="end-date" placeholder="Sélectionnez une date" required>
+                                <label for="end-date" data-i18n="modal.end">Date de retour</label>
+                                <input type="text" id="end-date" placeholder="Sélectionnez une date" data-i18n-placeholder="modal.select-date" required>
                             </div>
                         </div>
 
-                        <div id="date-error" class="error-message">Ces dates ne sont pas disponibles.</div>
+                        <div id="date-error" class="error-message" data-i18n="modal.dates-unavailable">Ces dates ne sont pas disponibles.</div>
 
                         <div class="price-summary">
                             <div class="summary-row">
-                                <span>Durée</span>
-                                <span id="summary-days">0 jour</span>
+                                <span data-i18n="modal.duration">Durée</span>
+                                <span id="summary-days" data-i18n="unit.days" data-i18n-arg="0">0 jours</span>
                             </div>
                             <div class="summary-row">
-                                <span>Tarif journalier</span>
+                                <span data-i18n="modal.daily-price">Tarif journalier</span>
                                 <span id="summary-daily-price">0€</span>
                             </div>
                             <div class="summary-divider"></div>
                             <div class="summary-row total">
-                                <span>Total</span>
+                                <span data-i18n="modal.total">Total</span>
                                 <span id="summary-price">0€</span>
                             </div>
                         </div>
 
                         <button type="submit" class="btn btn-primary btn-block" id="confirm-reservation-btn"
-                            disabled>Confirmer la réservation</button>
+                            data-i18n="modal.confirm" disabled>Confirmer la réservation</button>
                     </form>
                 </div>
             </div>
@@ -421,34 +414,34 @@
                         </svg>
                         <span class="brand-name">Auto<span>Rent</span></span>
                     </a>
-                    <p class="footer-desc">
+                    <p class="footer-desc" data-i18n="footer.desc">
                         Application web de location de véhicules développée dans le cadre du module BAWE à l'ENSIIE.
                     </p>
                 </div>
 
                 <!-- Navigation Links -->
                 <div class="footer-nav-col">
-                    <h4 class="footer-heading">Navigation</h4>
+                    <h4 class="footer-heading" data-i18n="footer.navigation">Navigation</h4>
                     <ul class="footer-nav-links">
-                        <li><a href="index.html" class="footer-link">Accueil</a></li>
-                        <li><a href="vehicles.html" class="footer-link">Véhicules</a></li>
-                        <li><a href="reservations.html" class="footer-link">Réservations</a></li>
+                        <li><a href="index.html" class="footer-link" data-i18n="nav.home">Accueil</a></li>
+                        <li><a href="vehicles.html" class="footer-link" data-i18n="nav.vehicles">Véhicules</a></li>
+                        <li><a href="reservations.html" class="footer-link" data-i18n="nav.reservations">Réservations</a></li>
                     </ul>
                 </div>
 
                 <!-- Informations Projet & Stack -->
                 <div class="footer-info-col">
-                    <h4 class="footer-heading">Projet BAWE</h4>
+                    <h4 class="footer-heading" data-i18n="footer.project">Projet BAWE</h4>
                     <ul class="footer-meta-list">
-                        <li><span>Module :</span> Bases du Web (BAWE)</li>
-                        <li><span>École :</span> ENSIIE</li>
-                        <li><span>Technologies :</span> Java Spring Boot &bull; HTML / CSS / JS</li>
+                        <li><span data-i18n="footer.module">Module :</span> Bases du Web (BAWE)</li>
+                        <li><span data-i18n="footer.school">École :</span> ENSIIE</li>
+                        <li><span data-i18n="footer.tech">Technologies :</span> Java Spring Boot &bull; HTML / CSS / JS</li>
                     </ul>
                 </div>
             </div>
 
             <div class="footer-bottom">
-                <p>&copy; 2026 AutoRent &bull; Projet académique ENSIIE &bull; À but pédagogique</p>
+                <p data-i18n="footer.copyright">&copy; 2026 AutoRent &bull; Projet académique ENSIIE &bull; À but pédagogique</p>
             </div>
         </div>
     </footer>

@@ -62,7 +62,7 @@
 
                     <div class="mobile-menu-tools">
                         <!-- Theme Toggle (Mobile) -->
-                        <button class="mobile-tool-btn btn-theme-toggle" type="button" aria-label="Changer de thème">
+                        <button class="mobile-tool-btn btn-theme-toggle" type="button" aria-label="Changer de thème" data-i18n-aria-label="nav.toggle-theme">
                             <svg class="theme-icon sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <circle cx="12" cy="12" r="4" />
                                 <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41" />
@@ -74,14 +74,10 @@
                         </button>
 
                         <!-- Langue (Mobile) -->
-                        <button class="mobile-tool-btn btn-lang-toggle" type="button" aria-label="Changer de langue">
-                            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <circle cx="12" cy="12" r="10"></circle>
-                                <line x1="2" y1="12" x2="22" y2="12"></line>
-                                <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
-                            </svg>
-                            <span class="tool-label">Langue (FR)</span>
-                        </button>
+                        <select class="lang-select mobile-lang-select" aria-label="Langue" data-i18n-aria-label="nav.language">
+                            <option value="fr">&#x1f1eb;&#x1f1f7; Français</option>
+                            <option value="en">&#x1f1ec;&#x1f1e7; English</option>
+                        </select>
                     </div>
                 </div>
             </nav>
@@ -89,17 +85,14 @@
             <!-- Action Controls (Theme, Language, Auth) -->
             <div class="nav-actions">
                 <!-- Language Switcher (Desktop) -->
-                <button class="btn-icon header-tool btn-lang-toggle" id="btn-lang-toggle" aria-label="Changer de langue" title="Français / English">
-                    <span class="lang-text" id="current-lang">FR</span>
-                </button>
-                <select name="lang-select" id="lang-select">
+                <select class="lang-select header-tool" name="lang-select" id="lang-select" aria-label="Langue" data-i18n-aria-label="nav.language">
                     <option value="fr">&#x1f1eb;&#x1f1f7; FR</option>
                     <option value="en">&#x1f1ec;&#x1f1e7; EN</option>
                 </select>
 
                 <!-- Dark/Light Theme Toggle (Desktop) -->
-                <button class="btn-icon header-tool btn-theme-toggle" id="btn-theme-toggle" aria-label="Basculer le thème"
-                    title="Thème Clair / Sombre">
+                <button class="btn-icon header-tool btn-theme-toggle" id="btn-theme-toggle" aria-label="Basculer le thème" data-i18n-aria-label="nav.toggle-theme"
+                    title="Thème Clair / Sombre" data-i18n-title="nav.theme-title">
                     <svg class="theme-icon sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                         stroke-width="2">
                         <circle cx="12" cy="12" r="4" />
@@ -113,7 +106,7 @@
                 </button>
 
                 <!-- Auth Buttons -->
-                <button type="button" class="btn" id="btn-login" aria-label="Connexion ou inscription">
+                <button type="button" class="btn" id="btn-login" aria-label="Connexion ou inscription" data-i18n-aria-label="nav.login-aria">
                     <svg class="user-login-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"
                         stroke-linecap="round" stroke-linejoin="round">
                         <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
@@ -123,7 +116,7 @@
                 </button>
 
                 <!-- Mobile Menu Toggle -->
-                <button class="btn-icon mobile-menu-btn" id="mobile-toggle" aria-label="Ouvrir le menu">
+                <button class="btn-icon mobile-menu-btn" id="mobile-toggle" aria-label="Ouvrir le menu" data-i18n-aria-label="nav.open-menu">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <line x1="3" y1="12" x2="21" y2="12"></line>
                         <line x1="3" y1="6" x2="21" y2="6"></line>
@@ -176,9 +169,9 @@
         <section class="how-it-works" id="how-it-works">
             <div class="container">
                 <div class="section-header">
-                    <span class="section-tag">Fonctionnement</span>
-                    <h2 class="section-title">Comment ça marche ?</h2>
-                    <p class="section-subtitle">La location en 3 étapes simples.</p>
+                    <span class="section-tag" data-i18n="home.how.tag">Fonctionnement</span>
+                    <h2 class="section-title" data-i18n="home.how-it-works">Comment ça marche ?</h2>
+                    <p class="section-subtitle" data-i18n="home.how.subtitle">La location en 3 étapes simples.</p>
                 </div>
 
                 <div class="steps-grid">
@@ -191,10 +184,8 @@
                                 <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
                             </svg>
                         </div>
-                        <h3 class="step-title">Trouvez votre modèle</h3>
-                        <p class="step-description">Parcourez le catalogue et filtrez selon vos besoins (boîte,
-                            carburant,
-                            tarif).</p>
+                        <h3 class="step-title" data-i18n="home.step1.title">Trouvez votre modèle</h3>
+                        <p class="step-description" data-i18n="home.step1.desc">Parcourez le catalogue et filtrez selon vos besoins (boîte, carburant, tarif).</p>
                     </div>
 
                     <!-- Step 2 -->
@@ -208,9 +199,8 @@
                                 <line x1="3" y1="10" x2="21" y2="10"></line>
                             </svg>
                         </div>
-                        <h3 class="step-title">Réservez en ligne</h3>
-                        <p class="step-description">Connectez-vous, sélectionnez vos dates et confirmez votre
-                            réservation.</p>
+                        <h3 class="step-title" data-i18n="home.step2.title">Réservez en ligne</h3>
+                        <p class="step-description" data-i18n="home.step2.desc">Connectez-vous, sélectionnez vos dates et confirmez votre réservation.</p>
                     </div>
 
                     <!-- Step 3 -->
@@ -225,8 +215,8 @@
                                 <circle cx="17" cy="17" r="2"></circle>
                             </svg>
                         </div>
-                        <h3 class="step-title">Prenez la route</h3>
-                        <p class="step-description">Récupérez le véhicule et profitez de votre trajet.</p>
+                        <h3 class="step-title" data-i18n="home.step3.title">Prenez la route</h3>
+                        <p class="step-description" data-i18n="home.step3.desc">Récupérez le véhicule et profitez de votre trajet.</p>
                     </div>
                 </div>
             </div>
@@ -236,11 +226,11 @@
         <section class="featured-vehicles">
             <div class="container">
                 <div class="section-header">
-                    <span class="section-tag">Catalogue</span>
+                    <span class="section-tag" data-i18n="home.catalog.tag">Catalogue</span>
                     <div class="section-header-row">
-                        <h2 class="section-title">Véhicules Disponible</h2>
+                        <h2 class="section-title" data-i18n="home.catalog.title">Véhicules disponibles</h2>
                         <a href="/vehicles" class="btn btn-outline">
-                            Voir tout
+                            <span data-i18n="home.catalog.see-all">Voir tout</span>
                             <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                 stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                                 <path d="M5 12h14"></path>
@@ -262,7 +252,7 @@
     <!-- RESERVATION MODAL -->
     <div id="reservation-modal" class="modal-overlay">
         <div class="modal-content">
-            <button class="modal-close" id="close-modal-btn" aria-label="Fermer">
+            <button class="modal-close" id="close-modal-btn" aria-label="Fermer" data-i18n-aria-label="common.close">
                 <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <line x1="18" y1="6" x2="6" y2="18"></line>
                     <line x1="6" y1="6" x2="18" y2="18"></line>
@@ -276,47 +266,47 @@
                         <h3 id="modal-vehicle-brand">Marque</h3>
                         <h2 id="modal-vehicle-model">Modèle</h2>
                     </div>
-                    <span id="modal-vehicle-category" class="category-badge">Catégorie</span>
+                    <span id="modal-vehicle-category" class="category-badge" data-i18n="modal.category-default">Catégorie</span>
                     <div class="modal-specs" id="modal-vehicle-specs">
                         <!-- Specs injected by JS -->
                     </div>
                 </div>
                 <!-- Right: Booking Form -->
                 <div class="modal-right">
-                    <h3 class="modal-title">Réserver ce véhicule</h3>
-                    <p class="modal-subtitle">Sélectionnez vos dates pour calculer le prix.</p>
-                    
+                    <h3 class="modal-title" data-i18n="modal.title">Réserver ce véhicule</h3>
+                    <p class="modal-subtitle" data-i18n="modal.subtitle">Sélectionnez vos dates pour calculer le prix.</p>
+
                     <form id="reservation-form">
                         <div class="form-row">
                             <div class="form-group">
-                                <label for="start-date">Date de départ</label>
-                                <input type="text" id="start-date" placeholder="Sélectionnez une date" required>
+                                <label for="start-date" data-i18n="modal.start">Date de départ</label>
+                                <input type="text" id="start-date" placeholder="Sélectionnez une date" data-i18n-placeholder="modal.select-date" required>
                             </div>
                             <div class="form-group">
-                                <label for="end-date">Date de retour</label>
-                                <input type="text" id="end-date" placeholder="Sélectionnez une date" required>
+                                <label for="end-date" data-i18n="modal.end">Date de retour</label>
+                                <input type="text" id="end-date" placeholder="Sélectionnez une date" data-i18n-placeholder="modal.select-date" required>
                             </div>
                         </div>
 
-                        <div id="date-error" class="error-message">Ces dates ne sont pas disponibles.</div>
+                        <div id="date-error" class="error-message" data-i18n="modal.dates-unavailable">Ces dates ne sont pas disponibles.</div>
 
                         <div class="price-summary">
                             <div class="summary-row">
-                                <span>Durée</span>
-                                <span id="summary-days">0 jour</span>
+                                <span data-i18n="modal.duration">Durée</span>
+                                <span id="summary-days" data-i18n="unit.days" data-i18n-arg="0">0 jours</span>
                             </div>
                             <div class="summary-row">
-                                <span>Tarif journalier</span>
+                                <span data-i18n="modal.daily-price">Tarif journalier</span>
                                 <span id="summary-daily-price">0€</span>
                             </div>
                             <div class="summary-divider"></div>
                             <div class="summary-row total">
-                                <span>Total</span>
+                                <span data-i18n="modal.total">Total</span>
                                 <span id="summary-price">0€</span>
                             </div>
                         </div>
-                        
-                        <button type="submit" class="btn btn-primary btn-block" id="confirm-reservation-btn" disabled>Confirmer la réservation</button>
+
+                        <button type="submit" class="btn btn-primary btn-block" id="confirm-reservation-btn" data-i18n="modal.confirm" disabled>Confirmer la réservation</button>
                     </form>
                 </div>
             </div>
@@ -340,34 +330,34 @@
                         </svg>
                         <span class="brand-name">Auto<span>Rent</span></span>
                     </a>
-                    <p class="footer-desc">
+                    <p class="footer-desc" data-i18n="footer.desc">
                         Application web de location de véhicules développée dans le cadre du module BAWE à l'ENSIIE.
                     </p>
                 </div>
 
                 <!-- Navigation Links -->
                 <div class="footer-nav-col">
-                    <h4 class="footer-heading">Navigation</h4>
+                    <h4 class="footer-heading" data-i18n="footer.navigation">Navigation</h4>
                     <ul class="footer-nav-links">
-                        <li><a href="index.html" class="footer-link">Accueil</a></li>
-                        <li><a href="vehicles.html" class="footer-link">Véhicules</a></li>
-                        <li><a href="reservations.html" class="footer-link">Réservations</a></li>
+                        <li><a href="index.html" class="footer-link" data-i18n="nav.home">Accueil</a></li>
+                        <li><a href="vehicles.html" class="footer-link" data-i18n="nav.vehicles">Véhicules</a></li>
+                        <li><a href="reservations.html" class="footer-link" data-i18n="nav.reservations">Réservations</a></li>
                     </ul>
                 </div>
 
                 <!-- Informations Projet & Stack -->
                 <div class="footer-info-col">
-                    <h4 class="footer-heading">Projet BAWE</h4>
+                    <h4 class="footer-heading" data-i18n="footer.project">Projet BAWE</h4>
                     <ul class="footer-meta-list">
-                        <li><span>Module :</span> Bases du Web (BAWE)</li>
-                        <li><span>École :</span> ENSIIE</li>
-                        <li><span>Technologies :</span> Java Spring Boot &bull; HTML / CSS / JS</li>
+                        <li><span data-i18n="footer.module">Module :</span> Bases du Web (BAWE)</li>
+                        <li><span data-i18n="footer.school">École :</span> ENSIIE</li>
+                        <li><span data-i18n="footer.tech">Technologies :</span> Java Spring Boot &bull; HTML / CSS / JS</li>
                     </ul>
                 </div>
             </div>
 
             <div class="footer-bottom">
-                <p>&copy; 2026 AutoRent &bull; Projet académique ENSIIE &bull; À but pédagogique</p>
+                <p data-i18n="footer.copyright">&copy; 2026 AutoRent &bull; Projet académique ENSIIE &bull; À but pédagogique</p>
             </div>
         </div>
     </footer>

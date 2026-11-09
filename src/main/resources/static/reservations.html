@@ -46,9 +46,9 @@
 
             <!-- Navigation Links -->
             <nav class="nav-menu">
-                <a href="/" class="nav-link">Accueil</a>
-                <a href="/vehicles" class="nav-link">Véhicules</a>
-                <a href="/reservations" class="nav-link active">Réservations</a>
+                <a href="/" class="nav-link" data-i18n="nav.home">Accueil</a>
+                <a href="/vehicles" class="nav-link" data-i18n="nav.vehicles">Véhicules</a>
+                <a href="/reservations" class="nav-link active" data-i18n="nav.reservations">Réservations</a>
 
                 <!-- Mobile Menu Actions (visible uniquement sur mobile dans le tiroir) -->
                 <div class="mobile-menu-actions">
@@ -58,12 +58,12 @@
                             <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
                             <circle cx="12" cy="7" r="4"></circle>
                         </svg>
-                        <span>Connexion / Inscription</span>
+                        <span data-i18n="nav.login-register">Connexion / Inscription</span>
                     </button>
 
                     <div class="mobile-menu-tools">
                         <!-- Theme Toggle (Mobile) -->
-                        <button class="mobile-tool-btn btn-theme-toggle" type="button" aria-label="Changer de thème">
+                        <button class="mobile-tool-btn btn-theme-toggle" type="button" aria-label="Changer de thème" data-i18n-aria-label="nav.toggle-theme">
                             <svg class="theme-icon sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                 stroke-width="2">
                                 <circle cx="12" cy="12" r="4" />
@@ -74,21 +74,14 @@
                                 stroke-width="2">
                                 <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
                             </svg>
-                            <span class="tool-label">Mode Sombre / Clair</span>
+                            <span class="tool-label" data-i18n="nav.switch-theme">Mode Sombre / Clair</span>
                         </button>
 
                         <!-- Langue (Mobile) -->
-                        <button class="mobile-tool-btn btn-lang-toggle" type="button" aria-label="Changer de langue">
-                            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor"
-                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <circle cx="12" cy="12" r="10"></circle>
-                                <line x1="2" y1="12" x2="22" y2="12"></line>
-                                <path
-                                    d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z">
-                                </path>
-                            </svg>
-                            <span class="tool-label">Langue (FR)</span>
-                        </button>
+                        <select class="lang-select mobile-lang-select" aria-label="Langue" data-i18n-aria-label="nav.language">
+                            <option value="fr">&#x1f1eb;&#x1f1f7; Français</option>
+                            <option value="en">&#x1f1ec;&#x1f1e7; English</option>
+                        </select>
                     </div>
                 </div>
             </nav>
@@ -96,14 +89,15 @@
             <!-- Action Controls (Theme, Language, Auth) -->
             <div class="nav-actions">
                 <!-- Language Switcher (Desktop) -->
-                <button class="btn-icon header-tool btn-lang-toggle" id="btn-lang-toggle" aria-label="Changer de langue"
-                    title="Français / English">
-                    <span class="lang-text" id="current-lang">FR</span>
-                </button>
+                <select class="lang-select header-tool" name="lang-select" id="lang-select" aria-label="Langue" data-i18n-aria-label="nav.language">
+                    <option value="fr">&#x1f1eb;&#x1f1f7; FR</option>
+                    <option value="en">&#x1f1ec;&#x1f1e7; EN</option>
+                </select>
 
                 <!-- Dark/Light Theme Toggle (Desktop) -->
                 <button class="btn-icon header-tool btn-theme-toggle" id="btn-theme-toggle"
-                    aria-label="Basculer le thème" title="Thème Clair / Sombre">
+                    aria-label="Basculer le thème" data-i18n-aria-label="nav.toggle-theme"
+                    title="Thème Clair / Sombre" data-i18n-title="nav.theme-title">
                     <svg class="theme-icon sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                         stroke-width="2">
                         <circle cx="12" cy="12" r="4" />
@@ -117,17 +111,17 @@
                 </button>
 
                 <!-- Auth Buttons -->
-                <button type="button" class="btn" id="btn-login" aria-label="Connexion ou inscription">
+                <button type="button" class="btn" id="btn-login" aria-label="Connexion ou inscription" data-i18n-aria-label="nav.login-aria">
                     <svg class="user-login-icon" viewBox="0 0 24 24" width="18" height="18" fill="none"
                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
                         <circle cx="12" cy="7" r="4"></circle>
                     </svg>
-                    <span class="btn-login-text">Connexion / Inscription</span>
+                    <span class="btn-login-text" data-i18n="nav.login-register">Connexion / Inscription</span>
                 </button>
 
                 <!-- Mobile Menu Toggle -->
-                <button class="btn-icon mobile-menu-btn" id="mobile-toggle" aria-label="Ouvrir le menu">
+                <button class="btn-icon mobile-menu-btn" id="mobile-toggle" aria-label="Ouvrir le menu" data-i18n-aria-label="nav.open-menu">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <line x1="3" y1="12" x2="21" y2="12"></line>
                         <line x1="3" y1="6" x2="21" y2="6"></line>
@@ -144,8 +138,8 @@
 
                 <!-- Section Header -->
                 <div class="reservations-header">
-                    <h1 class="page-title">Mes Réservations</h1>
-                    <p class="page-subtitle">
+                    <h1 class="page-title" data-i18n="reservations.title">Mes Réservations</h1>
+                    <p class="page-subtitle" data-i18n="reservations.subtitle">
                         Consultez l'historique et l'état de vos locations de véhicules.
                     </p>
                 </div>
@@ -503,34 +497,34 @@
                         </svg>
                         <span class="brand-name">Auto<span>Rent</span></span>
                     </a>
-                    <p class="footer-desc">
+                    <p class="footer-desc" data-i18n="footer.desc">
                         Application web de location de véhicules développée dans le cadre du module BAWE à l'ENSIIE.
                     </p>
                 </div>
 
                 <!-- Navigation Links -->
                 <div class="footer-nav-col">
-                    <h4 class="footer-heading">Navigation</h4>
+                    <h4 class="footer-heading" data-i18n="footer.navigation">Navigation</h4>
                     <ul class="footer-nav-links">
-                        <li><a href="index.html" class="footer-link">Accueil</a></li>
-                        <li><a href="vehicles.html" class="footer-link">Véhicules</a></li>
-                        <li><a href="reservations.html" class="footer-link">Réservations</a></li>
+                        <li><a href="index.html" class="footer-link" data-i18n="nav.home">Accueil</a></li>
+                        <li><a href="vehicles.html" class="footer-link" data-i18n="nav.vehicles">Véhicules</a></li>
+                        <li><a href="reservations.html" class="footer-link" data-i18n="nav.reservations">Réservations</a></li>
                     </ul>
                 </div>
 
                 <!-- Informations Projet & Stack -->
                 <div class="footer-info-col">
-                    <h4 class="footer-heading">Projet BAWE</h4>
+                    <h4 class="footer-heading" data-i18n="footer.project">Projet BAWE</h4>
                     <ul class="footer-meta-list">
-                        <li><span>Module :</span> Bases du Web (BAWE)</li>
-                        <li><span>École :</span> ENSIIE</li>
-                        <li><span>Technologies :</span> Java Spring Boot &bull; HTML / CSS / JS</li>
+                        <li><span data-i18n="footer.module">Module :</span> Bases du Web (BAWE)</li>
+                        <li><span data-i18n="footer.school">École :</span> ENSIIE</li>
+                        <li><span data-i18n="footer.tech">Technologies :</span> Java Spring Boot &bull; HTML / CSS / JS</li>
                     </ul>
                 </div>
             </div>
 
             <div class="footer-bottom">
-                <p>&copy; 2026 AutoRent &bull; Projet académique ENSIIE &bull; À but pédagogique</p>
+                <p data-i18n="footer.copyright">&copy; 2026 AutoRent &bull; Projet académique ENSIIE &bull; À but pédagogique</p>
             </div>
         </div>
     </footer>

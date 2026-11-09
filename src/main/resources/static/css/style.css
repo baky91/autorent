@@ -280,10 +280,43 @@ header {
   background-color: var(--bg-surface-elevated);
 }
 
-.lang-text {
+.lang-select {
+  height: 39px;
+  padding: 0 0.6rem;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+  background-color: transparent;
+  color: var(--text-primary);
+  font-family: "Plus Jakarta Sans", sans-serif;
   font-weight: 700;
   font-size: 0.8rem;
+  cursor: pointer;
+  color-scheme: light;
+}
+
+[data-theme="dark"] .lang-select {
+  color-scheme: dark;
+}
+
+.lang-select:hover {
+  background-color: var(--bg-surface-elevated);
+}
+
+.lang-select:focus-visible {
+  outline: 2px solid var(--line);
+  outline-offset: 2px;
+}
+
+.lang-select option {
+  background-color: var(--bg-surface-elevated);
   color: var(--text-primary);
+}
+
+.mobile-lang-select {
+  width: 100%;
+  border-radius: var(--radius-md);
+  border-color: var(--border-color);
+  background-color: var(--bg-surface-elevated);
 }
 
 .theme-icon {

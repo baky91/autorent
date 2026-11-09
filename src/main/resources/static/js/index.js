@@ -79,7 +79,7 @@ const AuthenticationManager = {
     modal.className = "modal-overlay";
     modal.innerHTML = `
       <div class="modal-content auth-modal-content">
-        <button class="modal-close" id="close-auth-modal-btn" aria-label="Fermer">
+        <button class="modal-close" id="close-auth-modal-btn" data-i18n-aria-label="common.close" aria-label="${LanguageManager.t("common.close")}">
           <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <line x1="18" y1="6" x2="6" y2="18"></line>
             <line x1="6" y1="6" x2="18" y2="18"></line>
@@ -89,8 +89,8 @@ const AuthenticationManager = {
         <div class="auth-modal-body">
           <!-- En-tête : Choix Connexion ou Créer un compte -->
           <div class="auth-tabs" role="tablist">
-            <button type="button" class="auth-tab-btn active" id="auth-tab-login" role="tab" aria-selected="true">Connexion</button>
-            <button type="button" class="auth-tab-btn" id="auth-tab-register" role="tab" aria-selected="false">Créer un compte</button>
+            <button type="button" class="auth-tab-btn active" id="auth-tab-login" role="tab" aria-selected="true" data-i18n="auth.tab.login">${LanguageManager.t("auth.tab.login")}</button>
+            <button type="button" class="auth-tab-btn" id="auth-tab-register" role="tab" aria-selected="false" data-i18n="auth.tab.register">${LanguageManager.t("auth.tab.register")}</button>
           </div>
 
           <!-- Zone de message d'alerte (erreur ou succès) -->
@@ -99,34 +99,34 @@ const AuthenticationManager = {
           <!-- Formulaire de Connexion -->
           <form id="login-form" class="auth-form">
             <div class="form-group">
-              <label for="login-username">Nom d'utilisateur</label>
-              <input type="text" id="login-username" name="username" class="form-input" placeholder="Votre nom d'utilisateur" required autocomplete="username">
+              <label for="login-username" data-i18n="auth.username">${LanguageManager.t("auth.username")}</label>
+              <input type="text" id="login-username" name="username" class="form-input" data-i18n-placeholder="auth.username-placeholder" placeholder="${LanguageManager.t("auth.username-placeholder")}" required autocomplete="username">
             </div>
             <div class="form-group">
-              <label for="login-password">Mot de passe</label>
-              <input type="password" id="login-password" name="password" class="form-input" placeholder="Votre mot de passe" required autocomplete="current-password">
+              <label for="login-password" data-i18n="auth.password">${LanguageManager.t("auth.password")}</label>
+              <input type="password" id="login-password" name="password" class="form-input" data-i18n-placeholder="auth.password-placeholder" placeholder="${LanguageManager.t("auth.password-placeholder")}" required autocomplete="current-password">
             </div>
             <button type="submit" class="btn btn-primary btn-block" id="btn-submit-login">
-              <span>Se connecter</span>
+              <span data-i18n="auth.login-submit">${LanguageManager.t("auth.login-submit")}</span>
             </button>
           </form>
 
           <!-- Formulaire de Création de compte -->
           <form id="register-form" class="auth-form" style="display: none;">
             <div class="form-group">
-              <label for="register-username">Nom d'utilisateur</label>
-              <input type="text" id="register-username" name="username" class="form-input" placeholder="Choisissez un nom d'utilisateur" required autocomplete="username">
+              <label for="register-username" data-i18n="auth.username">${LanguageManager.t("auth.username")}</label>
+              <input type="text" id="register-username" name="username" class="form-input" data-i18n-placeholder="auth.register-username-placeholder" placeholder="${LanguageManager.t("auth.register-username-placeholder")}" required autocomplete="username">
             </div>
             <div class="form-group">
-              <label for="register-password">Mot de passe</label>
-              <input type="password" id="register-password" name="password" class="form-input" placeholder="Créez un mot de passe" required autocomplete="new-password">
+              <label for="register-password" data-i18n="auth.password">${LanguageManager.t("auth.password")}</label>
+              <input type="password" id="register-password" name="password" class="form-input" data-i18n-placeholder="auth.register-password-placeholder" placeholder="${LanguageManager.t("auth.register-password-placeholder")}" required autocomplete="new-password">
             </div>
             <div class="form-group">
-              <label for="register-confirm-password">Confirmation de mot de passe</label>
-              <input type="password" id="register-confirm-password" name="confirmPassword" class="form-input" placeholder="Confirmez votre mot de passe" required autocomplete="new-password">
+              <label for="register-confirm-password" data-i18n="auth.confirm-password">${LanguageManager.t("auth.confirm-password")}</label>
+              <input type="password" id="register-confirm-password" name="confirmPassword" class="form-input" data-i18n-placeholder="auth.confirm-password-placeholder" placeholder="${LanguageManager.t("auth.confirm-password-placeholder")}" required autocomplete="new-password">
             </div>
             <button type="submit" class="btn btn-primary btn-block" id="btn-submit-register">
-              <span>Créer un compte</span>
+              <span data-i18n="auth.register-submit">${LanguageManager.t("auth.register-submit")}</span>
             </button>
           </form>
         </div>
@@ -143,9 +143,7 @@ const AuthenticationManager = {
         if (this.isAuthenticated()) {
           const username = this.getUsername();
           if (
-            confirm(
-              `Vous êtes connecté en tant que "${username}".\nSouhaitez-vous vous déconnecter ?`,
-            )
+            confirm(LanguageManager.t("auth.logout-confirm", username))
           ) {
             this.logout();
           }
@@ -193,7 +191,7 @@ const AuthenticationManager = {
   },
 
   getUsername() {
-    return localStorage.getItem(this.userKey) || "Utilisateur";
+    return localStorage.getItem(this.userKey) || LanguageManager.t("common.default-user");
   },
 
   openModal(mode = "login") {
@@ -232,9 +230,10 @@ const AuthenticationManager = {
     }
   },
 
-  showAlert(message, type = "error") {
+  // `messageKey` : clé de traduction (le message suit les changements de langue)
+  showAlert(messageKey, type = "error") {
     if (!this.alertBox) return;
-    this.alertBox.textContent = message;
+    LanguageManager.setText(this.alertBox, messageKey);
     this.alertBox.className = `auth-alert ${type}`;
     this.alertBox.style.display = "block";
   },
@@ -242,7 +241,13 @@ const AuthenticationManager = {
   hideAlert() {
     if (!this.alertBox) return;
     this.alertBox.style.display = "none";
+    this.alertBox.removeAttribute("data-i18n");
     this.alertBox.textContent = "";
+  },
+
+  // Texte d'un bouton de soumission (clé traduite, mémorisée pour le changement de langue)
+  setSubmitLabel(button, key) {
+    button.innerHTML = `<span data-i18n="${key}">${LanguageManager.t(key)}</span>`;
   },
 
   async handleLogin(e) {
@@ -257,13 +262,13 @@ const AuthenticationManager = {
     const password = passwordInput.value;
 
     if (!username || !password) {
-      this.showAlert("Veuillez remplir tous les champs.", "error");
+      this.showAlert("auth.error.fill-all", "error");
       return;
     }
 
     try {
       submitBtn.disabled = true;
-      submitBtn.innerHTML = "<span>Connexion en cours...</span>";
+      this.setSubmitLabel(submitBtn, "auth.login-loading");
 
       const data = await loginUser(username, password);
 
@@ -272,21 +277,21 @@ const AuthenticationManager = {
         localStorage.setItem(this.tokenKey, data.token);
         localStorage.setItem(this.userKey, username);
 
-        this.showAlert("Connexion réussie !", "success");
+        this.showAlert("auth.success.login", "success");
         onAuthStateChanged();
 
         setTimeout(() => {
           this.closeModal();
         }, 800);
       } else {
-        this.showAlert("Nom d'utilisateur ou mot de passe incorrect.", "error");
+        this.showAlert("auth.error.bad-credentials", "error");
       }
     } catch (err) {
       console.error("Erreur de connexion :", err);
-      this.showAlert("Erreur lors de la tentative de connexion.", "error");
+      this.showAlert("auth.error.login-failed", "error");
     } finally {
       submitBtn.disabled = false;
-      submitBtn.innerHTML = "<span>Se connecter</span>";
+      this.setSubmitLabel(submitBtn, "auth.login-submit");
     }
   },
 
@@ -304,26 +309,23 @@ const AuthenticationManager = {
     const confirm = confirmInput.value;
 
     if (!username || !password || !confirm) {
-      this.showAlert("Veuillez renseigner tous les champs.", "error");
+      this.showAlert("auth.error.fill-all-register", "error");
       return;
     }
 
     if (password !== confirm) {
-      this.showAlert("Les mots de passe ne correspondent pas.", "error");
+      this.showAlert("auth.error.password-mismatch", "error");
       return;
     }
 
     if (password.length < 4) {
-      this.showAlert(
-        "Le mot de passe doit comporter au moins 4 caractères.",
-        "error",
-      );
+      this.showAlert("auth.error.password-short", "error");
       return;
     }
 
     try {
       submitBtn.disabled = true;
-      submitBtn.innerHTML = "<span>Création du compte...</span>";
+      this.setSubmitLabel(submitBtn, "auth.register-loading");
 
       const res = await registerUser(username, password);
 
@@ -342,33 +344,27 @@ const AuthenticationManager = {
 
           console.log("JWT récupéré après inscription :", loginData.token);
 
-          this.showAlert("Compte créé et connecté avec succès !", "success");
+          this.showAlert("auth.success.register-logged", "success");
           onAuthStateChanged();
 
           setTimeout(() => {
             this.closeModal();
           }, 800);
         } else {
-          this.showAlert(
-            "Compte créé ! Vous pouvez vous connecter.",
-            "success",
-          );
+          this.showAlert("auth.success.register", "success");
           this.switchTab("login");
           const loginUserField = document.getElementById("login-username");
           if (loginUserField) loginUserField.value = username;
         }
       } else {
-        this.showAlert(
-          "Ce nom d'utilisateur est déjà utilisé ou invalide.",
-          "error",
-        );
+        this.showAlert("auth.error.username-taken", "error");
       }
     } catch (err) {
       console.error("Erreur lors de la création de compte :", err);
-      this.showAlert("Erreur lors de la création du compte.", "error");
+      this.showAlert("auth.error.register-failed", "error");
     } finally {
       submitBtn.disabled = false;
-      submitBtn.innerHTML = "<span>Créer un compte</span>";
+      this.setSubmitLabel(submitBtn, "auth.register-submit");
     }
   },
 
@@ -386,19 +382,20 @@ const AuthenticationManager = {
     const isAuth = this.isAuthenticated();
     const username = this.getUsername();
 
-    // Mise à jour du bouton Desktop
-    const loginText = document.querySelector("#btn-login .btn-login-text");
-    if (loginText) {
-      loginText.textContent = isAuth ? username : "Connexion / Inscription";
-    }
-
-    // Mise à jour du bouton Mobile
-    const mobileAuthSpan = document.querySelector(".mobile-auth-btn span");
-    if (mobileAuthSpan) {
-      mobileAuthSpan.textContent = isAuth
-        ? username
-        : "Connexion / Inscription";
-    }
+    // Connecté : on retire data-i18n pour que le changement de langue
+    // n'écrase pas le nom d'utilisateur ; sinon on remet le libellé traduit.
+    const labels = document.querySelectorAll(
+      "#btn-login .btn-login-text, .mobile-auth-btn span",
+    );
+    labels.forEach((label) => {
+      if (isAuth) {
+        label.removeAttribute("data-i18n");
+        label.textContent = username;
+      } else {
+        label.setAttribute("data-i18n", "nav.login-register");
+        label.textContent = LanguageManager.t("nav.login-register");
+      }
+    });
   },
 };
 
@@ -439,35 +436,118 @@ const LanguageManager = {
 
     this.applyLanguage(savedLang);
 
-    const langSelect = document.getElementById("lang-select")
-    if (langSelect) {
-      langSelect.value = savedLang
-      langSelect.addEventListener("change", (e) => {
-        const lang = e.target.value
-        this.applyLanguage(lang)
-      })
-    }
+    document.querySelectorAll(".lang-select").forEach((select) => {
+      select.addEventListener("change", (e) => {
+        this.applyLanguage(e.target.value);
+      });
+    });
   },
 
-  applyLanguage(lang) {
-    console.log(lang)
-    const elements = document.querySelectorAll('[data-i18n]')
+  // Attributs HTML traduisibles : data-i18n-<suffixe> -> attribut <suffixe>
+  ATTRIBUTES: ["placeholder", "title", "aria-label"],
 
-    elements.forEach(element => {
-      const key = element.getAttribute("data-i18n")
-      if (TRANSLATIONS[lang] && TRANSLATIONS[lang][key]) {
-        element.textContent = TRANSLATIONS[lang][key]
-      }
+  applyLanguage(lang) {
+    if (!TRANSLATIONS[lang]) lang = "fr";
+
+    // Mémorisation avant de traduire (t() lit la langue courante)
+    localStorage.setItem(this.STORAGE_KEY, lang);
+    document.documentElement.lang = lang;
+
+    this.translateTree(document);
+
+    // Synchronise tous les sélecteurs (desktop + mobile)
+    document.querySelectorAll(".lang-select").forEach((select) => {
+      select.value = lang;
     });
 
-    document.documentElement.lang = lang
-    localStorage.setItem(this.STORAGE_KEY, lang)
+    // Calendriers Flatpickr
+    const pickerLocale = lang === "fr" ? "fr" : "default";
+    [
+      CatalogManager.filterStartPicker,
+      CatalogManager.filterEndPicker,
+      ReservationManager.startPicker,
+      ReservationManager.endPicker,
+    ].forEach((picker) => {
+      if (picker) picker.set("locale", pickerLocale);
+    });
 
+    AuthenticationManager.updateUI();
+  },
+
+  // Traduit tous les éléments portant data-i18n (ou data-i18n-<attribut>) sous `root`
+  translateTree(root) {
+    root.querySelectorAll("[data-i18n]").forEach((element) => {
+      const key = element.getAttribute("data-i18n");
+      const arg = element.getAttribute("data-i18n-arg");
+      if (this.has(key)) element.textContent = this.t(key, arg);
+    });
+
+    this.ATTRIBUTES.forEach((attr) => {
+      root.querySelectorAll(`[data-i18n-${attr}]`).forEach((element) => {
+        const key = element.getAttribute(`data-i18n-${attr}`);
+        if (!this.has(key)) return;
+        element.setAttribute(attr, this.t(key));
+        // Flatpickr (altInput) recopie le placeholder dans un champ séparé
+        if (attr === "placeholder" && element._flatpickr?.altInput) {
+          element._flatpickr.altInput.setAttribute(attr, this.t(key));
+        }
+      });
+    });
   },
 
   currentLang() {
-    return localStorage.getItem(this.STORAGE_KEY)
-  }
+    return localStorage.getItem(this.STORAGE_KEY) || "fr";
+  },
+
+  has(key) {
+    const dict = TRANSLATIONS[this.currentLang()];
+    return !!dict && key in dict;
+  },
+
+  // `arg` : valeur remplaçant {0}, ou objet { nom: valeur } remplaçant {nom}
+  t(key, arg) {
+    const dict = TRANSLATIONS[this.currentLang()] || {};
+    let text = key in dict ? dict[key] : key;
+
+    if (arg !== undefined && arg !== null) {
+      if (typeof arg === "object") {
+        Object.entries(arg).forEach(([name, value]) => {
+          text = text.replaceAll(`{${name}}`, value);
+        });
+      } else {
+        text = text.replaceAll("{0}", arg);
+      }
+    }
+    return text;
+  },
+
+  // Traduit une valeur d'énumération (ex: prefix "fuel", value "PETROL") ; renvoie la valeur brute sinon
+  tEnum(prefix, value) {
+    const key = `${prefix}.${value}`;
+    return this.has(key) ? this.t(key) : value;
+  },
+
+  // Fixe le texte d'un élément ET le mémorise pour les futurs changements de langue
+  setText(element, key, arg) {
+    if (!element) return;
+    element.setAttribute("data-i18n", key);
+    if (arg !== undefined && arg !== null) {
+      element.setAttribute("data-i18n-arg", arg);
+    } else {
+      element.removeAttribute("data-i18n-arg");
+    }
+    element.textContent = this.t(key, arg);
+  },
+
+  // Clé d'unité de durée selon le nombre de jours
+  daysKey(n) {
+    return Number(n) === 1 ? "unit.day" : "unit.days";
+  },
+
+  // Attributs HTML (à insérer dans un template) : data-i18n="clé" [data-i18n-arg="arg"]
+  attrs(key, arg) {
+    return `data-i18n="${key}"${arg !== undefined ? ` data-i18n-arg="${arg}"` : ""}`;
+  },
 
 };
 
@@ -605,12 +685,10 @@ const CatalogManager = {
       toggleFiltersBtn.addEventListener("click", () => {
         const isOpen = filtersAside.classList.toggle("open");
         toggleFiltersBtn.setAttribute("aria-expanded", isOpen);
-        const span = toggleFiltersBtn.querySelector("span");
-        if (span) {
-          span.textContent = isOpen
-            ? "Masquer les filtres"
-            : "Afficher les filtres";
-        }
+        LanguageManager.setText(
+          toggleFiltersBtn.querySelector("span"),
+          isOpen ? "filters.hide" : "filters.show",
+        );
       });
     }
 
@@ -634,7 +712,7 @@ const CatalogManager = {
     }
 
     const flatpickrConfig = {
-      locale: "fr",
+      locale: LanguageManager.currentLang() === "fr" ? "fr" : "default",
       minDate: "today",
       dateFormat: "Y-m-d", // Format YYYY-MM-DD standard pour FormData
       altInput: true, // Affiche un format lisible jj/mm/aaaa
@@ -667,11 +745,12 @@ const CatalogManager = {
     if (this.vehiclesCount) this.vehiclesCount.innerText = "0";
 
     if (vehiclesList === null) {
-      this.catalogGrid.innerHTML = "<p>Une erreur s'est produite lors du chargement des véhicules.</p>"
+      this.catalogGrid.innerHTML = `<p ${LanguageManager.attrs("vehicle.load-error")}>${LanguageManager.t("vehicle.load-error")}</p>`;
+      return;
     }
 
     if (vehiclesList.length === 0) {
-      this.catalogGrid.innerHTML = "<p>Il n'y a aucun véhicule dans le catalogue.</p>"
+      this.catalogGrid.innerHTML = `<p ${LanguageManager.attrs("vehicle.none")}>${LanguageManager.t("vehicle.none")}</p>`;
     }
 
     vehiclesList.forEach((vehicle) => {
@@ -712,7 +791,7 @@ const CatalogManager = {
     const availableFrom = vehicle.availableFrom;
 
     const status = isCurrentlyAvailable
-      ? `<p class="vehicle-status available">Actuellement disponible <span class="vehicle-status-badge"></span></p>`
+      ? `<p class="vehicle-status available"><span ${LanguageManager.attrs("vehicle.available-now")}>${LanguageManager.t("vehicle.available-now")}</span> <span class="vehicle-status-badge"></span></p>`
       : `<span class="vehicle-status rented">
             <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor"
                 fill="none" stroke-width="2">
@@ -721,7 +800,7 @@ const CatalogManager = {
                 <line x1="8" y1="2" x2="8" y2="6"></line>
                 <line x1="3" y1="10" x2="21" y2="10"></line>
             </svg>
-            Disponible dès le ${availableFrom}
+            <span ${LanguageManager.attrs("vehicle.available-from", availableFrom)}>${LanguageManager.t("vehicle.available-from", availableFrom)}</span>
             <span class="vehicle-status-badge"></span>
           </span>`;
 
@@ -738,16 +817,13 @@ const CatalogManager = {
             <span class="media-label">${brand} ${model}</span>
           </div>`;
 
-    const powerUnit =
-      LanguageManager.currentLang().toLowerCase() === "fr" ? "ch" : "hp";
-    const seatsLabel =
-      LanguageManager.currentLang().toLowerCase() === "fr" ? "places" : "seats";
-    const priceLabel =
-      LanguageManager.currentLang().toLowerCase() === "fr" ? "/ jour" : "/ day";
+    const powerUnit = LanguageManager.t("vehicle.power-unit");
+    const seatsLabel = LanguageManager.t("vehicle.seats");
+    const priceLabel = LanguageManager.t("vehicle.per-day");
 
     vehicleCard.innerHTML = `
         <div class="vehicle-card-media">
-          <span class="category-badge">${category}</span>
+          <span class="category-badge" data-i18n="category.${category}">${LanguageManager.tEnum("category", category)}</span>
           ${status}
           ${image}
         </div>
@@ -764,25 +840,25 @@ const CatalogManager = {
           <div class="specs-list">
             <div class="spec-item">
                 ${IconsManager.getIconSvg("fuelType")}
-                <span>${fuelType}</span>
+                <span data-i18n="fuel.${fuelType}">${LanguageManager.tEnum("fuel", fuelType)}</span>
             </div>
             <div class="spec-item">
                 ${IconsManager.getIconSvg("power")}
-                <span>${horsePower} ${powerUnit.toUpperCase()}</span>
+                <span>${horsePower} <span data-i18n="vehicle.power-unit">${powerUnit}</span></span>
             </div>
             <div class="spec-item">
                 ${IconsManager.getIconSvg("transmission")}
-                <span>${transmission}</span>
+                <span data-i18n="transmission.${transmission}">${LanguageManager.tEnum("transmission", transmission)}</span>
             </div>
             <div class="spec-item">
                 ${IconsManager.getIconSvg("seats")}
-                <span>${seatsCount} ${seatsLabel}</span>
+                <span>${seatsCount} <span data-i18n="vehicle.seats">${seatsLabel}</span></span>
             </div>
           </div>
           <div class="card-footer">
             <div class="price-container">
               <span class="price-value">${dailyPrice}€</span>
-              <span class="price-period">${priceLabel}</span>
+              <span class="price-period" data-i18n="vehicle.per-day">${priceLabel}</span>
             </div>
             <div class="action-wrapper">
               ${
@@ -791,10 +867,10 @@ const CatalogManager = {
                   : `
                 <div class="tooltip-container">
                   <span class="tooltip-icon">i</span>
-                  <div class="tooltip-text">Ce véhicule est actuellement loué, mais vous pouvez le réserver pour des dates ultérieures.</div>
+                  <div class="tooltip-text" ${LanguageManager.attrs("vehicle.rented-tooltip")}>${LanguageManager.t("vehicle.rented-tooltip")}</div>
                 </div>`
               }
-              <button class="btn btn-primary btn-open-reservation" data-vehicle-id="${vehicle.id}">Réserver</button>
+              <button class="btn btn-primary btn-open-reservation" data-vehicle-id="${vehicle.id}" ${LanguageManager.attrs("vehicle.reserve")}>${LanguageManager.t("vehicle.reserve")}</button>
             </div>
           </div>
         </div>
@@ -950,7 +1026,7 @@ const ReservationManager = {
         typeof flatpickr !== "undefined"
       ) {
         const flatpickrConfig = {
-          locale: "fr",
+          locale: LanguageManager.currentLang() === "fr" ? "fr" : "default",
           minDate: "today",
           dateFormat: "Y-m-d",
           altInput: true,
@@ -990,12 +1066,14 @@ const ReservationManager = {
         const vehicleId = btn.dataset.vehicleId || card?.dataset.vehicleId;
         const brand =
           card?.querySelector(".vehicle-brand")?.textContent ||
-          "Marque inconnue";
+          LanguageManager.t("vehicle.unknown-brand");
         const model =
           card?.querySelector(".vehicle-model")?.textContent ||
-          "Modèle inconnu";
+          LanguageManager.t("vehicle.unknown-model");
+        const categoryElement = card?.querySelector(".category-badge");
         const category =
-          card?.querySelector(".category-badge")?.textContent || "Catégorie";
+          categoryElement?.textContent || LanguageManager.t("modal.category-default");
+        const categoryKey = categoryElement?.getAttribute("data-i18n") || null;
         const img = card?.querySelector(".vehicle-card-img")?.src || "";
         const priceText =
           card?.querySelector(".price-value")?.textContent || "0";
@@ -1012,6 +1090,7 @@ const ReservationManager = {
           brand,
           model,
           category,
+          categoryKey,
           imagePath: img,
           dailyPrice: price,
           specsHtml: specs,
@@ -1030,8 +1109,13 @@ const ReservationManager = {
       vehicleData.brand;
     document.getElementById("modal-vehicle-model").textContent =
       vehicleData.model;
-    document.getElementById("modal-vehicle-category").textContent =
-      vehicleData.category;
+    const modalCategory = document.getElementById("modal-vehicle-category");
+    modalCategory.textContent = vehicleData.category;
+    if (vehicleData.categoryKey) {
+      modalCategory.setAttribute("data-i18n", vehicleData.categoryKey);
+    } else {
+      modalCategory.removeAttribute("data-i18n");
+    }
     document.getElementById("modal-vehicle-specs").innerHTML =
       vehicleData.specsHtml || "";
     document.getElementById("summary-daily-price").textContent =
@@ -1041,7 +1125,7 @@ const ReservationManager = {
     this.form.reset();
     this.errorMsg.style.display = "none";
     this.confirmBtn.disabled = true;
-    document.getElementById("summary-days").textContent = "0 jour";
+    this.setSummaryDays(0);
     document.getElementById("summary-price").textContent = "0€";
 
     // Récupération des dates indisponibles ce véhicule
@@ -1075,13 +1159,26 @@ const ReservationManager = {
     this.modal.classList.remove("active");
   },
 
+  setSummaryDays(days) {
+    LanguageManager.setText(
+      document.getElementById("summary-days"),
+      LanguageManager.daysKey(days),
+      days,
+    );
+  },
+
+  showError(key) {
+    LanguageManager.setText(this.errorMsg, key);
+    this.errorMsg.style.display = "block";
+  },
+
   validateDates() {
     const startVal = this.startDateInput.value;
     const endVal = this.endDateInput.value;
 
     this.errorMsg.style.display = "none";
     this.confirmBtn.disabled = true;
-    document.getElementById("summary-days").textContent = "0 jour";
+    this.setSummaryDays(0);
     document.getElementById("summary-price").textContent = "0€";
 
     if (!startVal || !endVal) return;
@@ -1094,9 +1191,7 @@ const ReservationManager = {
     end.setHours(0, 0, 0, 0);
 
     if (end < start) {
-      this.errorMsg.textContent =
-        "La date de retour doit être après la date de départ.";
-      this.errorMsg.style.display = "block";
+      this.showError("modal.error.end-before-start");
       return;
     }
 
@@ -1119,9 +1214,7 @@ const ReservationManager = {
     }
 
     if (hasOverlap) {
-      this.errorMsg.textContent =
-        "Certaines dates sélectionnées ne sont pas disponibles.";
-      this.errorMsg.style.display = "block";
+      this.showError("modal.error.overlap");
       return;
     }
 
@@ -1129,8 +1222,7 @@ const ReservationManager = {
     const diffTime = Math.abs(end - start);
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) + 1; // +1 pour inclure le jour de départ ET le jour de fin
 
-    document.getElementById("summary-days").textContent =
-      `${diffDays} jour${diffDays > 1 ? "s" : ""}`;
+    this.setSummaryDays(diffDays);
     document.getElementById("summary-price").textContent =
       `${diffDays * this.dailyPrice}€`;
 
@@ -1142,13 +1234,13 @@ const ReservationManager = {
     e.preventDefault();
 
     if (!AuthenticationManager.isAuthenticated()) {
-      alert("Vous devez être connecté pour réserver un véhicule.");
+      alert(LanguageManager.t("modal.alert.login-required"));
       AuthenticationManager.openModal("login");
       return;
     }
 
     if (!this.currentVehicle || !this.currentVehicle.id) {
-      alert("Identifiant du véhicule introuvable.");
+      alert(LanguageManager.t("modal.alert.vehicle-not-found"));
       return;
     }
 
@@ -1156,15 +1248,13 @@ const ReservationManager = {
     const endDate = this.endDateInput.value;
 
     if (!startDate || !endDate) {
-      this.errorMsg.textContent =
-        "Veuillez sélectionner des dates de début et de fin.";
-      this.errorMsg.style.display = "block";
+      this.showError("modal.error.missing-dates");
       return;
     }
 
     try {
       this.confirmBtn.disabled = true;
-      this.confirmBtn.textContent = "Réservation en cours...";
+      LanguageManager.setText(this.confirmBtn, "modal.confirming");
 
       const token = AuthenticationManager.getToken();
       const tokenWithBearer = token.startsWith("Bearer ")
@@ -1180,7 +1270,12 @@ const ReservationManager = {
 
       if (res && res.id) {
         alert(
-          `Réservation #${res.id} confirmée avec succès pour le véhicule ${this.currentVehicle.brand} ${this.currentVehicle.model} du ${startDate} au ${endDate} !`,
+          LanguageManager.t("modal.alert.success", {
+            id: res.id,
+            vehicle: `${this.currentVehicle.brand} ${this.currentVehicle.model}`,
+            start: startDate,
+            end: endDate,
+          }),
         );
         this.closeModal();
 
@@ -1196,27 +1291,25 @@ const ReservationManager = {
           CatalogManager.createOrReplaceVehicleCard(vehicle);
         }
       } else {
-        this.errorMsg.textContent =
-          "Impossible de créer la réservation. Veuillez vérifier vos dates.";
-        this.errorMsg.style.display = "block";
+        this.showError("modal.error.create-failed");
       }
     } catch (err) {
       console.error("Erreur lors de la réservation :", err);
-      this.errorMsg.textContent =
-        "Une erreur est survenue lors de la réservation.";
-      this.errorMsg.style.display = "block";
+      this.showError("modal.error.generic");
     } finally {
       this.confirmBtn.disabled = false;
-      this.confirmBtn.textContent = "Confirmer la réservation";
+      LanguageManager.setText(this.confirmBtn, "modal.confirm");
     }
   },
 
   async displayMyReservations() {
     this.myReservationsList.innerHTML = "";
     const jwt_token = localStorage.getItem(AuthenticationManager.tokenKey);
+    const messageHtml = (key) =>
+      `<p ${LanguageManager.attrs(key)}>${LanguageManager.t(key)}</p>`;
+
     if (!jwt_token) {
-      this.myReservationsList.innerHTML =
-        "<p>Vous devez être connecté pour voir vos réservations.</p>";
+      this.myReservationsList.innerHTML = messageHtml("reservations.login-required");
       return;
     }
 
@@ -1226,14 +1319,12 @@ const ReservationManager = {
     const reservations = await getMyReservations(tokenWithBearer);
 
     if (reservations === null) {
-      this.myReservationsList.innerHTML =
-        "<p>Une erreur s'est produite lors du chargement de vos réservations.</p>";
+      this.myReservationsList.innerHTML = messageHtml("reservations.load-error");
       return;
     }
 
     if (reservations.length === 0) {
-      this.myReservationsList.innerHTML =
-        "<p>Vous n'avez aucune réservation.</p>";
+      this.myReservationsList.innerHTML = messageHtml("reservations.none");
       return;
     }
 
@@ -1271,10 +1362,10 @@ const ReservationManager = {
 
     // Structure pour itérer proprement sur les catégories et ajouter les lignes démarcation
     const sections = [
-      {key: "current", label: "Réservations en cours"},
-      {key: "incomming", label: "Réservations à venir"},
-      {key: "finished", label: "Réservations terminées"},
-      {key: "cancelled", label: "Réservations annulées"}
+      {key: "current", label: "reservations.section.current"},
+      {key: "incomming", label: "reservations.section.incomming"},
+      {key: "finished", label: "reservations.section.finished"},
+      {key: "cancelled", label: "reservations.section.cancelled"}
     ]
 
     // Affichage des sections et des réservations
@@ -1284,7 +1375,7 @@ const ReservationManager = {
 
       const sectionHeader = document.createElement("div");
       sectionHeader.className = `reservation-section-title`;
-      sectionHeader.innerHTML = `<h3>${section.label} (${list.length})</h3><hr>`;
+      sectionHeader.innerHTML = `<h3><span ${LanguageManager.attrs(section.label)}>${LanguageManager.t(section.label)}</span> (${list.length})</h3><hr>`;
       this.myReservationsList.appendChild(sectionHeader);
 
       // Génération des lignes de réservations
@@ -1305,20 +1396,23 @@ const ReservationManager = {
         const diffDaysLeft = Math.ceil(diffTimeLeft / (1000 * 60 * 60 * 24))
 
         if (section.key === "current") {
-          daysLeftText = `<span class="days-left text-orange">${diffDaysLeft} jour(s) restant(s)</span>`;
+          daysLeftText = `<span class="days-left text-orange" ${LanguageManager.attrs("reservations.days-left", diffDaysLeft)}>${LanguageManager.t("reservations.days-left", diffDaysLeft)}</span>`;
         } else if (section.key === "incomming") {
           const diffTimeBeforeStart = startDate - today;
           const diffDaysBeforeStart = Math.ceil(diffTimeBeforeStart / (1000 * 60 * 60 * 24));
-          daysLeftText = `<span class="days-left text-blue">Débute dans ${diffDaysBeforeStart} jour(s)</span>`;
+          daysLeftText = `<span class="days-left text-blue" ${LanguageManager.attrs("reservations.starts-in", diffDaysBeforeStart)}>${LanguageManager.t("reservations.starts-in", diffDaysBeforeStart)}</span>`;
         } else {
-          daysLeftText = `<span class="days-left text-gray">Terminée</span>`;
+          daysLeftText = `<span class="days-left text-gray" ${LanguageManager.attrs("reservations.finished")}>${LanguageManager.t("reservations.finished")}</span>`;
         }
 
         const cancelButtonHtml = (section.key === "incomming")
           ? `<button type="button" class="btn-cancel-reservation" data-id="${reservation.id}">
-              ${IconsManager.getIconSvg("cancel")} <span>Annuler la réservation</span>
+              ${IconsManager.getIconSvg("cancel")} <span ${LanguageManager.attrs("reservations.cancel")}>${LanguageManager.t("reservations.cancel")}</span>
              </button>`
           : "";
+
+        const statusKey = `reservations.status.${reservation.status}`;
+        const statusLabel = LanguageManager.tEnum("reservations.status", reservation.status);
 
         reservationElement.innerHTML = `
           <div class="reservation-media">
@@ -1329,13 +1423,13 @@ const ReservationManager = {
               <div class="reservation-title-group">
                 <span class="reservation-id">#${reservation.id}</span>
                 <h2 class="reservation-vehicle-name">${vehicle.brand} ${vehicle.model}</h2>
-                <button type="button" class="btn-vehicle-details" title="Voir les détails du véhicule">
-                  ${IconsManager.getIconSvg("info")} <span>Voir les détails</span>
+                <button type="button" class="btn-vehicle-details" data-i18n-title="reservations.details-title" title="${LanguageManager.t("reservations.details-title")}">
+                  ${IconsManager.getIconSvg("info")} <span ${LanguageManager.attrs("reservations.details")}>${LanguageManager.t("reservations.details")}</span>
                 </button>
               </div>
               <span class="reservation-status status-${reservation.status.toLowerCase()}">
                 <span class="status-dot"></span>
-                ${reservation.status}
+                <span data-i18n="${statusKey}">${statusLabel}</span>
               </span>
             </div>
             <div class="reservation-body-info">
@@ -1343,7 +1437,7 @@ const ReservationManager = {
                 <div class="date-item">
                   ${IconsManager.getIconSvg("calendar")}
                   <div class="date-text">
-                    <span class="date-label">Date de début</span>
+                    <span class="date-label" ${LanguageManager.attrs("reservations.start")}>${LanguageManager.t("reservations.start")}</span>
                     <strong class="date-value">${reservation.startDate}</strong>
                   </div>
                 </div>
@@ -1353,11 +1447,11 @@ const ReservationManager = {
                 <div class="date-item">
                   ${IconsManager.getIconSvg("calendar")}
                   <div class="date-text">
-                    <span class="date-label">Date de fin</span>
+                    <span class="date-label" ${LanguageManager.attrs("reservations.end")}>${LanguageManager.t("reservations.end")}</span>
                     <strong class="date-value">${reservation.endDate}</strong>
                   </div>
                 </div>
-                <span class="reservation-duration-badge">${diffDays} jours &bull; ${reservation.totalPrice} €</span>
+                <span class="reservation-duration-badge"><span ${LanguageManager.attrs(LanguageManager.daysKey(diffDays), diffDays)}>${LanguageManager.t(LanguageManager.daysKey(diffDays), diffDays)}</span> &bull; ${reservation.totalPrice} €</span>
                 ${daysLeftText}
               </div>
               <div class="reservation-actions">
@@ -1377,7 +1471,7 @@ const ReservationManager = {
       if (cancelButton) {
         const resId = cancelButton.dataset.id
 
-        const confirmed = confirm(`Voulez-vous vraiment annuler la réservation #${resId}`)
+        const confirmed = confirm(LanguageManager.t("reservations.cancel-confirm", resId))
 
         if (confirmed) {
           const data = await cancelReservation(resId, tokenWithBearer)
@@ -1411,10 +1505,11 @@ function onAuthStateChanged() {
 
 async function initAll() {
   ThemeManager.init();
-  LanguageManager.init();
   NavigationManager.init();
   AuthenticationManager.init();
   ReservationManager.init();
+  // Après les autres managers : la modale d'auth et les calendriers existent déjà
+  LanguageManager.init();
   await CatalogManager.init();
 }
 
