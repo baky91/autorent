@@ -1,6 +1,9 @@
 package com.baky91.autorent.configuration;
 
 import com.baky91.autorent.repository.UserRepository;
+import com.baky91.autorent.service.VehicleService;
+import org.springframework.cache.CacheManager;
+import org.springframework.cache.concurrent.ConcurrentMapCacheManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -18,6 +21,13 @@ public class ApplicationConfiguration {
 
     public ApplicationConfiguration(UserRepository userRepository) {
         this.userRepository = userRepository;
+    }
+
+    // Cache en mémoire (ConcurrentHashMap), sans dépendance supplémentaire.
+    // Déclaré explicitement pour ne pas dépendre de l'auto-configuration du cache.
+    @Bean
+    CacheManager cacheManager() {
+        return new ConcurrentMapCacheManager(VehicleService.VEHICLES_CACHE);
     }
 
     @Bean

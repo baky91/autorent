@@ -9,6 +9,7 @@ import com.baky91.autorent.model.exception.ReservationConflictException;
 import com.baky91.autorent.repository.ReservationRepository;
 import com.baky91.autorent.repository.UserRepository;
 import com.baky91.autorent.repository.VehicleRepository;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -49,6 +50,8 @@ public class ReservationService {
                                     .toList();
     }
 
+    // Les réservations modifient la disponibilité des véhicules : on vide le cache de la liste
+    @CacheEvict(value = VehicleService.VEHICLES_CACHE, allEntries = true)
     public ReservationDTO.Output createReservation(Long id, User user, ReservationDTO.CreateInput input) {
         // Si on a déjà un objet User on peut le passer directement en paramètre et éviter de faire une recherche dans la BDD à partir de l'id
         Optional<User> currentUser = null;
@@ -101,6 +104,7 @@ public class ReservationService {
         return newReservation.toDto();
     }
 
+    @CacheEvict(value = VehicleService.VEHICLES_CACHE, allEntries = true)
     public ReservationDTO.Output editReservation(Long id, ReservationDTO.EditInput input) {
         Reservation reservation = reservationRepository.findById(id)
                                                        .orElseThrow(() -> new ObjectNotFoundException("La réservation numéro %d n'a pas été trouvée".formatted(id)));
@@ -123,6 +127,7 @@ public class ReservationService {
         return reservation.toDto();
     }
 
+    @CacheEvict(value = VehicleService.VEHICLES_CACHE, allEntries = true)
     public ReservationDTO.Output cancelReservation(User user, Long reservationId) {
         if (user == null) {
             throw new ObjectNotFoundException("L'utilisateur n'a pas été trouvé");
@@ -148,6 +153,7 @@ public class ReservationService {
         return reservation.toDto();
     }
 
+    @CacheEvict(value = VehicleService.VEHICLES_CACHE, allEntries = true)
     public void deleteReservation(Long id) throws ObjectNotFoundException {
         Reservation foundReservation = reservationRepository.findById(id)
                 .orElseThrow(() -> new ObjectNotFoundException("La réservation numéro %d n'a pas été trouvé".formatted(id)));

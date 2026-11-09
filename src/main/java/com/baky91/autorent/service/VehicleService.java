@@ -1,19 +1,25 @@
 package com.baky91.autorent.service;
 
+import java.time.LocalDate;
+import java.util.List;
+import java.util.stream.Stream;
+
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.stereotype.Service;
+
 import com.baky91.autorent.dto.VehicleDTO;
 import com.baky91.autorent.model.Reservation;
 import com.baky91.autorent.model.Vehicle;
 import com.baky91.autorent.model.exception.ObjectNotFoundException;
 import com.baky91.autorent.repository.ReservationRepository;
 import com.baky91.autorent.repository.VehicleRepository;
-import org.springframework.stereotype.Service;
-
-import java.time.LocalDate;
-import java.util.List;
-import java.util.stream.Stream;
 
 @Service
 public class VehicleService {
+
+    // Nom du cache des listes de véhicules (vidé à chaque modification de véhicule ou de réservation)
+    public static final String VEHICLES_CACHE = "vehicles";
 
     private final VehicleRepository vehicleRepository;
     private final ReservationRepository reservationRepository;
@@ -29,6 +35,9 @@ public class VehicleService {
         return mapToOutputWithAvailability(vehicle);
     }
 
+    // La clé du cache est le record QueryParams lui-même (equals/hashCode générés).
+    // Les requêtes avec dates ne sont pas mises en cache : leur résultat dépend de la période demandée.
+    @Cacheable(value = VEHICLES_CACHE, condition = "#params.startDate() == null && #params.endDate() == null")
     public List<VehicleDTO.Output> getAllVehicles(VehicleDTO.QueryParams params) {
         Stream<Vehicle> stream = vehicleRepository.findAll().stream();
 
@@ -81,6 +90,7 @@ public class VehicleService {
         return v.toDto(isCurrentlyAvailable, availableFrom);
     }
 
+    @CacheEvict(value = VEHICLES_CACHE, allEntries = true)
     public VehicleDTO.Output createVehicle(VehicleDTO.Input data) {
         Vehicle vehicle = new Vehicle(
             data.brand(),
@@ -101,6 +111,7 @@ public class VehicleService {
         return vehicle.toDto();
     }
 
+    @CacheEvict(value = VEHICLES_CACHE, allEntries = true)
     public VehicleDTO.Output updateVehicle(Long id, VehicleDTO.Input data) {
         Vehicle vehicle = vehicleRepository.findById(id)
                                            .orElseThrow(() -> new ObjectNotFoundException("Le véhicule numéro %d n'a pas été trouvé".formatted(id)));
@@ -123,6 +134,7 @@ public class VehicleService {
         return vehicle.toDto();
     }
 
+    @CacheEvict(value = VEHICLES_CACHE, allEntries = true)
     public void deleteVehicle(Long id) throws ObjectNotFoundException {
         Vehicle foundVehicle = vehicleRepository.findById(id)
                                                 .orElseThrow(() -> new ObjectNotFoundException("Le véhicule numéro %d n'a pas été trouvé".formatted(id)));

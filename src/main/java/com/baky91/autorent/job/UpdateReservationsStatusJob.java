@@ -2,6 +2,9 @@ package com.baky91.autorent.job;
 
 import com.baky91.autorent.model.Reservation;
 import com.baky91.autorent.repository.ReservationRepository;
+import com.baky91.autorent.service.VehicleService;
+import org.springframework.cache.Cache;
+import org.springframework.cache.CacheManager;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -12,8 +15,21 @@ public class UpdateReservationsStatusJob {
 
     private final ReservationRepository reservationRepository;
 
-    public UpdateReservationsStatusJob(ReservationRepository reservationRepository) {
+    private final CacheManager cacheManager;
+
+    public UpdateReservationsStatusJob(ReservationRepository reservationRepository, CacheManager cacheManager) {
         this.reservationRepository = reservationRepository;
+        this.cacheManager = cacheManager;
+    }
+
+    // La disponibilité d'un véhicule dépend de la date du jour (isCurrentlyAvailable, availableFrom) :
+    // on vide le cache chaque nuit pour ne pas servir les valeurs de la veille.
+    @Scheduled(cron = "0 0 0 * * ?")
+    public void clearVehiclesCache() {
+        Cache cache = cacheManager.getCache(VehicleService.VEHICLES_CACHE);
+        if (cache != null) {
+            cache.clear();
+        }
     }
 
     // Mettre à jour le status des réservation tous les jours à 18h
