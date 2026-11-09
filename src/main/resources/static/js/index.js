@@ -991,6 +991,9 @@ const ReservationManager = {
     this.myReservationsList = document.getElementById("my-reservations-list");
 
     if (this.myReservationsList) {
+      this.myReservationsList.addEventListener("click", (e) =>
+        this.onReservationsListClick(e),
+      );
       this.displayMyReservations();
     }
 
@@ -1464,33 +1467,27 @@ const ReservationManager = {
 
       })
     });
-
-    this.myReservationsList.addEventListener("click", async (e) => {
-      const cancelButton = e.target.closest(".btn-cancel-reservation")
-
-      if (cancelButton) {
-        const resId = cancelButton.dataset.id
-
-        const confirmed = confirm(LanguageManager.t("reservations.cancel-confirm", resId))
-
-        if (confirmed) {
-          const data = await cancelReservation(resId, tokenWithBearer)
-        
-          console.log(`La réservation #${resId} a bien été annulée`)
-
-          // TODO: logique de raffraichissement, éviter de scroll tout en haut
-          this.displayMyReservations()
-        }
-
-      }
-
-    })
-
   },
 
-  async handleCancel() {
-    console.log("Cancel reservation")
-  }
+  // Délégation d'événement : posée une seule fois dans init(), pas à chaque rendu de la liste
+  async onReservationsListClick(e) {
+    const cancelButton = e.target.closest(".btn-cancel-reservation");
+    if (!cancelButton || !cancelButton.dataset.id) return;
+
+    const resId = cancelButton.dataset.id;
+    if (!confirm(LanguageManager.t("reservations.cancel-confirm", resId))) return;
+
+    // Token lu au moment du clic (il peut avoir changé depuis le dernier rendu)
+    const token = localStorage.getItem(AuthenticationManager.tokenKey);
+    if (!token) return;
+    const tokenWithBearer = token.startsWith("Bearer ") ? token : `Bearer ${token}`;
+
+    await cancelReservation(resId, tokenWithBearer);
+    console.log(`La réservation #${resId} a bien été annulée`);
+
+    // TODO: logique de raffraichissement, éviter de scroll tout en haut
+    this.displayMyReservations();
+  },
 
 };
 
